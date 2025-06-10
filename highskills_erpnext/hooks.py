@@ -242,3 +242,8 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+# Add this to override the signup form template with your custom one
+website_context = {
+    "signup_form_template": "highskills_erpnext/templates/includes/signup/signup.html"
+}
+
