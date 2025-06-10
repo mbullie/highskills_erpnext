@@ -244,6 +244,6 @@ app_license = "mit"
 
 # Add this to override the signup form template with your custom one
 website_context = {
-    "signup_form_template": "highskills_erpnext/templates/includes/signup/signup.html"
+    "signup_form_template": "highskills_erpnext.templates.includes.signup.signup.html"
 }
 
