@@ -4,6 +4,7 @@ app_publisher = "Highskills and more LTD - Michael Bulwick <michael@highskills.c
 app_description = "Highskills Erpnext custom app"
 app_email = "info@highskills.co.il"
 app_license = "mit"
+signup_form_template = ["highskills_erpnext/templates/signup.html"]
 
 # Apps
 # ------------------
@@ -241,6 +242,8 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
+
+
 
 
 
