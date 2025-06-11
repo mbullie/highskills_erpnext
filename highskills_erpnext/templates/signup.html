@@ -1,14 +1,9 @@
 {# Custom signup form override for Frappe #}
 <!-- CUSTOM SIGNUP FORM: highskills_erpnext/templates/signup.html -->
-
-{% extends "frappe/templates/signup.html" %}
-
-{# You can customize the form below. Example: #}
-{% block content %}
+<!-- HIGHSKILLS CUSTOM SIGNUP TEST 2025-06-11 new -->
+<!-- Copied from includes/signup/signup.html for direct template override test -->
 <div class="custom-signup-form">
     <h2>Sign Up (Custom)</h2>
-    <!-- HIGHSKILLS CUSTOM SIGNUP TEST 2025-06-11 new -->
-    <!-- Copied from includes/signup/signup.html for direct template override test -->
     <form class="form-signin form-signup hide" role="form">
         <div class="page-card-body">
             <div class="form-group">
@@ -34,11 +29,9 @@
         <div class="page-card-actions">
             <button class="btn btn-sm btn-primary btn-block btn-signup"
                 type="submit">{{ _("Sign up") }}</button>
-
             <p class="text-center sign-up-message">
                 <a href="#login" class="blue">{{ _("Have an account? Login") }}</a>
             </p>
         </div>
     </form>
 </div>
-{% endblock %}
