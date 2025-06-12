@@ -125,7 +125,6 @@ frappe.ready(function() {
 				message.push(password_strength_message_success);
 			}
 		}
-		password_mismatch_message.addClass('hidden');
 
 		strength_message.html(message.join(' ') || '').removeClass('hidden');
 	}
