@@ -4,20 +4,24 @@
             <label class="form-label sr-only" for="signup_fullname">{{ _("Full Name") }}</label>
             <input type="text" id="signup_fullname" class="form-control" name="fullname"
                 placeholder="{{ _('First name + Last name') }}" required autofocus autocomplete="name">
+            <span class="text-danger">*</span>
         </div>
         <div class="form-group">
             <label class="form-label sr-only" for="signup_email">{{ _("Email") }}</label>
             <input type="email" id="signup_email" class="form-control" name="email"
                 placeholder="{{ _('Email') }}" required autocomplete="username">
+            <span class="text-danger">*</span>
         </div>
         <!-- Custom Fields -->
          <div class="form-group">
 		    <label class="form-label sr-only" for="username">{{ _("Username") }}</label>
 		    <input id="username" type="text" class="form-control" name="username" placeholder="{{ _('Username') }}" required>
+		    <span class="text-danger">*</span>
 	    </div>
 	    <div class="form-group">
 		    <label class="form-label sr-only" for="password">{{ _("Password") }}</label>
 		    <input id="password" type="password" class="form-control" name="password" placeholder="{{ _('Password') }}" required>
+		    <span class="text-danger">*</span>
 	    </div>
         <p class='password-strength-message text-muted small hidden'></p>
         <div class="form-group">
@@ -150,7 +154,7 @@ frappe.ready(function() {
 
 			/*frappe.call({
 				type: "POST",
-				method: "frappe.core.doctype.user.user.sign_up",
+				method: "highskills_erpnext.api.signup.custom_sign_up",
 				args: {
 					"data": data
 				},
@@ -161,7 +165,7 @@ frappe.ready(function() {
 							message: __("Your Account has been successfully created!"),
 							clear: true
 						});
-						setTimeout(function() {
+					 setTimeout(function() {
 							window.location.href = "/login";
 						}, 2000);
 					}
