@@ -138,13 +138,11 @@ signup_form_template = ["highskills_erpnext/templates/signup.html"]
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {}
+
+# Expose custom signup endpoint
+# This allows frappe.call({ method: "highskills_erpnext.api_signup.custom_sign_up", ... })
+# to work from the frontend
 
 # Scheduled Tasks
 # ---------------

@@ -150,7 +150,7 @@ frappe.ready(function() {
 <script>
 	frappe.ready(() => {
 		$("#submit").click(function (event) {
-            //event.preventDefault();
+			event.preventDefault();
 			var data = {
 				full_name: $("#signup_fullname").val(),
 				email: ($("#signup_email").val() || "").trim(),
@@ -160,12 +160,10 @@ frappe.ready(function() {
                 signup_phone: $("#signup_phone").val(),
 			};
 
-			/*frappe.call({
+			frappe.call({
 				type: "POST",
-				method: "highskills_erpnext.api.signup.custom_sign_up",
-				args: {
-					"data": data
-				},
+				method: "highskills_erpnext.api_signup.custom_sign_up",
+				args: data,
 				callback: (data) => {
 					$("input").val("");
 					if (data.message == "OK") {
@@ -179,7 +177,7 @@ frappe.ready(function() {
 					}
 				}
 			});
-			return false;*/
+			return false;
 		});
 	})
 </script>
