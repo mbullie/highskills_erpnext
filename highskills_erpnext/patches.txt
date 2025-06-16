@@ -5,3 +5,4 @@
 highskills_erpnext.patches.add_user_custom_fields
 
 # Patches added in this section will be executed after doctypes are migrated
+[post_model_sync]
