@@ -4,7 +4,7 @@ app_publisher = "Highskills and more LTD - Michael Bulwick <michael@highskills.c
 app_description = "Highskills Erpnext custom app"
 app_email = "info@highskills.co.il"
 app_license = "mit"
-signup_form_template = ["highskills_erpnext/templates/signup.html"]
+#signup_form_template = ["highskills_erpnext/templates/request-invite.html"]
 
 # Apps
 # ------------------
@@ -138,7 +138,11 @@ signup_form_template = ["highskills_erpnext/templates/signup.html"]
 # ---------------
 # Hook on document methods and events
 
-doc_events = {}
+doc_events = {
+	"User": {
+		"validate": "highskills_erpnext.highskills_erpnext.user.validate_username_duplicates",
+	},
+}
 
 # Expose custom signup endpoint
 # This allows frappe.call({ method: "highskills_erpnext.api_signup.custom_sign_up", ... })
