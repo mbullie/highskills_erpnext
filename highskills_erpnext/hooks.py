@@ -32,6 +32,7 @@ app_license = "mit"
 # include js, css files in header of web template
 # web_include_css = "/assets/highskills_erpnext/css/highskills_erpnext.css"
 # web_include_js = "/assets/highskills_erpnext/js/highskills_erpnext.js"
+web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "highskills_erpnext/public/scss/website"
@@ -139,9 +140,9 @@ app_license = "mit"
 # Hook on document methods and events
 
 doc_events = {
-	"User": {
-		"validate": "highskills_erpnext.highskills_erpnext.user.validate_username_duplicates",
-	},
+    "User": {
+        "after_insert": "highskills_erpnext.highskills_erpnext.user.set_profile_needs_update_flag",
+    }
 }
 
 # Expose custom signup endpoint
