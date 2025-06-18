@@ -32,7 +32,7 @@ app_license = "mit"
 # include js, css files in header of web template
 # web_include_css = "/assets/highskills_erpnext/css/highskills_erpnext.css"
 # web_include_js = "/assets/highskills_erpnext/js/highskills_erpnext.js"
-web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
+# web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "highskills_erpnext/public/scss/website"
