@@ -5,7 +5,7 @@ app_description = "Highskills Erpnext custom app"
 app_email = "info@highskills.co.il"
 app_license = "mit"
 override_whitelisted_methods = {
- 	"frappe.www.update_password.update_password": "highskills_erpnext.api.custom_update_password"
+ 	"frappe.core.doctype.user.user.update_password": "highskills_erpnext.api.custom_update_password"
 }
 #web_include_js = "force_profile_update.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
