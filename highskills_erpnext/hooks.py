@@ -142,9 +142,6 @@ web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 # Hook on document methods and events
 
 doc_events = {
-    "User": {
-        "after_insert": "highskills_erpnext.highskills_erpnext.user.set_profile_needs_update_flag",
-    }
 }
 
 # Expose custom signup endpoint
