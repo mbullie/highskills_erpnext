@@ -8,8 +8,16 @@ You can install this app using the [bench](https://github.com/frappe/bench) CLI:
 
 ```bash
 cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
+bench get-app https://github.com/mbullie/highskills_erpnext.git --branch master
 bench install-app highskills_erpnext
+```
+
+### Upgrade
+
+```bash
+cd $PATH_TO_YOUR_BENCH/apps/highskills_erpnext
+git pull
+bench --site your-site-name migrate
 ```
 
 ### Contributing
