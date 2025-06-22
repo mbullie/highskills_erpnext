@@ -3,7 +3,7 @@ from frappe import _
 
 @frappe.whitelist(allow_guest=True)
 def custom_update_password(key=None, old_password=None, new_password=None, logout_all_sessions=0):
-    logout_all_sessions = 1  # Force logout all sessions for security reasons
+    logout_all_sessions = 0  # Dont force logout all sessions
         
     # Call the original method with correct argument order
     from frappe.core.doctype.user.user import update_password as orig_update_password
@@ -14,4 +14,6 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
         old_password=old_password
     )
     # Return your custom redirect URL instead of /me
-    return "/update-profile"
+    user = frappe.session.user
+    return f"/update-profile/{user}/edit"
+
