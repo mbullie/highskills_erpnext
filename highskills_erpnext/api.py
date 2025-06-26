@@ -22,12 +22,40 @@ def quotation_notify_support(doc, method=None):
     support_email = frappe.db.get_value("Email Account", {"default_outgoing": 1}, "email_id")
     if not support_email:
         return  # No default outgoing email account set
+    # Fetch all customer details from Customer DocType (one fetch)
+    customer_doc = frappe.get_doc("Customer", doc.customer) if doc.customer else None
+    customer_full_name = customer_doc.customer_name if customer_doc else doc.customer_name or doc.customer or "-"
+    customer_group = customer_doc.customer_group if customer_doc else "-"
+    territory = customer_doc.territory if customer_doc else "-"
+    customer_type = customer_doc.customer_type if customer_doc else "-"
+    tax_id = getattr(customer_doc, 'tax_id', "-") if customer_doc else "-"
+    # Fetch primary Contact and Address in one query each
+    contact = None
+    address = None
+    if customer_doc:
+        links = frappe.get_all("Dynamic Link", filters={"link_doctype": "Customer", "link_name": customer_doc.name}, fields=["parent", "parenttype"])
+        for link in links:
+            if link["parenttype"] == "Contact" and not contact:
+                contact = frappe.get_doc("Contact", link["parent"])
+            elif link["parenttype"] == "Address" and not address:
+                address = frappe.get_doc("Address", link["parent"])
+            if contact and address:
+                break
+    # Get customer email and phone
+    customer_email = doc.contact_email or (contact.email_id if contact else "-")
+    customer_phone = doc.contact_mobile or (contact.phone if contact else "-")
+    # Get customer address
+    customer_address = doc.customer_address or (address.display if address and hasattr(address, 'display') else (address.address_line1 if address else "-"))
     # Collect all customer details
     customer_details = f"""
-    <b>Customer Name:</b> {doc.customer_name or doc.customer or 'Unknown'}<br>
-    <b>Email:</b> {doc.contact_email or '-'}<br>
-    <b>Phone:</b> {doc.contact_mobile or '-'}<br>
-    <b>Address:</b> {doc.customer_address or '-'}<br>
+    <b>Customer Name:</b> {customer_full_name}<br>
+    <b>Customer Group:</b> {customer_group}<br>
+    <b>Territory:</b> {territory}<br>
+    <b>Customer Type:</b> {customer_type}<br>
+    <b>Tax ID:</b> {tax_id}<br>
+    <b>Email:</b> {customer_email}<br>
+    <b>Phone:</b> {customer_phone}<br>
+    <b>Address:</b> {customer_address}<br>
     """
     # Collect all items from the Quotation
     items = doc.get("items", [])
@@ -78,7 +106,7 @@ def quotation_notify_support(doc, method=None):
     </table>
     """ if taxes else "<i>No taxes applied.</i>"
     # Quotation time
-    quotation_time = frappe.utils.format_datetime(doc.creation, "yyyy-mm-dd HH:MM:ss")
+    quotation_time = frappe.utils.format_datetime(doc.creation, "yyyy-MM-dd HH:mm:ss")
     # Email body
     message = f"""
     <h2>New Quotation Created</h2>
