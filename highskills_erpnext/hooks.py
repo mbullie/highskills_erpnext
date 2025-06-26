@@ -4,9 +4,6 @@ app_publisher = "Highskills and more LTD - Michael Bulwick <michael@highskills.c
 app_description = "Highskills Erpnext custom app"
 app_email = "info@highskills.co.il"
 app_license = "mit"
-override_whitelisted_methods = {
- 	"frappe.core.doctype.user.user.update_password": "highskills_erpnext.api.custom_update_password"
-}
 #web_include_js = "force_profile_update.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
@@ -145,6 +142,9 @@ override_whitelisted_methods = {
 # Hook on document methods and events
 
 doc_events = {
+    "Quotation": {
+        "after_insert": "highskills_erpnext.api.quotation_notify_support"
+    }
 }
 
 # Expose custom signup endpoint
@@ -180,9 +180,9 @@ doc_events = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "highskills_erpnext.event.get_events"
-# }
+override_whitelisted_methods = {
+ 	"frappe.core.doctype.user.user.update_password": "highskills_erpnext.api.custom_update_password"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
