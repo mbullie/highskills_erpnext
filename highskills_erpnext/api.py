@@ -99,6 +99,6 @@ def quotation_notify_support(doc, method=None):
         subject=subject,
         message=message,
         delayed=False,
-        content_type="html"
+        as_markdown=False
     )
 
