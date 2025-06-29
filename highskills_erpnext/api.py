@@ -62,7 +62,7 @@ def quotation_notify_support(doc, method=None):
     frappe.logger().error(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
     if not items:
         return
-    item_rows = "".join([
+    item_rows = "\n".join([
         f"<tr>"
         f"<td>{item.item_code}</td>"
         f"<td>{item.item_name}</td>"
