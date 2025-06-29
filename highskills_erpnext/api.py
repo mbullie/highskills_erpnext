@@ -129,12 +129,19 @@ def quotation_notify_support(doc, method=None):
     """ if taxes else "<i>No taxes applied.</i>"
     # Quotation time
     quotation_time = frappe.utils.format_datetime(doc.creation, "yyyy-MM-dd HH:mm:ss")
+    # Get roles of the user who created the Quotation
+    user_roles = []
+    if hasattr(doc, 'owner') and doc.owner:
+        user_roles = frappe.get_roles(doc.owner)
+    roles_str = ', '.join(user_roles) if user_roles else '-'
+    user_roles_details = f"<b>User Roles:</b> {roles_str}<br>"
     # Email body
     message = f"""
     <h2>New Quotation Created</h2>
     <b>Quotation No:</b> {doc.name}<br>
     <b>Date & Time:</b> {quotation_time}<br>
     {customer_details}
+    {user_roles_details}
     <h3>Company Details</h3>
     {company_details}
     <h3>Items</h3>
