@@ -57,28 +57,6 @@ def quotation_notify_support(doc, method=None):
     <b>Phone:</b> {customer_phone}<br>
     <b>Address:</b> {customer_address}<br>
     """
-    # Fetch company details
-    company_doc = frappe.get_doc("Company", doc.company) if getattr(doc, "company", None) else None
-    company_name = company_doc.company_name if company_doc else (doc.company or "-")
-    company_tax_id = getattr(company_doc, 'tax_id', "-") if company_doc else "-"
-    company_email = getattr(company_doc, 'email', "-") if company_doc and hasattr(company_doc, 'email') else "-"
-    company_phone = getattr(company_doc, 'phone_no', "-") if company_doc and hasattr(company_doc, 'phone_no') else "-"
-    # Fetch primary address for company
-    company_address = "-"
-    if company_doc:
-        links = frappe.get_all("Dynamic Link", filters={"link_doctype": "Company", "link_name": company_doc.name}, fields=["parent", "parenttype"])
-        for link in links:
-            if link["parenttype"] == "Address":
-                addr = frappe.get_doc("Address", link["parent"])
-                company_address = addr.display if hasattr(addr, 'display') else (addr.address_line1 if addr else "-")
-                break
-    company_details = f"""
-    <b>Company Name:</b> {company_name}<br>
-    <b>Tax ID:</b> {company_tax_id}<br>
-    <b>Email:</b> {company_email}<br>
-    <b>Phone:</b> {company_phone}<br>
-    <b>Address:</b> {company_address}<br>
-    """
     # Collect all items from the Quotation
     items = doc.get("items", [])
     if not items:
@@ -131,10 +109,11 @@ def quotation_notify_support(doc, method=None):
     quotation_time = frappe.utils.format_datetime(doc.creation, "yyyy-MM-dd HH:mm:ss")
     # Get roles of the user who created the Quotation
     user_roles = []
-    if hasattr(doc, 'owner') and doc.owner:
-        user_roles = frappe.get_roles(doc.owner)
+    username = getattr(doc, 'owner', '-')
+    if username:
+        user_roles = frappe.get_roles(username)
     roles_str = ', '.join(user_roles) if user_roles else '-'
-    user_roles_details = f"<b>User Roles:</b> {roles_str}<br>"
+    user_roles_details = f"<b>Username:</b> {username}<br><b>User Roles:</b> {roles_str}<br>"
     # Email body
     message = f"""
     <h2>New Quotation Created</h2>
@@ -142,8 +121,6 @@ def quotation_notify_support(doc, method=None):
     <b>Date & Time:</b> {quotation_time}<br>
     {customer_details}
     {user_roles_details}
-    <h3>Company Details</h3>
-    {company_details}
     <h3>Items</h3>
     {items_table}
     <h3>Taxes</h3>
