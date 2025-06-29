@@ -59,7 +59,7 @@ def quotation_notify_support(doc, method=None):
     """
     # Collect all items from the Quotation
     items = doc.get("items", [])
-    frappe.logger().info(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
+    frappe.logger().error(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
     if not items:
         return
     item_rows = "".join([
