@@ -138,4 +138,9 @@ def quotation_notify_support(doc, method=None):
         delayed=False,
         as_markdown=False
     )
+    # Log which function triggered the hook
+    import inspect
+    stack = inspect.stack()
+    caller_info = f"Triggered by: {stack[1].function} (file: {stack[1].filename}, line: {stack[1].lineno})"
+    frappe.logger().error(f"[quotation_notify_support2] {caller_info}")
 
