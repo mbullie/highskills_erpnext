@@ -17,8 +17,7 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
     user = frappe.session.user
     return f"/update-profile/{user}/edit"
 
-@frappe.whitelist()
-def on_user_profile_update(doc, method=None):
+def after_user_profile_update(doc, method=None):
     user = getattr(doc, "user", None)
     redirect_url = None
     if user:
