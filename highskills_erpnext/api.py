@@ -17,6 +17,18 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
     user = frappe.session.user
     return f"/update-profile/{user}/edit"
 
+@frappe.whitelist()
+def on_user_profile_update(doc, method=None):
+    user = getattr(doc, "user", None)
+    redirect_url = None
+    if user:
+        redirect_to = frappe.cache.hget("redirect_after_login", user)
+        if redirect_to:
+            redirect_url = redirect_to
+            frappe.cache.hdel("redirect_after_login", user)
+    return redirect_url or get_default_path() or get_home_page()
+
+
 def quotation_notify_support(doc, method=None):
     # Get support or admin email from default outgoing Email Account only
     support_email = frappe.db.get_value("Email Account", {"default_outgoing": 1}, "email_id")
@@ -44,6 +56,7 @@ def quotation_notify_support(doc, method=None):
     # Get customer email and phone
     customer_email = doc.contact_email or (contact.email_id if contact else "-")
     customer_phone = doc.contact_mobile or (contact.phone if contact else "-")
+    customer_mobile = doc.contact_mobile or (contact.mobile_no if contact else "-")
     # Get customer address
     customer_address = doc.customer_address or (address.display if address and hasattr(address, 'display') else (address.address_line1 if address else "-"))
     # Collect all customer details
@@ -55,11 +68,12 @@ def quotation_notify_support(doc, method=None):
     <b>Tax ID:</b> {tax_id}<br>
     <b>Email:</b> {customer_email}<br>
     <b>Phone:</b> {customer_phone}<br>
+    <b>Mobile Phone:</b> {customer_mobile}<br>
     <b>Address:</b> {customer_address}<br>
     """
     # Collect all items from the Quotation
     items = doc.get("items", [])
-    frappe.logger().error(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
+    #frappe.logger().error(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
     if not items:
         return
     item_rows = "\n".join([
@@ -139,8 +153,8 @@ def quotation_notify_support(doc, method=None):
         as_markdown=False
     )
     # Log which function triggered the hook
-    import inspect
-    stack = inspect.stack()
-    caller_info = f"Triggered by: {stack[1].function} (file: {stack[1].filename}, line: {stack[1].lineno})"
-    frappe.logger().error(f"[quotation_notify_support2] {caller_info}")
+    #import inspect
+    #stack = inspect.stack()
+    #caller_info = f"Triggered by: {stack[1].function} (file: {stack[1].filename}, line: {stack[1].lineno})"
+    #frappe.logger().error(f"[quotation_notify_support2] {caller_info}")
 

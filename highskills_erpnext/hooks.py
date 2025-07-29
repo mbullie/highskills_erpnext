@@ -144,6 +144,9 @@ app_license = "mit"
 doc_events = {
     "Quotation": {
         "on_submit": "highskills_erpnext.api.quotation_notify_support"
+    },
+    "User": {
+        "on_update": "highskills_erpnext.api.on_user_profile_update"
     }
 }
 
