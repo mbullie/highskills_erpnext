@@ -3,6 +3,8 @@ from frappe import _
 #from frappe.apps import get_default_path
 #from frappe.website.utils import get_home_page
 
+print("highskills_erpnext.api loaded")
+
 @frappe.whitelist(allow_guest=True)
 def custom_update_password(key=None, old_password=None, new_password=None, logout_all_sessions=0):
     logout_all_sessions = 0  # Dont force logout all sessions
