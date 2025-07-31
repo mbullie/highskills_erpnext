@@ -19,23 +19,6 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
     user = frappe.session.user
     return f"/update-profile/{user}/edit"
 
-def get_home_page():
-    # This is a placeholder. Your actual get_home_page might return a URL string
-    # or perform a client-side redirect.
-    # If it's meant to redirect directly from the server, you'd usually call frappe.redirect(url).
-    # Hooks typically don't directly handle HTTP responses for redirection.
-    # If the goal is client-side redirect after update, you'd usually return something
-    # that the client-side JavaScript of the web form can interpret.
-    # For server-side redirect within a hook, it's generally not the right place for it,
-    # as hooks are post-save.
-    return "/home" # Example home URL
-
-@frappe.whitelist()
-def redirect_after_user_profile_update(doc, method=None):
-    frappe.log_error("### DEBUG: redirect to home page")
-    print("redirect to home page")
-    return get_home_page()
-
 
 def quotation_notify_support(doc, method=None):
     # Get support or admin email from default outgoing Email Account only
