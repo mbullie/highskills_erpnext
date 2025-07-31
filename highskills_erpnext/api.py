@@ -20,6 +20,12 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
     return f"/update-profile/{user}/edit"
 
 @frappe.whitelist()
+def test_user_update_hook(doc, method=None):
+    frappe.log_error("DEBUG: test_user_update_hook CALLED!", "User OnUpdate Hook Test")
+    print("DEBUG: test_user_update_hook CALLED! (via print)") # For Docker logs
+    # No return value, just logging
+
+@frappe.whitelist()
 def redirect_after_user_profile_update(doc, method=None):
     print("redirect to home page")
     return get_home_page()
