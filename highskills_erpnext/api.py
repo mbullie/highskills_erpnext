@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 #from frappe.apps import get_default_path
-#from frappe.website.utils import get_home_page
+from frappe.website.utils import get_home_page
 
 print("highskills_erpnext.api loaded")
 
@@ -23,14 +23,7 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
 
 @frappe.whitelist()
 def redirect_after_user_profile_update(doc, method=None):
-    user = getattr(doc, "user", None)
-    redirect_url = None
-    if user:
-        redirect_to = frappe.cache.hget("redirect_after_login", user)
-        if redirect_to:
-            redirect_url = redirect_to
-            frappe.cache.hdel("redirect_after_login", user)
-    return redirect_url
+    return get_home_page()
 
 
 def quotation_notify_support(doc, method=None):
