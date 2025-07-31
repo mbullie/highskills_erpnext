@@ -146,7 +146,7 @@ doc_events = {
         "on_submit": "highskills_erpnext.api.quotation_notify_support"
     },
     "User": {
-        "on_update": "highskills_erpnext.api.test_user_update_hook"
+        "on_update": "highskills_erpnext.api.redirect_after_user_profile_update"
     }
 }
 

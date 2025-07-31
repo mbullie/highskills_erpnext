@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 #from frappe.apps import get_default_path
-from frappe.website.utils import get_home_page
+#from frappe.website.utils import get_home_page
 
 @frappe.whitelist(allow_guest=True)
 def custom_update_password(key=None, old_password=None, new_password=None, logout_all_sessions=0):
@@ -19,15 +19,20 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
     user = frappe.session.user
     return f"/update-profile/{user}/edit"
 
-# Remove the @frappe.whitelist() decorator for the hook. It's not needed for doc_events.
-# It might even cause unexpected behavior if called directly, though unlikely to be the root issue here.
-def test_user_update_hook(doc, method=None):
-    frappe.log_error("### DEBUG: test_user_update_hook CALLED! ###", "User OnUpdate Hook Test")
-    # Ensure you remove any 'print' statements here
-    # print("DEBUG: test_user_update_hook CALLED! (via print)") # <-- REMOVE THIS
+def get_home_page():
+    # This is a placeholder. Your actual get_home_page might return a URL string
+    # or perform a client-side redirect.
+    # If it's meant to redirect directly from the server, you'd usually call frappe.redirect(url).
+    # Hooks typically don't directly handle HTTP responses for redirection.
+    # If the goal is client-side redirect after update, you'd usually return something
+    # that the client-side JavaScript of the web form can interpret.
+    # For server-side redirect within a hook, it's generally not the right place for it,
+    # as hooks are post-save.
+    return "/home" # Example home URL
 
 @frappe.whitelist()
 def redirect_after_user_profile_update(doc, method=None):
+    frappe.log_error("### DEBUG: redirect to home page")
     print("redirect to home page")
     return get_home_page()
 
