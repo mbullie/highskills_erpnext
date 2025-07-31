@@ -19,11 +19,12 @@ def custom_update_password(key=None, old_password=None, new_password=None, logou
     user = frappe.session.user
     return f"/update-profile/{user}/edit"
 
-@frappe.whitelist()
+# Remove the @frappe.whitelist() decorator for the hook. It's not needed for doc_events.
+# It might even cause unexpected behavior if called directly, though unlikely to be the root issue here.
 def test_user_update_hook(doc, method=None):
-    frappe.log_error("DEBUG: test_user_update_hook CALLED!", "User OnUpdate Hook Test")
-    print("DEBUG: test_user_update_hook CALLED! (via print)") # For Docker logs
-    # No return value, just logging
+    frappe.log_error("### DEBUG: test_user_update_hook CALLED! ###", "User OnUpdate Hook Test")
+    # Ensure you remove any 'print' statements here
+    # print("DEBUG: test_user_update_hook CALLED! (via print)") # <-- REMOVE THIS
 
 @frappe.whitelist()
 def redirect_after_user_profile_update(doc, method=None):
