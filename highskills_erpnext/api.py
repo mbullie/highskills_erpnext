@@ -143,6 +143,103 @@ def quotation_notify_support(doc, method=None):
         delayed=False,
         as_markdown=False
     )
+    quotation_notify_customer(doc)
+
+
+def quotation_notify_customer(doc, method=None):
+    # Get support or admin email from default outgoing Email Account only
+    support_email = frappe.db.get_value("Email Account", {"default_outgoing": 1}, "email_id")
+    if not support_email:
+        return  # No default outgoing email account set
+    # Fetch all customer details from Customer DocType (one fetch)
+    customer_doc = frappe.get_doc("Customer", doc.customer) if doc.customer else None
+
+    # Fetch primary Contact and Address in one query each
+    contact = None
+    if customer_doc:
+        links = frappe.get_all("Dynamic Link", filters={"link_doctype": "Customer", "link_name": customer_doc.name}, fields=["parent", "parenttype"])
+        for link in links:
+            if link["parenttype"] == "Contact" and not contact:
+                contact = frappe.get_doc("Contact", link["parent"])
+
+   # Get customer email and phone
+    customer_email = doc.contact_email or (contact.email_id if contact else "-")
+
+    # Collect all items from the Quotation
+    items = doc.get("items", [])
+    #frappe.logger().error(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
+    if not items:
+        return
+    item_rows = "\n".join([
+        f"<tr>"
+        f"<td>{item.item_code}</td>"
+        f"<td>{item.item_name}</td>"
+        f"<td>{item.qty}</td>"
+        f"<td>{item.uom}</td>"
+        f"<td>{frappe.utils.fmt_money(item.rate, currency=doc.currency)}</td>"
+        f"<td>{frappe.utils.fmt_money(item.amount, currency=doc.currency)}</td>"
+        f"</tr>"
+        for item in items
+    ])
+    
+    items_table = f"""
+    <table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse;'>
+        <thead>
+            <tr>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Qty</th>
+                <th>UOM</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {item_rows}
+        </tbody>
+    </table>
+    """
+    # Taxes
+    taxes = doc.get("taxes", [])
+    tax_rows = "".join([
+        f"<tr><td>{tax.account_head}</td><td>{tax.description or ''}</td><td>{frappe.utils.fmt_money(tax.tax_amount, currency=doc.currency)}</td></tr>"
+        for tax in taxes
+    ])
+    taxes_table = f"""
+    <table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse;margin-top:10px;'>
+        <thead>
+            <tr><th>Tax Account</th><th>Description</th><th>Amount</th></tr>
+        </thead>
+        <tbody>
+            {tax_rows}
+        </tbody>
+    </table>
+    """ if taxes else "<i>No taxes applied.</i>"
+    # Quotation time
+    quotation_time = frappe.utils.format_datetime(doc.creation, "yyyy-MM-dd HH:mm:ss")
+    # Email body
+    message = f"""
+    <p>בקשתך התקבלה, נציגנו יחזרו אלייך.</p>
+    </br>
+    <p>פרטים:</p>
+    <b>מספר הזמנה:</b> {doc.name}<br>
+    <b>תאריך</b> {quotation_time}<br>
+    <h3>מוצרים</h3>
+    {items_table}
+    <h3>מיסים</h3>
+    {taxes_table}
+    <h3>סה"כ</h3>
+    <b>סה"כ:</b> {frappe.utils.fmt_money(doc.grand_total, currency=doc.currency)}<br>
+    <b>במילים</b> {doc.in_words or ''}<br>
+    """
+    subject = f"New Quotation #{doc.name}"
+    frappe.sendmail(
+        recipients=[customer_email],
+        subject=subject,
+        message=message,
+        delayed=False,
+        as_markdown=False
+    )
     # Log which function triggered the hook
     #import inspect
     #stack = inspect.stack()
