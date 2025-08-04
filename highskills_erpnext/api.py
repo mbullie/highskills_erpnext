@@ -24,7 +24,7 @@ def quotation_notify_support(doc, method=None):
     # Get support or admin email from default outgoing Email Account only
     support_email = frappe.db.get_value("Email Account", {"default_outgoing": 1}, "email_id")
     if not support_email:
-        return  # No default outgoing email account set
+        return {"show_modal": False, "message": "No default outgoing email account set."}
     # Fetch all customer details from Customer DocType (one fetch)
     customer_doc = frappe.get_doc("Customer", doc.customer) if doc.customer else None
     customer_full_name = customer_doc.customer_name if customer_doc else doc.customer_name or doc.customer or "-"
@@ -66,7 +66,7 @@ def quotation_notify_support(doc, method=None):
     items = doc.get("items", [])
     #frappe.logger().error(f"[quotation_notify_support] Quotation {doc.name} items count: {len(items)} | items: {items}")
     if not items:
-        return
+        return {"show_modal": False, "message": "No items in quotation."}
     item_rows = "\n".join([
         f"<tr>"
         f"<td>{item.item_code}</td>"
@@ -144,7 +144,11 @@ def quotation_notify_support(doc, method=None):
         as_markdown=False
     )
     quotation_notify_customer(doc)
-
+    # Return flag and message for modal dialog
+    return {
+        "show_modal": True,
+        "message": _("Quotation notification sent successfully.")
+    }
 
 def quotation_notify_customer(doc, method=None):
     # Get support or admin email from default outgoing Email Account only

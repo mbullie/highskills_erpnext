@@ -7,17 +7,10 @@ app_license = "mit"
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
-#signup_form_template = ["highskills_erpnext/templates/request-invite.html"]
-
-# Apps
-# ------------------
-
-# required_apps = []
-
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "highskills_erpnext",
+# Include Quotation modal dialog JS
+app_include_js = [
+    "public/js/quotation_notify_support.js"
+]
 # 		"logo": "/assets/highskills_erpnext/logo.png",
 # 		"title": "Highskills Erpnext",
 # 		"route": "/highskills_erpnext",
