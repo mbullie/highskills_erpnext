@@ -19,7 +19,6 @@ def sign_quotation_api(quotation_name, signature_image_base64):
         file_doc = save_file(
             fname=f"quotation_signature_{quotation_name}.png",
             content=signature_image_base64.split("base64,")[1],
-            doctype="Quotation",
             docname=quotation_name,
             folder="Home/Attachments",
             is_private=1,
