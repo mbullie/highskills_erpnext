@@ -27,7 +27,7 @@ def sign_quotation_api(quotation_name, signature_image_base64):
         quotation.db_set("status", "Accepted") # Or your custom status field
 
         frappe.db.commit()
-        return {"success": True, "redirect_url": "/me"}
+        return {"success": True, "redirect_url": "/quotations/" + quotation_name}
 
     except frappe.PermissionError:
         frappe.log_error(f"Permission denied for signing quotation {quotation_name}", "Sign Quotation API Error")
