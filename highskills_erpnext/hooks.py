@@ -8,9 +8,9 @@ app_license = "mit"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
 # Include Quotation modal dialog JS only for Quotation doctype
-doctype_js = {
-    "Quotation": "public/js/quotation_notify_support.js"
-}
+#doctype_js = {
+#    "Quotation": "public/js/quotation_notify_support.js"
+#}
 # 		"logo": "/assets/highskills_erpnext/logo.png",
 # 		"title": "Highskills Erpnext",
 # 		"route": "/highskills_erpnext",
@@ -134,11 +134,11 @@ doctype_js = {
 # ---------------
 # Hook on document methods and events
 
-doc_events = {
-    "Quotation": {
-        "on_submit": "highskills_erpnext.api.quotation_notify_support"
-    }
-}
+#doc_events = {
+#    "Quotation": {
+#        "on_submit": "highskills_erpnext.api.quotation_notify_support"
+#    }
+#}
 
 # Expose custom signup endpoint
 # This allows frappe.call({ method: "highskills_erpnext.api_signup.custom_sign_up", ... })
