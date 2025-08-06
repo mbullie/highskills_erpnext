@@ -1,0 +1,76 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block script %}
+<script src="/assets/highskills_erpnext/js/signature_pad.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card p-4">
+        <h1 class="text-center">{{ quotation.name }} - Signature</h1>
+        <p class="lead text-center">Please review and sign to accept.</p>
+
+        <p><strong>Customer:</strong> {{ quotation.customer }}</p>
+        <p><strong>Total:</strong> {{ quotation.grand_total }}</p>
+
+        <h5 class="mt-4">Your Signature</h5>
+        <canvas id="signature-pad" class="signature-pad border w-100" height="200"></canvas>
+        <div class="d-flex justify-content-between mt-3">
+            <button id="clear" class="btn btn-secondary">Clear</button>
+            <button id="save" class="btn btn-primary">Save & Accept</button>
+        </div>
+    </div>
+</div>
+
+<script>
+frappe.ready(function() {
+    const canvas = document.getElementById('signature-pad');
+    const signaturePad = new SignaturePad(canvas);
+
+    document.getElementById('clear').addEventListener('click', () => signaturePad.clear());
+
+    document.getElementById('save').addEventListener('click', async () => {
+        if (signaturePad.isEmpty()) {
+            alert("Please provide your signature.");
+            return;
+        }
+
+        const dataURL = signaturePad.toDataURL();
+        const quotationName = "{{ quotation.name }}";
+
+        try {
+            const response = await frappe.call({
+                method: "highskills_erpnext.api.sign_quotation_api",
+                args: {
+                    quotation_name: quotationName,
+                    signature_image_base64: dataURL
+                },
+                freeze: true
+            });
+
+            if (response.message.success) {
+                alert("Quotation accepted successfully!");
+                window.location.href = "/me"; // Redirect to customer's home
+            } else {
+                alert("Error: " + response.message.error);
+            }
+        } catch (e) {
+            alert("An error occurred. Please try again.");
+        }
+    });
+
+    // Make canvas responsive
+    const resizeCanvas = () => {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.clear();
+    };
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+});
+</script>
+{% endblock %}
