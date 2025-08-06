@@ -14,8 +14,14 @@ def get_context(context):
             customer_doc = frappe.get_doc("Customer", quotation.customer)
             customer_email = getattr(customer_doc, "email_id", None)
 
-        # Security Check: Ensure the user is the customer.
-        if frappe.session.user == "Guest" or not customer_email or customer_email != frappe.session.user:
+
+        # Security Check: Redirect to login if not logged in
+        if frappe.session.user == "Guest":
+            frappe.local.response['type'] = 'redirect'
+            frappe.local.response['location'] = f'/login?redirect_to=/sign_quotation?name={quotation_name}'
+            return
+        # Only allow if the user is the customer
+        if not customer_email or customer_email != frappe.session.user:
             frappe.throw("You are not authorized to sign this quotation.", frappe.PermissionError)
 
         context.quotation = quotation
