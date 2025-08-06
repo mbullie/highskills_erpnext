@@ -12,7 +12,14 @@
         <h1 class="text-center">{{ quotation.name }} - Signature</h1>
         <p class="lead text-center">Please review and sign to accept.</p>
 
-        <p><strong>Customer:</strong> {{ quotation.customer }}</p>
+        <p><strong>Customer:</strong>
+            {{ quotation.customer_name if quotation.customer_name else
+                (quotation.customer if quotation.customer else
+                    (quotation.contact_display if quotation.contact_display else
+                        (quotation.contact_email if quotation.contact_email else ''))
+                )
+            }}
+        </p>
         <p><strong>Total:</strong> {{ quotation.grand_total }}</p>
 
         <h5 class="mt-4">Your Signature</h5>
