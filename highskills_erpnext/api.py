@@ -22,7 +22,7 @@ def sign_quotation_api(quotation_name, signature_image_base64):
             dt="Quotation",
             dn=quotation_name,
             folder="Home/Attachments",
-            is_private=1,
+            is_private=0,  # Set to 0 for public access, change as needed
             decode=True
         )
 
