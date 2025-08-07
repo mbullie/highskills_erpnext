@@ -7,7 +7,11 @@
 {% endblock %}
 
 {% block content %}
-{% if quotation %}
+{% if error_message %}
+<div class="container my-5">
+    <div class="alert alert-danger">{{ error_message }}</div>
+</div>
+{% elif quotation %}
 <div class="container my-5">
     <div class="card p-4">
         <h1 class="text-center">{{ quotation.name }} - Signature</h1>
@@ -81,9 +85,5 @@ frappe.ready(function() {
     resizeCanvas();
 });
 </script>
-{% else %}
-<div class="container my-5">
-    <div class="alert alert-danger">You are not authorized to view this page.</div>
-</div>
 {% endif %}
 {% endblock %}
