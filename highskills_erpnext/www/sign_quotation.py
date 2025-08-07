@@ -3,6 +3,8 @@ import frappe
 def get_context(context):
 
     quotation_name = frappe.request.args.get('name')
+    # Debug: print session user to logs
+    frappe.logger().info(f"[sign_quotation] frappe.session.user: {frappe.session.user}")
     # 1. If user not logged in, always redirect to login (with or without quotation name)
     if frappe.session.user == "Guest":
         redirect_url = "/sign_quotation"
