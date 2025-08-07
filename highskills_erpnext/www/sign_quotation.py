@@ -8,7 +8,7 @@ def get_context(context):
     session_user = frappe.session.user
     current_user = frappe.get_user().name if hasattr(frappe.get_user(), 'name') else str(frappe.get_user())
 
-    context.error_message = "foo + session" + {session_user} + "frappe.get_user" + {current_user}
+    context.error_message = f"foo + session {session_user} frappe.get_user {current_user}"
     context.quotation = None
     return
 
