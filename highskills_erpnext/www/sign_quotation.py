@@ -2,6 +2,8 @@ import frappe
 
 def get_context(context):
 
+    print("sign_quotation get_context called")
+
     quotation_name = frappe.request.args.get('name')
     # Debug: print session user and frappe.get_user() to logs
     session_user = frappe.session.user
