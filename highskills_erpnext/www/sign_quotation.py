@@ -5,7 +5,9 @@ def get_context(context):
     print("sign_quotation get_context called")
     frappe.logger().info(f"sign_quotation get_context called")
 
-    context.error_message = "foo + test"
+    quotation_name = frappe.request.args.get('name')
+
+    context.error_message = "foo + test" + quotation_name
     context.quotation = None
     return
 
