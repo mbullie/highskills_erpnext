@@ -1,17 +1,21 @@
 import frappe
 
 def get_context(context):
+
     quotation_name = frappe.request.args.get('name')
-    # 1. If no quotation name supplied, show error message and return immediately
+    # 1. If user not logged in, always redirect to login (with or without quotation name)
+    if frappe.session.user == "Guest":
+        redirect_url = "/sign_quotation"
+        if quotation_name:
+            redirect_url += f"?name={quotation_name}"
+        frappe.local.response['type'] = 'redirect'
+        frappe.local.response['location'] = f'/login?redirect_to={redirect_url}'
+        return
+
+    # 2. If no quotation name supplied (and user is logged in), show error message and return immediately
     if not quotation_name:
         context.error_message = "Quotation not found or does not exist."
         context.quotation = None
-        return
-
-    # 2. If quotation name supplied but user not logged in, redirect to login
-    if frappe.session.user == "Guest":
-        frappe.local.response['type'] = 'redirect'
-        frappe.local.response['location'] = f'/login?redirect_to=/sign_quotation?name={quotation_name}'
         return
 
     # 3. Try to get the quotation
