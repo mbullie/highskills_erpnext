@@ -18,9 +18,7 @@ def get_context(context):
         redirect_url = "/sign_quotation"
         if quotation_name:
             redirect_url += f"?name={quotation_name}"
-        frappe.local.response['type'] = 'redirect'
-        frappe.local.response['location'] = f'/login?redirect_to={redirect_url}'
-        return
+        raise frappe.redirect_to(f'/login?redirect_to={redirect_url}')
         
     # 3. Try to get the quotation
     try:
