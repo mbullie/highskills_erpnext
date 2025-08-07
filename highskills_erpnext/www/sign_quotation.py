@@ -5,7 +5,7 @@ def get_context(context):
     print("sign_quotation get_context called")
     frappe.logger().info(f"sign_quotation get_context called")
 
-    context.error_message = "Quotation not found or does not exist. + test"
+    context.error_message = "Quotation not found or does not exist."
     context.quotation = None
     return
 
