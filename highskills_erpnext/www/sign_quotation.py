@@ -5,6 +5,7 @@ def get_context(context):
     print("sign_quotation get_context called")
 
     quotation_name = frappe.request.args.get('name')
+    '''
     # Debug: print session user and frappe.get_user() to logs
     session_user = frappe.session.user
     current_user = frappe.get_user().name if hasattr(frappe.get_user(), 'name') else str(frappe.get_user())
@@ -24,15 +25,17 @@ def get_context(context):
         context.error_message = "Quotation not found or does not exist."
         context.quotation = None
         return
-
+'''
     # 3. Try to get the quotation
     try:
         quotation = frappe.get_doc("Quotation", quotation_name)
+        context.quotation = quotation
+        context.title = f"Sign Quotation: {quotation.name}"
     except frappe.DoesNotExistError:
         context.error_message = f"Quotation {quotation_name} not found."
         context.quotation = None
         return
-
+'''
     # 4. Get customer email
     customer_email = getattr(quotation, "contact_email", None)
     if not customer_email and getattr(quotation, "customer", None):
@@ -47,4 +50,4 @@ def get_context(context):
 
     # 6. If all checks pass, show signature fields
     context.quotation = quotation
-    context.title = f"Sign Quotation: {quotation.name}"
+    context.title = f"Sign Quotation: {quotation.name}"'''
