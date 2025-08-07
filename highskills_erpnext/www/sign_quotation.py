@@ -3,20 +3,23 @@ import frappe
 def get_context(context):
 
     quotation_name = frappe.request.args.get('name')
-    # Debug: print session user to logs
-    frappe.logger().info(f"[sign_quotation] frappe.session.user: {frappe.session.user}")
+    # Debug: print session user and frappe.get_user() to logs
+    session_user = frappe.session.user
+    current_user = frappe.get_user().name if hasattr(frappe.get_user(), 'name') else str(frappe.get_user())
+    frappe.logger().info(f"[sign_quotation] frappe.session.user: {session_user}, frappe.get_user(): {current_user}")
     # 1. If user not logged in, always redirect to login (with or without quotation name)
-    if frappe.session.user == "Guest":
+    if session_user == "Guest" or current_user == "Guest":
         redirect_url = "/sign_quotation"
         if quotation_name:
             redirect_url += f"?name={quotation_name}"
+        frappe.logger().info(f"[sign_quotation] Redirecting Guest to login: {redirect_url}")
         frappe.local.response['type'] = 'redirect'
         frappe.local.response['location'] = f'/login?redirect_to={redirect_url}'
         return
 
     # 2. If no quotation name supplied (and user is logged in), show error message and return immediately
     if not quotation_name:
-        context.error_message = "Quotation not found or does not exist."
+        context.error_message = "Quotation not found or does not exist." + "[sign_quotation] frappe.session.user: {session_user}, frappe.get_user(): {current_user}"
         context.quotation = None
         return
 
