@@ -5,9 +5,10 @@ def get_context(context):
     print("sign_quotation get_context called")
     frappe.logger().info(f"sign_quotation get_context called")
 
-    quotation_name = frappe.request.args.get('name')
+    session_user = frappe.session.user
+    current_user = frappe.get_user().name if hasattr(frappe.get_user(), 'name') else str(frappe.get_user())
 
-    context.error_message = "foo + test" + quotation_name
+    context.error_message = "foo + session" + session_user + "frappe.get_user" + current_user
     context.quotation = None
     return
 
