@@ -19,7 +19,7 @@ def get_context(context):
 
     # 2. If no quotation name supplied (and user is logged in), show error message and return immediately
     if not quotation_name:
-        context.error_message = "Quotation not found or does not exist." + "[sign_quotation] frappe.session.user: {session_user}, frappe.get_user(): {current_user}"
+        context.error_message = "Quotation not found or does not exist. [sign_quotation] frappe.session.user: {session_user}, frappe.get_user(): {current_user}"
         context.quotation = None
         return
 
