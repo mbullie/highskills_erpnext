@@ -19,9 +19,16 @@ def get_context(context):
         xf_host = frappe.request.headers.get("X-Forwarded-Host")
         xf_port = frappe.request.headers.get("X-Forwarded-Port")
         # Extract port from Host header if present
+        # Improved port extraction: handle IPv6, default ports, and missing port
         port = None
-        if host and ":" in host:
-            _, port = host.split(":", 1)
+        if host:
+            if host.startswith("["):  # IPv6
+                if "]:" in host:
+                    port = host.split("]:", 1)[1]
+            elif ":" in host:
+                port = host.rsplit(":", 1)[1]
+            else:
+                port = "80"  # default HTTP port
         print(f"Host: {host}, Port: {port}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}, frappe.request.url: {frappe.request.url}", flush=True)
         #frappe.redirect("/login?redirect-to=" + frappe.request.path)
         context.error_message = f"Please log in to sign the quotation. {frappe.request}"
