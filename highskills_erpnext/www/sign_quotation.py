@@ -1,8 +1,7 @@
 import frappe
-from urllib.parse import quote, urlencode
+from urllib.parse import urlencode
 
 
-@frappe.whitelist(allow_guest=True)
 def get_context(context):
     quotation_name = frappe.request.args.get('name')
 
