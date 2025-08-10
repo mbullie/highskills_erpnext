@@ -1,7 +1,8 @@
 import frappe
+from urllib.parse import quote, urlencode
 
+@frappe.whitelist(allow_guest=True)
 def get_context(context):
-
     quotation_name = frappe.request.args.get('name')
 
     # 1. If no quotation name supplied show error message and return immediately
@@ -12,12 +13,11 @@ def get_context(context):
 
     # 2. If user not logged in, always redirect to login (with or without quotation name)
     if frappe.session.user == "Guest":
-    #    context.error_message = "Please log in to sign the quotation."
-    #    context.quotation = None
-        import urllib.parse
         frappe.local.response["type"] = "redirect"
-        frappe.local.response["location"] = "/login?" + urllib.parse.urlencode({"redirect-to": frappe.request.url})
+        frappe.local.response["location"] = "/login?" + encode_params({"redirect-to": frappe.request.url})
         return
+        #    context.error_message = "Please log in to sign the quotation."
+        #    context.quotation = None
         
     # 3. Try to get the quotation
     try:
@@ -30,6 +30,15 @@ def get_context(context):
         return
 
     
+def encode_params(params):
+	"""
+	Encode a dict of params into a query string.
+
+	Use `quote_via=urllib.parse.quote` so that whitespaces will be encoded as
+	`%20` instead of as `+`. This is needed because oauthlib cannot handle `+`
+	as a whitespace.
+	"""
+	return urlencode(params, quote_via=quote)
         
 
 
