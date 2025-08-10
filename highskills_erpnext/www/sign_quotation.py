@@ -26,7 +26,7 @@ def get_context(context):
             "Sign Quotation Guest Debug",
             f"Host: {host}, Port: {port}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}, frappe.request.url: {frappe.request.url}"
         )
-        print("michael debug: ", frappe.request.url)
+        print("michael debug: ", frappe.request.url, flush=True)
         #frappe.redirect("/login?redirect-to=" + frappe.request.path)
         context.error_message = f"Please log in to sign the quotation. {frappe.request}"
         context.quotation = None
