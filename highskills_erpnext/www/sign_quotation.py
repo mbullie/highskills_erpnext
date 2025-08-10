@@ -43,7 +43,7 @@ def encode_params(params):
 
 
 
-    '''
+"""
     quotation_name = frappe.request.args.get('name')
     
     # Debug: print session user and frappe.get_user() to logs
@@ -90,4 +90,5 @@ def encode_params(params):
 
     # 6. If all checks pass, show signature fields
     context.quotation = quotation
-    context.title = f"Sign Quotation: {quotation.name}"'''
+    context.title = f"Sign Quotation: {quotation.name}"
+"""
