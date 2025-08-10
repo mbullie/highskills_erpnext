@@ -1,5 +1,5 @@
 import frappe
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 
 
 def get_context(context):
