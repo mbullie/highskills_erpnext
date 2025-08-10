@@ -1,4 +1,5 @@
 import frappe
+import json
 from urllib.parse import quote, urlencode
 
 
@@ -23,7 +24,7 @@ def get_context(context):
         quotation = frappe.get_doc("Quotation", quotation_name)
         context.quotation = quotation
         context.title = f"Sign Quotation: {quotation.name}"
-        print(f"[sign_quotation] Quotation found: {quotation}" , flush=True)  # Debugging output 
+        print(f"[sign_quotation] Quotation found: {json.dumps(quotation.as_dict(), indent=2)}", flush=True)
     except frappe.DoesNotExistError:
         context.error_message = f"Quotation {quotation_name} not found."
         context.quotation = None
