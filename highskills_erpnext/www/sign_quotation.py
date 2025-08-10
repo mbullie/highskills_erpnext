@@ -22,8 +22,10 @@ def get_context(context):
         port = None
         if host and ":" in host:
             _, port = host.split(":", 1)
-        frappe.logger().info(f"Please log in to sign the quotation. Host: {host}, Port: {port}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port} , X-frappe.request.url-Port: {frappe.request.url}")
-        print(f"Host: {host}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}")
+        frappe.logger().info(
+            f"Please log in to sign the quotation. Host: {host}, Port: {port}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}, frappe.request.url: {frappe.request.url}"
+        )
+        print("michael debug: ", frappe.request.url)
         #frappe.redirect("/login?redirect-to=" + frappe.request.path)
         context.error_message = f"Please log in to sign the quotation. {frappe.request}"
         context.quotation = None
