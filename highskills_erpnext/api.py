@@ -6,15 +6,6 @@ def sign_quotation_api(quotation_name, signature_image_base64):
     try:
         quotation = frappe.get_doc("Quotation", quotation_name)
 
-        # CRITICAL Security Check
-        customer_email = getattr(quotation, "contact_email", None)
-        if not customer_email and getattr(quotation, "customer", None):
-            customer_doc = frappe.get_doc("Customer", quotation.customer)
-            customer_email = getattr(customer_doc, "email_id", None)
-
-        if frappe.session.user == "Guest" or not customer_email or customer_email != frappe.session.user:
-            frappe.throw("You are not authorized to sign this quotation.", frappe.PermissionError)
-
         # Save the Base64 signature as an image file
         file_doc = save_file(
             fname=f"quotation_signature_{quotation_name}.png",
