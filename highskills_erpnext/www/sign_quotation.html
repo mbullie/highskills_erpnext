@@ -12,19 +12,14 @@
     <div class="alert alert-danger">{{ error_message }}</div>
     <div class="text-muted small">Debug: error_message = <code>{{ error_message|e }}</code></div>
 </div>
-{% elif quotation %}
+{% elif quotation and quotation.contact_email %}
 <div class="container my-5">
     <div class="card p-4">
         <h1 class="text-center">{{ quotation.name }} - Signature</h1>
         <p class="lead text-center">Please review and sign to accept.</p>
 
         <p><strong>Customer:</strong>
-            {{ quotation.customer_name if quotation.customer_name else
-                (quotation.customer if quotation.customer else
-                    (quotation.contact_display if quotation.contact_display else
-                        (quotation.contact_email if quotation.contact_email else ''))
-                )
-            }}
+            {{quotation.contact_email}}
         </p>
         <p><strong>Total:</strong> {{ quotation.grand_total }}</p>
 
