@@ -11,8 +11,7 @@ def get_context(context):
         return
 
     # 2. If user not logged in, always redirect to login (with or without quotation name)
-    session_user = frappe.session.user
-    if session_user == "Guest":
+    if frappe.session.user == "Guest":
     #    context.error_message = "Please log in to sign the quotation."
     #    context.quotation = None
         import urllib.parse
