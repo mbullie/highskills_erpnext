@@ -13,21 +13,17 @@ def get_context(context):
 
     # 2. If user not logged in, always redirect to login (with or without quotation name)
     if frappe.session.user == "Guest":
-        #frappe.local.response["type"] = "redirect"
-        #frappe.local.response["location"] = "/login?" + encode_params({"redirect-to": frappe.request.url})
-
+        # Redirect to login with the current URL as the redirect target
         frappe.redirect("/login?redirect-to=" + frappe.request.url)
-        #context.error_message = f"Please log in to sign the quotation. {frappe.request}"
-        #context.quotation = None
         return 
-        #    context.error_message = "Please log in to sign the quotation."
-        #    context.quotation = None
+
         
     # 3. Try to get the quotation
     try:
         quotation = frappe.get_doc("Quotation", quotation_name)
         context.quotation = quotation
         context.title = f"Sign Quotation: {quotation.name}"
+        print(f"[sign_quotation] Quotation found: {quotation}")
     except frappe.DoesNotExistError:
         context.error_message = f"Quotation {quotation_name} not found."
         context.quotation = None
