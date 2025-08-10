@@ -16,6 +16,10 @@ def get_context(context):
         #frappe.local.response["type"] = "redirect"
         #frappe.local.response["location"] = "/login?" + encode_params({"redirect-to": frappe.request.url})
         #frappe.redirect("/login?redirect-to=" + frappe.request.path)
+        host = frappe.request.headers.get("Host")
+        xf_host = frappe.request.headers.get("X-Forwarded-Host")
+        xf_port = frappe.request.headers.get("X-Forwarded-Port")
+        frappe.logger().info(f"Host: {host}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}")
         context.error_message = f"Please log in to sign the quotation. {frappe.request}"
         context.quotation = None
         return 
