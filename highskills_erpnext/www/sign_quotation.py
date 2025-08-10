@@ -3,9 +3,7 @@ from urllib.parse import quote, urlencode
 
 
 @frappe.whitelist(allow_guest=True)
-def get_context(context=None):
-    if context is None:
-        context = frappe._dict()
+def get_context(context):
     quotation_name = frappe.request.args.get('name')
 
     # 1. If no quotation name supplied show error message and return immediately
@@ -18,9 +16,7 @@ def get_context(context=None):
     if frappe.session.user == "Guest":
         frappe.local.response["type"] = "redirect"
         frappe.local.response["location"] = "/login?" + encode_params({"redirect-to": frappe.request.url})
-        context.error_message = "Please log in to sign the quotation."
-        context.quotation = None
-        return context
+        return 
         #    context.error_message = "Please log in to sign the quotation."
         #    context.quotation = None
         
