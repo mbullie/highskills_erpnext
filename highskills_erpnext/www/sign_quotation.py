@@ -31,7 +31,12 @@ def get_context(context):
         return context
     
     # 4. If user is not the customer, show unauthorized message
-    if not quotation.contact_email or (quotation.contact_email != frappe.session.user and not frappe.get_doc("User", frappe.session.user).has_role("Sales Manager")):
+    # Use frappe.db.exists() to check for a user's role
+    has_sales_manager_role = frappe.db.exists("Has Role", {
+        "parent": user_to_check,
+        "role": "Sales Manager"
+    })
+    if not quotation.contact_email or (quotation.contact_email != user_to_check and not has_sales_manager_role):
         context.error_message = "You are not authorized to sign this quotation."
         context.quotation = None
         return
