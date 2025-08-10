@@ -15,7 +15,7 @@ def get_context(context):
     if frappe.session.user == "Guest":
         #frappe.local.response["type"] = "redirect"
         #frappe.local.response["location"] = "/login?" + encode_params({"redirect-to": frappe.request.url})
-        frappe.redirect("/login?redirect-to=" + frappe.request.path)
+        frappe.redirect("/login?redirect-to=" + frappe.request.url)
         return 
         #    context.error_message = "Please log in to sign the quotation."
         #    context.quotation = None
