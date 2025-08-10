@@ -29,6 +29,12 @@ def get_context(context):
         context.error_message = f"Quotation {quotation_name} not found."
         context.quotation = None
         return context
+    
+    # 4. If user is not the customer, show unauthorized message
+    if not quotation.contact_email or quotation.contact_email != frappe.session.user:
+        context.error_message = "You are not authorized to sign this quotation."
+        context.quotation = None
+        return
 
     return context
 
