@@ -10,7 +10,7 @@
 {% if error_message %}
 <div class="container my-5">
     <div class="alert alert-danger">{{ error_message }}</div>
-    <div class="text-muted small">Debug: error_message = <code>{{ error_message|e }}</code></div>
+    <div class="text-muted small hidden">Debug: error_message = <code>{{ error_message|e }}</code></div>
 </div>
 {% elif quotation and quotation.contact_email %}
 <div class="container my-5">

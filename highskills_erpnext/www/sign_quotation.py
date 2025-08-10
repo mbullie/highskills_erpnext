@@ -24,14 +24,14 @@ def get_context(context):
         quotation = frappe.get_doc("Quotation", quotation_name)
         context.quotation = quotation
         context.title = f"Sign Quotation: {quotation.name}"
-        print(f"quotation.customer_name {quotation.customer_name} quotation.contact_person {quotation.contact_person} quotation.contact_display {quotation.contact_display} quotation.contact_email {quotation.contact_email}" , flush=True)
+        #print(f"quotation.customer_name {quotation.customer_name} quotation.contact_person {quotation.contact_person} quotation.contact_display {quotation.contact_display} quotation.contact_email {quotation.contact_email}" , flush=True)
     except frappe.DoesNotExistError:
         context.error_message = f"Quotation {quotation_name} not found."
         context.quotation = None
         return context
     
     # 4. If user is not the customer, show unauthorized message
-    if not quotation.contact_email or quotation.contact_email != frappe.session.user:
+    if not quotation.contact_email or quotation.contact_email != frappe.session.user and not frappe.has_role("Sales Manager"):
         context.error_message = "You are not authorized to sign this quotation."
         context.quotation = None
         return
