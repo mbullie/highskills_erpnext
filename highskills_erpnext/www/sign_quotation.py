@@ -1,15 +1,18 @@
 import frappe
 from urllib.parse import quote, urlencode
 
+
 @frappe.whitelist(allow_guest=True)
 def get_context(context=None):
+    if context is None:
+        context = frappe._dict()
     quotation_name = frappe.request.args.get('name')
 
     # 1. If no quotation name supplied show error message and return immediately
     if not quotation_name:
         context.error_message = "Missing quotation."
         context.quotation = None
-        return
+        return context
 
     # 2. If user not logged in, always redirect to login (with or without quotation name)
     if frappe.session.user == "Guest":
@@ -17,7 +20,7 @@ def get_context(context=None):
         frappe.local.response["location"] = "/login?" + encode_params({"redirect-to": frappe.request.url})
         context.error_message = "Please log in to sign the quotation."
         context.quotation = None
-        return
+        return context
         #    context.error_message = "Please log in to sign the quotation."
         #    context.quotation = None
         
@@ -29,7 +32,9 @@ def get_context(context=None):
     except frappe.DoesNotExistError:
         context.error_message = f"Quotation {quotation_name} not found."
         context.quotation = None
-        return
+        return context
+
+    return context
 
     
 def encode_params(params):
