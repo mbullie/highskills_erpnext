@@ -2,7 +2,7 @@ import frappe
 from urllib.parse import quote, urlencode
 
 @frappe.whitelist(allow_guest=True)
-def get_context(context):
+def get_context(context=None):
     quotation_name = frappe.request.args.get('name')
 
     # 1. If no quotation name supplied show error message and return immediately
@@ -31,14 +31,14 @@ def get_context(context):
 
     
 def encode_params(params):
-	"""
-	Encode a dict of params into a query string.
+    """
+    Encode a dict of params into a query string.
 
-	Use `quote_via=urllib.parse.quote` so that whitespaces will be encoded as
-	`%20` instead of as `+`. This is needed because oauthlib cannot handle `+`
-	as a whitespace.
-	"""
-	return urlencode(params, quote_via=quote)
+    Use `quote_via=urllib.parse.quote` so that whitespaces will be encoded as
+    `%20` instead of as `+`. This is needed because oauthlib cannot handle `+`
+    as a whitespace.
+    """
+    return urlencode(params, quote_via=quote)
         
 
 
