@@ -20,6 +20,7 @@ def get_context(context):
         xf_host = frappe.request.headers.get("X-Forwarded-Host")
         xf_port = frappe.request.headers.get("X-Forwarded-Port")
         frappe.logger().info(f"Host: {host}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}")
+        print(f"Host: {host}, X-Forwarded-Host: {xf_host}, X-Forwarded-Port: {xf_port}")
         context.error_message = f"Please log in to sign the quotation. {frappe.request}"
         context.quotation = None
         return 
