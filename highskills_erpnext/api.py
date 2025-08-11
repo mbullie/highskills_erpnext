@@ -12,14 +12,14 @@ def sign_quotation_api(quotation_name, signature_image_base64):
             content=signature_image_base64.split("base64,")[1],
             dt="Quotation",
             dn=quotation_name,
-            folder="Home/Attachments",
             is_private=0,  # Set to 0 for public access, change as needed
             decode=True
         )
 
         # Update the quotation with the new signature and status
         quotation.db_set("custom_signature", file_doc.file_url)
-        quotation.db_set("status", "Accepted") # Or your custom status field
+        # "Ordered" is the status for signed quotations
+        quotation.db_set("status", "Ordered") 
 
         frappe.db.commit()
         return {"success": True, "redirect_url": "/quotations/" + quotation_name}
