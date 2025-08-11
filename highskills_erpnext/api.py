@@ -7,17 +7,18 @@ def sign_quotation_api(quotation_name, signature_image_base64):
         quotation = frappe.get_doc("Quotation", quotation_name)
 
         # Save the Base64 signature as an image file
-        file_doc = save_file(
-            fname=f"quotation_signature_{quotation_name}.png",
-            content=signature_image_base64.split("base64,")[1],
-            dt="Quotation",
-            dn=quotation_name,
-            is_private=0,  # Set to 0 for public access, change as needed
-            decode=True
-        )
+        #file_doc = save_file(
+        #    fname=f"quotation_signature_{quotation_name}.png",
+        #    content=signature_image_base64.split("base64,")[1],
+        #    dt="Quotation",
+        #    dn=quotation_name,
+        #    is_private=0,  # Set to 0 for public access, change as needed
+        #    decode=True
+        #)
 
         # Update the quotation with the new signature and status
-        quotation.db_set("custom_signature", file_doc.file_url)
+        #quotation.db_set("custom_signature", file_doc.file_url)
+        quotation.db_set("custom_signature", signature_image_base64.split("base64,")[1])
         # "Ordered" is the status for signed quotations
         quotation.db_set("status", "Ordered") 
 
