@@ -3,6 +3,15 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block script %}
+<style>
+    .req {
+        color: red;
+    }
+</style>>
+{% endblock %}
+
+{% block style %}
+{% block script %}
 <script src="/assets/highskills_erpnext/js/signature_pad.umd.min.js"></script>
 {% endblock %}
 
@@ -23,17 +32,21 @@
         </p>
         <p><strong>Total:</strong> {{ quotation.grand_total }}</p>
 
-        <h5 class="mt-4">Company Information</h5>
-        <label><strong>Company Name:</strong><span class="req">*</span></label>
-        <input type="text" class="form-control" value="{{ quotation.company }}" required>
-        <label><strong>Company Id:</strong><span class="req">*</span></label>
-        <input type="text" class="form-control" value="{{ quotation.company_id }}" required>
+        <div class="float-begin">
+            <h5 class="mt-4">Company Information</h5>
+            <label><strong>Company Name:</strong><span class="req">*</span></label>
+            <input type="text" class="form-control" value="{{ quotation.company }}" required>
+            <label><strong>Company Id:</strong><span class="req">*</span></label>
+            <input type="text" class="form-control" value="{{ quotation.company_id }}" required>
+        </div>
 
-        <h5 class="mt-4">Personal Information</h5>
-        <label><strong>Your role in the company:</strong><span class="req">*</span></label>
-        <input type="text" class="form-control" value="{{ quotation.role_in_company }}" required>
-        <label><strong>Full name</strong><span class="req">*</span></label>
-        <input type="text" class="form-control" value="{{ quotation.full_name }}" required>
+        <div class="float-end">
+            <h5 class="mt-4">Personal Information</h5>
+            <label><strong>Your role in the company:</strong><span class="req">*</span></label>
+            <input type="text" class="form-control" value="{{ quotation.role_in_company }}" required>
+            <label><strong>Full name</strong><span class="req">*</span></label>
+            <input type="text" class="form-control" value="{{ quotation.full_name }}" required>
+        </div>
   
 
         <h5 class="mt-4">Your Signature<span class="req">*</span></h5>
