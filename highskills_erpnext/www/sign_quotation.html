@@ -24,19 +24,19 @@
         <p><strong>Total:</strong> {{ quotation.grand_total }}</p>
 
         <h5 class="mt-4">Company Information</h5>
-        <label><strong>Company Name:</strong></label>
-        <input type="text" class="form-control" value="{{ quotation.company }}">
-        <label><strong>Company Id:</strong></label>
-        <input type="text" class="form-control" value="{{ quotation.company_id }}">
+        <label><strong>Company Name:</strong><span class="req">*</span></label>
+        <input type="text" class="form-control" value="{{ quotation.company }}" required>
+        <label><strong>Company Id:</strong><span class="req">*</span></label>
+        <input type="text" class="form-control" value="{{ quotation.company_id }}" required>
 
         <h5 class="mt-4">Personal Information</h5>
-        <label><strong>Your role in the company:</strong></label>
-        <input type="text" class="form-control" value="{{ quotation.role_in_company }}">
-        <label><strong>Full name</strong></label>
-        <input type="text" class="form-control" value="{{ quotation.full_name }}">
+        <label><strong>Your role in the company:</strong><span class="req">*</span></label>
+        <input type="text" class="form-control" value="{{ quotation.role_in_company }}" required>
+        <label><strong>Full name</strong><span class="req">*</span></label>
+        <input type="text" class="form-control" value="{{ quotation.full_name }}" required>
   
 
-        <h5 class="mt-4">Your Signature</h5>
+        <h5 class="mt-4">Your Signature<span class="req">*</span></h5>
         <canvas id="signature-pad" class="signature-pad border w-100" height="200"></canvas>
         <div class="d-flex justify-content-between mt-3">
             <button id="clear" class="btn btn-secondary">Clear</button>
