@@ -81,6 +81,16 @@ frappe.ready(function() {
             return;
         }
 
+        // Validate required fields
+        const companyName = document.getElementById('company_name').value.trim();   
+        const companyId = document.getElementById('company_id').value.trim();
+        const roleInCompany = document.getElementById('role_in_company').value.trim();
+        const customerName = document.getElementById('customer_name').value.trim();
+        if (!companyName || !companyId || !roleInCompany || !customerName) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
         const dataURL = signaturePad.toDataURL();
         const quotationName = "{{ quotation.name }}";
 
