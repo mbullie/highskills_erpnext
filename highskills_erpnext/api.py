@@ -11,26 +11,28 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
         # "Ordered" is the status for signed quotations
         quotation.db_set("status", "Ordered") 
 
-        frappe.db.commit()
-
-        # Update company 
-        if not frappe.db.exists("Company", company_name):
-            company = frappe.get_doc(
-				{
-					"doctype": "Company",
-					"company_name": company_name,
-					"country": "Israel",
-					"default_currency": "ILS",
-				}
-			)
-            company = company.save()
-        
-        company = frappe.get_doc("Company", company_name)
-
-        company.db_set("registration_details", company_id)
         quotation.db_set("company", company_name) 
 
         frappe.db.commit()
+
+        # Update company 
+        #if not frappe.db.exists("Company", company_name):
+        #    company = frappe.get_doc(
+		#		{
+		#			"doctype": "Company",
+		#			"company_name": company_name,
+		#			"country": "Israel",
+		#			"default_currency": "ILS",
+		#		}
+		#	)
+        #    company = company.save()
+        #
+        #company = frappe.get_doc("Company", company_name)
+
+        #company.db_set("registration_details", company_id)
+        #quotation.db_set("company", company_name) 
+
+        #frappe.db.commit()
 
         # Update company and personal information
         customer = frappe.get_doc("Customer", quotation.party_name)
