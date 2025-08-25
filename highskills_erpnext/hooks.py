@@ -4,6 +4,12 @@ app_publisher = "Highskills and more LTD - Michael Bulwick <michael@highskills.c
 app_description = "Highskills Erpnext custom app"
 app_email = "info@highskills.co.il"
 app_license = "mit"
+website_route_overrides = {
+    "/contact": "/contact",
+}
+web_page_controllers = {
+    "contact": "highskills_erpnext.www.contact.get_context",
+}
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
