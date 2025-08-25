@@ -35,7 +35,7 @@
         <h1 class="text-center">{{ quotation.name }} - Signature</h1>
         <p class="lead text-center">Please review and sign to accept.</p>
 
-        <p><strong>Customer:</strong>
+        <p><strong>Contact email:</strong>
             {{quotation.contact_email}}
         </p>
         <p><strong>Total:</strong> {{ quotation.grand_total }}</p>
@@ -44,17 +44,17 @@
             <div class="myitem p-4">
                 <h5 class="mt-4">Company Information</h5>
                 <label><strong>Company Name:</strong><span class="req">*</span></label>
-                <input id="company_name"  name="company_name" type="text" class="form-control" value="{{ quotation.company | default('') }}" required>
+                <input id="company_name"  name="company_name" type="text" class="form-control" value="" required>
                 <label><strong>Company Id:</strong><span class="req">*</span></label>
-                <input id="company_id"  name="company_id" type="text" class="form-control" value="{{ quotation.company_id | default('') }}" required>
+                <input id="company_id"  name="company_id" type="text" class="form-control" value="" required>
             </div>
 
             <div class="myitem p-4">
                 <h5 class="mt-4">Personal Information</h5>
                 <label><strong>Your role in the company:</strong><span class="req">*</span></label>
-                <input id="role_in_company"  name="role_in_company" type="text" class="form-control" value="{{ quotation.role_in_company | default('') }}" required>
+                <input id="role_in_company"  name="role_in_company" type="text" class="form-control" value="" required>
                 <label><strong>Full name</strong><span class="req">*</span></label>
-                <input id="customer_name" name="customer_name" type="text" class="form-control" value="{{ quotation.customer_name | default('') }}" required>
+                <input id="customer_name" name="customer_name" type="text" class="form-control" value="" required>
             </div>
         </div>
   
@@ -100,10 +100,10 @@ frappe.ready(function() {
                 args: {
                     quotation_name: quotationName,
                     signature_image_base64: dataURL,
-                    company_name: document.getElementById('company_name').value,
-                    company_id:    document.getElementById('company_id').value,
-                    role_in_company: document.getElementById('role_in_company').value,
-                    customer_name: document.getElementById('customer_name').value
+                    company_name: companyName,
+                    company_id:    companyId,
+                    role_in_company: roleInCompany,
+                    customer_name: customerName
                 },
                 freeze: true
             });
