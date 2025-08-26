@@ -4,7 +4,7 @@
 			{%- if brand_html -%}
 				{{ brand_html }}
 			{%- elif banner_image -%}
-				<img src='{{ banner_image }}' alt='{{ __("App Logo") }}'>
+				<img src='{{ banner_image }}' alt='{{ _("App Logo") }}'>
 			{%- else -%}
 				<span>{{ (frappe.get_hooks("brand_html") or [_("Home")])[0] }}</span>
 			{%- endif -%}
