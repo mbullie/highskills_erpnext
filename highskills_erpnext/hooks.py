@@ -12,6 +12,14 @@ web_page_controllers = {
     "contact": "highskills_erpnext.www.contact.get_context",
     "login": "highskills_erpnext.www.login.get_context",
 }
+web_include_js = [
+    "/assets/highskills_erpnext/js/sienna.min.js",
+    "/assets/highskills_erpnext/js/highskills_erpnext-web.bundle.js"
+]
+
+web_include_css = [
+    "/assets/highskills_erpnext/css/highskills_erpnext-web.bundle.css",
+]
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
