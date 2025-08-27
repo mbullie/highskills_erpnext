@@ -1,0 +1,324 @@
+"ID","Title","Route","Dynamic Route","Published","Module (for export)","Content Type","Slideshow","Dynamic Template","Main Section","Main Section (Markdown)","Main Section (HTML)","Context Script","Javascript","Insert Style","Text Align","CSS","Full Width","Show Title","Start Date","End Date","meta_title","Description","Image","Show Sidebar","Priority","Website Sidebar","Enable Comments","Header","Breadcrumbs","ID (Page Building Blocks)","Add Background Image (Page Building Blocks)","Add Border at Bottom (Page Building Blocks)","Add Border at Top (Page Building Blocks)","Add Container (Page Building Blocks)","Add Gray Background (Page Building Blocks)","Add Space at Bottom (Page Building Blocks)","Add Space at Top (Page Building Blocks)","Background Image (Page Building Blocks)","CSS Class (Page Building Blocks)","Hide Block (Page Building Blocks)","Section ID (Page Building Blocks)","Web Template (Page Building Blocks)","Web Template Values (Page Building Blocks)"
+"home","בית","home",0,1,"Webshop","Page Builder","",0,"","","test","","
+  function openTab(evt, sectionIdx) {
+    // Only target sections with data-section-idx=""3"", ""4"", or ""5""
+    const targetIndices = [""4"", ""5"", ""6""];
+
+    // Hide only the relevant sections
+    targetIndices.forEach(idx => {
+      const section = document.querySelector(`section[data-section-idx=""${idx}""]`);
+      if (section) section.style.display = 'none';
+    });
+
+    // Remove ""active"" class from all tab buttons
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(btn => btn.classList.remove('tab-current'));
+
+    // Show the selected section
+    const targetSection = document.querySelector(`section[data-section-idx=""${sectionIdx}""]`);
+    if (targetSection) {
+      targetSection.style.display = 'block';
+    }
+
+    // Add ""active"" class to the clicked button
+    evt.currentTarget.parentElement.classList.add('tab-current');
+
+  }
+
+  // Open the first tab by default
+  document.addEventListener(""DOMContentLoaded"", function () {
+    const firstTab = document.querySelector("".tab-button a"");
+    if (firstTab) firstTab.click();
+  });
+  
+ document.documentElement.setAttribute('lang',""he"");
+
+",1,"Right","body:lang(en) {
+    direction: rtl;
+    text-align: right;
+}
+.hero-content{
+   margin-top: 0; 
+}
+.section-padding-top{
+    padding:0 !important;
+}
+h2.section-title {
+    display: none;
+}
+.carousel-item{
+    height:300px !important;
+}
+#page-home .carousel-content{
+    max-width: 570px;
+}
+.carousel-content{
+    direction: rtl;
+    text-align: right;
+}
+.carousel-content h1{
+    font-size: 3rem;
+}
+.carousel-content p{
+    font-size:large;
+}
+.hg{
+color:#FF0000;
+}
+.hs{
+color:#928F8A;
+}
+.item-card-group-section .card{
+    height:300px !important;
+}
+ .tabs {
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    width: 100%;
+    font-weight: 300;
+    font-size: 1.25em;
+}
+.tabs nav {
+    text-align: center;
+}
+.tabs-style-line nav ul {
+    padding: 0 2em;
+    max-width: none;
+    box-shadow: inset 0 -2px #d1d3d2;
+}
+.tabs nav ul {
+    position: relative;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: flex;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 1200px;
+    list-style: none;
+    -ms-box-orient: horizontal;
+    -ms-box-pack: center;
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+}
+.tabs nav ul li {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    text-align: center;
+    -webkit-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+.tabs-style-line nav li.tab-current a {
+    box-shadow: inset 0 -2px #2CC185;
+    color: #2CC185;
+}
+.tabs-style-line nav a {
+    padding: 0.7em 0.4em;
+    box-shadow: inset 0 -2px #d1d3d2;
+    color: #74777b;
+    text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 0.8em;
+    line-height: 1;
+    -webkit-transition: color 0.3s, box-shadow 0.3s;
+    transition: color 0.3s, box-shadow 0.3s;
+}
+.tabs nav a {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 2.5;
+}
+.tabs nav a:hover {
+    text-decoration:none;
+}
+.tabs nav a span {
+    vertical-align: middle;
+    font-size: 1.1em;
+}
+#page-home .page_content {
+    padding-bottom: 50px;
+}
+.hero .hero-title{
+    display:none;
+}
+.before\:bg-slate-100:before {
+    background-color: #F1F5F9;
+    content:"""";
+}
+.before\:rounded-lg:before {
+    border-radius: .5rem;
+    content: """";
+}
+.before\:w-full:before {
+    content: """";
+    width: 100%;
+}
+.before\:-z-10:before {
+    content: """";
+    z-index: -10;
+}
+.before\:bottom-0:before {
+    bottom: calc(.25rem * 0);
+    content: """";
+}
+.before\:top-6:before {
+    content: """";
+    top: calc(.25rem * 6);
+}
+.before\:absolute:before{
+    position: absolute;
+    content: """";
+}
+.audience h2 {
+    font-weight: 500;
+    font-size: 1.125rem;
+    margin-top: 1.25rem !important;
+}
+@media (min-width: 28rem) {
+    .min-\[28rem\]\:grid-cols-\[repeat\(auto-fill\,_minmax\(24rem\,_1fr\)\)\] {
+        grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+    }
+}
+.audience{
+    border: 0 solid;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.grid {
+    display: grid;
+}
+.gap-8 {
+    gap: calc(.25rem * 8);
+}
+.px-6 {
+    padding-inline: calc(.25rem * 6);
+}
+.rounded-md {
+    border-radius: .375rem;
+}
+.bg-indigo-500{
+    background-color:#9AD9E9;
+}
+.place-items-center{
+    place-items: center;
+}
+.items-center {
+    align-items: center;
+}
+.flex-col {
+    flex-direction: column;
+}
+.max-w-full {
+    max-width: 100%;
+}
+.max-w-lg {
+    max-width: 32rem;
+}
+.flex {
+    display: flex;
+}
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+.left-1\/2 {
+    left: 50%;
+}
+.top-0 {
+    top: calc(.25rem * 0);
+}
+.iconify{
+    font-size: 1.5rem; 
+}
+.-translate-x-1\/2 {
+    --tw-translate-x: -50%;
+    translate: -50% 0;
+}
+:where(.i-mingcute\:target-line) {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: currentColor;
+    -webkit-mask-image: url(""data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none'%3E%3Cpath d='m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z'/%3E%3Cpath fill='black' d='M12 2q.563 0 1.11.061a1 1 0 0 1-.22 1.988a8 8 0 1 0 7.061 7.061a1 1 0 1 1 1.988-.22q.06.547.061 1.11c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m-.032 5.877a1 1 0 0 1-.719 1.217A3.002 3.002 0 0 0 12 15a3 3 0 0 0 2.906-2.25a1 1 0 0 1 1.936.5A5.002 5.002 0 0 1 7 12a5 5 0 0 1 3.75-4.842a1 1 0 0 1 1.218.719m6.536-5.75a1 1 0 0 1 .617.923v1.83h1.829a1 1 0 0 1 .707 1.707L18.12 10.12a1 1 0 0 1-.707.293H15l-1.828 1.829a1 1 0 0 1-1.415-1.415L13.586 9V6.586a1 1 0 0 1 .293-.707l3.535-3.536a1 1 0 0 1 1.09-.217m-1.383 3.337L15.586 7v1.414H17l1.536-1.535h-.415a1 1 0 0 1-1-1z'/%3E%3C/g%3E%3C/svg%3E"");
+    mask-image: url(""data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none'%3E%3Cpath d='m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z'/%3E%3Cpath fill='black' d='M12 2q.563 0 1.11.061a1 1 0 0 1-.22 1.988a8 8 0 1 0 7.061 7.061a1 1 0 1 1 1.988-.22q.06.547.061 1.11c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m-.032 5.877a1 1 0 0 1-.719 1.217A3.002 3.002 0 0 0 12 15a3 3 0 0 0 2.906-2.25a1 1 0 0 1 1.936.5A5.002 5.002 0 0 1 7 12a5 5 0 0 1 3.75-4.842a1 1 0 0 1 1.218.719m6.536-5.75a1 1 0 0 1 .617.923v1.83h1.829a1 1 0 0 1 .707 1.707L18.12 10.12a1 1 0 0 1-.707.293H15l-1.828 1.829a1 1 0 0 1-1.415-1.415L13.586 9V6.586a1 1 0 0 1 .293-.707l3.535-3.536a1 1 0 0 1 1.09-.217m-1.383 3.337L15.586 7v1.414H17l1.536-1.535h-.415a1 1 0 0 1-1-1z'/%3E%3C/g%3E%3C/svg%3E"");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    --svg: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none'%3E%3Cpath d='m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z'/%3E%3Cpath fill='black' d='M12 2q.563 0 1.11.061a1 1 0 0 1-.22 1.988a8 8 0 1 0 7.061 7.061a1 1 0 1 1 1.988-.22q.06.547.061 1.11c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m-.032 5.877a1 1 0 0 1-.719 1.217A3.002 3.002 0 0 0 12 15a3 3 0 0 0 2.906-2.25a1 1 0 0 1 1.936.5A5.002 5.002 0 0 1 7 12a5 5 0 0 1 3.75-4.842a1 1 0 0 1 1.218.719m6.536-5.75a1 1 0 0 1 .617.923v1.83h1.829a1 1 0 0 1 .707 1.707L18.12 10.12a1 1 0 0 1-.707.293H15l-1.828 1.829a1 1 0 0 1-1.415-1.415L13.586 9V6.586a1 1 0 0 1 .293-.707l3.535-3.536a1 1 0 0 1 1.09-.217m-1.383 3.337L15.586 7v1.414H17l1.536-1.535h-.415a1 1 0 0 1-1-1z'/%3E%3C/g%3E%3C/svg%3E);
+}
+:where(.i-majesticons\:lightbulb-shine) {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: currentColor;
+    -webkit-mask-image: url(""data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none'%3E%3Cpath fill='black' d='M12 7a5 5 0 0 0-2 9.584V19h4v-2.416A5.001 5.001 0 0 0 12 7'/%3E%3Cpath stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 12h1m-3.5-6.5l1-1M12 3V2M5.5 5.5l-1-1M3 12H2m8 10h4m3-10a5 5 0 1 0-7 4.584V19h4v-2.416A5 5 0 0 0 17 12'/%3E%3C/g%3E%3C/svg%3E"");
+    mask-image: url(""data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none'%3E%3Cpath fill='black' d='M12 7a5 5 0 0 0-2 9.584V19h4v-2.416A5.001 5.001 0 0 0 12 7'/%3E%3Cpath stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 12h1m-3.5-6.5l1-1M12 3V2M5.5 5.5l-1-1M3 12H2m8 10h4m3-10a5 5 0 1 0-7 4.584V19h4v-2.416A5 5 0 0 0 17 12'/%3E%3C/g%3E%3C/svg%3E"");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    --svg: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cg fill='none'%3E%3Cpath fill='black' d='M12 7a5 5 0 0 0-2 9.584V19h4v-2.416A5.001 5.001 0 0 0 12 7'/%3E%3Cpath stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 12h1m-3.5-6.5l1-1M12 3V2M5.5 5.5l-1-1M3 12H2m8 10h4m3-10a5 5 0 1 0-7 4.584V19h4v-2.416A5 5 0 0 0 17 12'/%3E%3C/g%3E%3C/svg%3E);
+}
+:where(.i-streamline\:decent-work-and-economic-growth-solid) {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: currentColor;
+    -webkit-mask-image: url(""data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' width='14' height='14'%3E%3Cpath fill='black' fill-rule='evenodd' d='M10.326.28a.5.5 0 0 1 .506-.229l2.571.429a.5.5 0 0 1 .411.575l-.428 2.572a.5.5 0 0 1-.9.208l-.694-.97l-3.574 2.284a.75.75 0 0 1-.974-.144l-1.993-2.33L1.524 4.59a.75.75 0 1 1-.686-1.334l4.255-2.187a.75.75 0 0 1 .913.18L7.96 3.534l2.96-1.892l-.577-.807a.5.5 0 0 1-.017-.555M3.78 5.19L.878 6.85A.75.75 0 0 0 .5 7.5v5.75c0 .414.336.75.75.75h2.53zM5.03 14h3.668V7.188l-1.649.824l-1.648-2.884a.75.75 0 0 0-.37-.324zm7.72 0H9.948V6.563l2.467-1.234A.75.75 0 0 1 13.5 6v7.25a.75.75 0 0 1-.75.75' clip-rule='evenodd'/%3E%3C/svg%3E"");
+    mask-image: url(""data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' width='14' height='14'%3E%3Cpath fill='black' fill-rule='evenodd' d='M10.326.28a.5.5 0 0 1 .506-.229l2.571.429a.5.5 0 0 1 .411.575l-.428 2.572a.5.5 0 0 1-.9.208l-.694-.97l-3.574 2.284a.75.75 0 0 1-.974-.144l-1.993-2.33L1.524 4.59a.75.75 0 1 1-.686-1.334l4.255-2.187a.75.75 0 0 1 .913.18L7.96 3.534l2.96-1.892l-.577-.807a.5.5 0 0 1-.017-.555M3.78 5.19L.878 6.85A.75.75 0 0 0 .5 7.5v5.75c0 .414.336.75.75.75h2.53zM5.03 14h3.668V7.188l-1.649.824l-1.648-2.884a.75.75 0 0 0-.37-.324zm7.72 0H9.948V6.563l2.467-1.234A.75.75 0 0 1 13.5 6v7.25a.75.75 0 0 1-.75.75' clip-rule='evenodd'/%3E%3C/svg%3E"");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    --svg: url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' width='14' height='14'%3E%3Cpath fill='black' fill-rule='evenodd' d='M10.326.28a.5.5 0 0 1 .506-.229l2.571.429a.5.5 0 0 1 .411.575l-.428 2.572a.5.5 0 0 1-.9.208l-.694-.97l-3.574 2.284a.75.75 0 0 1-.974-.144l-1.993-2.33L1.524 4.59a.75.75 0 1 1-.686-1.334l4.255-2.187a.75.75 0 0 1 .913.18L7.96 3.534l2.96-1.892l-.577-.807a.5.5 0 0 1-.017-.555M3.78 5.19L.878 6.85A.75.75 0 0 0 .5 7.5v5.75c0 .414.336.75.75.75h2.53zM5.03 14h3.668V7.188l-1.649.824l-1.648-2.884a.75.75 0 0 0-.37-.324zm7.72 0H9.948V6.563l2.467-1.234A.75.75 0 0 1 13.5 6v7.25a.75.75 0 0 1-.75.75' clip-rule='evenodd'/%3E%3C/svg%3E);
+}
+/* Styles for screens smaller than 480px (common for mobile phones) */
+@media screen and (max-width: 480px) {
+    .carousel-content{
+        margin-right:0;
+        margin-left:0
+    }
+    .product-category-section .card-grid{
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+    }
+}
+.mix-filter {
+    list-style: none;
+    margin: 0 0 20px 0;
+    padding: 10px 0;
+    text-align: center;
+}
+.mix-filter li {
+    color: white;
+    cursor: pointer;
+    padding: 6px 15px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    background: #1D2025;
+    display: inline-block;
+    font-family: 'Conv_Lato-Regular', Sans-Serif;
+}
+",1,0,"","","","","",0,0,"",0,"&lt;script src=""https://cdn.tailwindcss.com""&gt;&lt;/script&gt;","","n8f19rarvb",0,0,0,1,0,1,1,"","",0,"","Hero Slider","{""slider_name"":""hero-hs"",""show_indicators"":0,""show_controls"":0,""slide_1_image"":""/files/temp.png"",""slide_1_title"":""<span class=\""hg\"">high</span><span class=\""hs\"">skills</span>"",""slide_1_subtitle"":""חברת הייסקילס הוקמה בשנת 2007 ע\""י ישי רז, בעלים, מנכ\""ל ויועץ טכנולוגי בכיר.\n\nהחברה מורכבת מיועצים, מנהלי פרויקטים ומפתחי WEB.\n\nמשרדינו ממוקמים בבית כלל בתל אביב."",""slide_2_content_align"":""Left""}"
+"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","pe3sq5mlhv",0,0,0,1,0,1,1,"","",0,"","Hero","{""title"":""{{Learnops}}"",""subtitle"":""<div style=\""direction:rtl; text-align:right;\"" class=\""mb-6\"">\n\t<ul class=\""audience grid gap-8 min-[28rem]:grid-cols-[repeat(auto-fill,_minmax(24rem,_1fr))]\"">\n\t  <!--[-->\n\t  <li class=\""relative flex max-w-full flex-col items-center px-6 pt-20 pb-8 before:absolute before:top-6 before:bottom-0 before:-z-10 before:w-full before:rounded-lg before:bg-slate-100\"">\n\t\t<h2 class=\""mb-5 text-center \"">השירותים שלנו</h2>\n\t\t<p class=\""text-center\"">החברה עוסקת במתן שירותי WEB מתקדמים בהיבטי ייעוץ, איפיון, יישום, הטמעה ותחזוקה.\n\nאנו שותפים לעשייה הארגונית בהיבטי ניהול למידה, ניהול ידע ותמיכה טכנולוגית בתהליכים עסקיים.\nהפתרונות הטכנולוגיים שלנו ייחודיים ומותאמים לצרכי השוק הארגוני, תוך יישום של מערכות מסורתיות (LMS), מערכות הדור הבא (NG) ויישום תהליכי ניהול ידע על גבי פלטפורמות ארגוניות מתקדמות.\n\nאנו נותנים חשיבות רבה לבחירת פתרונות טכנולוגיים חדשניים התומכים בתהליכים הארגוניים והעסקיים.\nפתרונות אלו מתבססים על הטכנולוגיה הקיימת בארגון או על שימוש בפלטפורמות קוד פתוח, תוך מתן גמישות ויכולת תגובה לצרכי הארגון המשתנים.\n\nמגוון הפתרונות שסיפקנו ללקוחותינו בוצעו על גבי פלטפורמות שונות, כגון: Microsoft Sharepoint, IBM Websphere, SAP Netweaver ועוד.\nכמוצרים משלימים אנו משתמשים במוצרי קוד פתוח המשתלבים במערכות הארגון, כגון: MOODLE, MODX ועוד.</p>\n\t\t<div class=\""absolute top-0 left-1/2 grid -translate-x-1/2 place-items-center rounded-md bg-indigo-500 p-3 text-white shadow-lg\"">\n\t\t  <span class=\""iconify i-mingcute:target-line\"" aria-hidden=\""true\"" ></span>\n\t\t</div>\n\t  </li>\n\t  <li class=\""relative flex max-w-full flex-col items-center px-6 pt-20 pb-8 before:absolute before:top-6 before:bottom-0 before:-z-10 before:w-full before:rounded-lg before:bg-slate-100\"">\n\t\t<h2 class=\""mb-5 text-center \"">האינטגרציה בין השירותים שלנו</h2>\n\t\t<p class=\""text-center\"">בחינת צרכי הארגון וגיבוש פתרון תואם לתהליכים העסקיים של הארגון.\nאינטגרציה בין תרבות ארגונית, תהליכים עסקיים ותשתיות קיימות.\nיישום של סביבה תומכת למידה וידע (ONE STOP SHOP), עם דגש על ויזואליזציה של המידע, חווית משתמש ייחודית וכלים מתקדמים לאחזור מידע.\nלמידה מתמשכת ושיפור מתמיד באמצעות איתור מידע עסקי המשמש למדידת ביצועי עובדים, שימוש בטכנולוגיות מתקדמות לפילוח המידע בהתייחס ליחידות ארגוניות, תפקידים וכשירויות, זיהוי פערי הידע הקיימים ושינוע תוכן רלוונטי ומותאם לכל עובד.</p>\n\t\t<div class=\""absolute top-0 left-1/2 grid -translate-x-1/2 place-items-center rounded-md bg-indigo-500 p-3 text-white shadow-lg\"">\n\t\t  <span class=\""iconify i-streamline:decent-work-and-economic-growth-solid\"" aria-hidden=\""true\"" ></span>\n\t\t</div>\n\t  </li>\n\t  <li class=\""relative flex max-w-full flex-col items-center px-6 pt-20 pb-8 before:absolute before:top-6 before:bottom-0 before:-z-10 before:w-full before:rounded-lg before:bg-slate-100\"">\n\t\t<h2 class=\""mb-5 text-center \"">למידה קצרת טווח</h2>\n\t\t<p class=\""text-center\"">תהליכי למידה קצרים ומיידיים או תהליכי למידה לאוכלוסיה חריגה מזו המנוהלת בארגון.</p>\n\t\t<div class=\""absolute top-0 left-1/2 grid -translate-x-1/2 place-items-center rounded-md bg-indigo-500 p-3 text-white shadow-lg\"">\n\t\t  <span class=\""iconify i-majesticons:lightbulb-shine\"" aria-hidden=\""true\"" ></span>\n\t\t</div>\n\t  </li>\n\t  <!--]-->\n\t</ul>\n\n\t</div>\n\n\n\t  <!-- Feature List -->\n\t<h3 style=\""\n    font-weight: 700;\n\"" class=\""text-center\"">\n\t\tאספקת השירותים הינה מיידית ליום הרכישה (כולל SSO, אספקת שם DNS מוקצה או בהינתן ע\""י הארגון).\n\t</h3>\n</div>"",""align"":""Left""}"
+"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","eeckllih1a",0,0,0,1,0,1,1,"","",0,"","html-only","{""html_content"":""<div id=\""customers\"" class=\""container\"">\r\n    <div class=\""tittle\"">\r\n        <h4>בין הלקוחות שלנו</h4>\r\n    </div>\r\n  <div class=\""min-hight portfolio-page margin-bottom-40 wow bounceIn animated\"" data-wow-delay=\""0.4s\"" style=\""visibility: visible; animation-delay: 0.4s; animation-name: bounceIn;\"">\r\n    <!-- BEGIN FILTER -->\r\n    <div class=\""filter-v1\"">\r\n      <ul class=\""mix-filter\"">\r\n        <li class=\""filter\"" data-filter=\""all\"">מדיסון פארמה</li>\r\n        <li class=\""filter\"" data-filter=\""category_1\"">הפניקס</li>\r\n        <li class=\""filter\"" data-filter=\""category_1\"">הראל ביטוח</li>\r\n\t\t<li class=\""filter\"" data-filter=\""category_1\"">בנק יהב</li>\r\n        <li class=\""filter\"" data-filter=\""category_2\"">מפעל הפיס</li>\r\n\t\t<li class=\""filter\"" data-filter=\""category_2\"">לאומית שירותי בריאות</li>\r\n        <li class=\""filter\"" data-filter=\""category_3\"">כלמוביל</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">בזק</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">Ness Digital Engineering</li>\r\n\t\t<li class=\""filter\"" data-filter=\""category_4\"">Matrix</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">סופר-פארם</li>\r\n\t\t<li class=\""filter\"" data-filter=\""category_4\"">HP</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">Elbit system</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">מנב\""ס</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">בנק פועלים</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">Amdocs</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">הספריה הלאומית</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">בנק לאומי</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">כנפיים של קרמבו</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">BrightSource Energy</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">iMDsoft</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">Nova Ltd.</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">רכבת ישראל</li>\r\n        <li class=\""filter\"" data-filter=\""category_4\"">ועוד...</li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n  <div class=\""clearfix\""></div>\r\n</div>""}"

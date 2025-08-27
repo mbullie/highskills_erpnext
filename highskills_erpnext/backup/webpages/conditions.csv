@@ -1,0 +1,66 @@
+"ID","Title","Route","Dynamic Route","Published","Module (for export)","Content Type","Slideshow","Dynamic Template","Main Section","Main Section (Markdown)","Main Section (HTML)","Context Script","Javascript","Insert Style","Text Align","CSS","Full Width","Show Title","Start Date","End Date","meta_title","Description","Image","Show Sidebar","Priority","Website Sidebar","Enable Comments","Header","Breadcrumbs","ID (Page Building Blocks)","Add Background Image (Page Building Blocks)","Add Border at Bottom (Page Building Blocks)","Add Border at Top (Page Building Blocks)","Add Container (Page Building Blocks)","Add Gray Background (Page Building Blocks)","Add Space at Bottom (Page Building Blocks)","Add Space at Top (Page Building Blocks)","Background Image (Page Building Blocks)","CSS Class (Page Building Blocks)","Hide Block (Page Building Blocks)","Section ID (Page Building Blocks)","Web Template (Page Building Blocks)","Web Template Values (Page Building Blocks)"
+"תנאי-שימוש-ותקנון","תנאי שימוש ותקנון","conditions",0,1,"","HTML","",0,"","","
+<body>
+
+<div class=""container"" style=""text-align:right;"">
+    <h1>תנאי שימוש ומדיניות</h1>
+    <h2>ברוכים הבאים ל-Highskills and More</h2>
+    <p>
+        תנאים והגבלות אלו (""התנאים"") חלים על השימוש שלך בשירותי ה-SaaS הניתנים על ידי Highskills and More (""החברה"", ""אנחנו"", ""שלנו""). על ידי גישה או שימוש בשירותים שלנו, אתה מסכים להיות כפוף לתנאים אלו. אם אינך מסכים לכל התנאים וההגבלות, עליך להימנע משימוש בשירותים שלנו.
+    </p>
+
+    <h2>1. השירותים</h2>
+    <p>
+        Highskills and More מספקת מגוון פתרונות SaaS (תוכנה כשירות). השירותים הספציפיים שאתה מנוי עליהם יפורטו בתוכנית המנוי שלך. אנו שומרים לעצמנו את הזכות לשנות או להפסיק, באופן זמני או קבוע, את השירותים (או כל חלק מהם) עם או ללא הודעה מוקדמת.
+    </p>
+
+    <h2>2. חשבון משתמש וגישה</h2>
+    <ul>
+        <li><strong>יצירת חשבון:</strong> עליך ליצור חשבון כדי לגשת לשירותים שלנו. אתה מסכים לספק מידע מדויק, עדכני ומלא במהלך תהליך ההרשמה.</li>
+        <li><strong>אבטחת חשבון:</strong> אתה אחראי לשמור על סודיות פרטי הכניסה לחשבון שלך ואחראי באופן מלא לכל הפעילויות המתרחשות תחת חשבונך.</li>
+        <li><strong>שימוש הולם:</strong> אתה מסכים שלא להשתמש בשירותים למטרה בלתי חוקית כלשהי או בכל דרך שעלולה לפגוע, להשבית, להעמיס יתר על המידה או לפגוע בשירותים.</li>
+    </ul>
+
+    <h2>3. מנוי ותשלומים</h2>
+    <ul>
+        <li><strong>חיוב:</strong> השירותים מחויבים על בסיס מנוי (לדוגמה, חודשי או שנתי). תחויב מראש עבור תקופת המנוי.</li>
+        <li><strong>תשלום:</strong> כל התשלומים אינם ניתנים להחזר, אלא אם צוין אחרת בהסכם המנוי שלך. אתה מסכים לשלם את כל העמלות והחיובים שנגרמו בקשר לחשבונך.</li>
+        <li><strong>סיום:</strong> אנו רשאים לסיים או להשעות את הגישה שלך לשירותים באופן מיידי, ללא הודעה מוקדמת או אחריות, אם תפר תנאים אלו.</li>
+    </ul>
+
+    <h2>4. קניין רוחני</h2>
+    <p>
+        השירותים והתוכן המקורי שלהם, התכונות והפונקציונליות הם ויישארו הרכוש הבלעדי של Highskills and More ושל בעלי הרישיונות שלה. אין להשתמש בסימנים המסחריים ובסימני הלבוש המסחריים שלנו בקשר לכל מוצר או שירות ללא הסכמה מוקדמת בכתב של Highskills and More.
+    </p>
+
+    <h2>5. ויתור על אחריות</h2>
+    <p>
+        השירותים ניתנים על בסיס ""כפי שהם"" ו""כפי שזמינים"". Highskills and More אינה נותנת כל אחריות, מפורשת או משתמעת, ובזה מתנערת מכל שאר האחריות, לרבות, ללא הגבלה, אחריות משתמעת או תנאים של סחירות, התאמה למטרה מסוימת, אי-הפרה של קניין רוחני או הפרה אחרת של זכויות.
+    </p>
+
+    <h2>6. הגבלת אחריות</h2>
+    <p>
+        בשום מקרה Highskills and More, וכן הדירקטורים, העובדים, השותפים, הסוכנים, הספקים או החברות המסונפות שלה, לא יהיו אחראים לכל נזק עקיף, מקרי, מיוחד, תוצאתי או עונשי, לרבות ללא הגבלה, אובדן רווחים, נתונים, שימוש, מוניטין או הפסדים בלתי מוחשיים אחרים, הנובעים מ- (i) גישתך או שימושך או אי-יכולתך לגשת או להשתמש בשירות; (ii) כל התנהגות או תוכן של צד שלישי כלשהו בשירות.
+    </p>
+    <h3>7. דין חל</h3>
+    <p>
+        תנאים אלו יחולו ויפורשו בהתאם לחוקי [המדינה/המחוז שלך], ללא התייחסות לעקרונות ברירת הדין שלה.
+    </p>
+
+    <h4>8. שינויים בתנאים</h4>
+    <p>
+        אנו שומרים לעצמנו את הזכות, לפי שיקול דעתנו הבלעדי, לשנות או להחליף תנאים אלו בכל עת. אם שינוי הוא מהותי, נשתדל לספק הודעה של לפחות 30 יום לפני כניסתם לתוקף של תנאים חדשים. מה שמהווה שינוי מהותי ייקבע על פי שיקול דעתנו הבלעדי.
+    </p>
+
+    <h4>9. צור קשר</h4>
+   <p>
+        אם יש לך שאלות לגבי תנאים אלו, אנא צור איתנו קשר בכתובת: <a style=""color:blue;text-decoration:underline;"" href=""mailto:info@highskills.co.il"">info@highskills.co.il</a>.
+    </p>
+
+    <p style=""text-align: center; font-size: 0.8em; color: black; margin-top: 30px;"">עדכון אחרון: 28 ביולי, 2025</p>
+</div>
+
+</body>
+","","",1,"Right",".cookie-overlay{
+    display:none !important;
+}",1,0,"","","","","",0,0,"",0,"","","","","","","","","","","","","","","",""
