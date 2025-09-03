@@ -43,10 +43,11 @@ body:lang(he) {
     font-family: 'HandelGothic';
     font-style: normal;
     font-weight: 400;
-    src: url('/assets/highskills_erpnext/font/HandelGothic Regular.ttf') format('truetype');
+    src: url('/assets/highskills_erpnext/font/HandelGo.ttf') format('truetype');
 }
 .hg , .hs{
     font-family: 'HandelGothic', sans-serif;
+    font-weight: 100;
 }
 .btn{
     border: 1px solid black !important;
