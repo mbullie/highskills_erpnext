@@ -39,6 +39,15 @@ body:lang(he) {
     max-width: 200px !important;
     max-height: 44px !important;
 }
+@font-face {
+    font-family: 'HandelGothic';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/assets/highskills_erpnext/font/HandelGothic Regular.ttf') format('truetype');
+}
+.hg , .hs{
+    font-family: 'HandelGothic', sans-serif;
+}
 .btn{
     border: 1px solid black !important;
 }
