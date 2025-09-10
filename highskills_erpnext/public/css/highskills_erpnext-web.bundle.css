@@ -105,9 +105,10 @@ color: black !important;
 }
 .web-footer{
     padding-top:0 !important;
-        background-color: white;
+    background-color: black;
     display: inline-table;
     direction: rtl;
+    color: white;
 }
 #cookieConsentOverlay{
     direction: rtl; /* Right-to-left for Hebrew */
@@ -216,10 +217,16 @@ color: black !important;
     display: none;
 }
 .footer-group-label{
-    color:black !important;
+    color:inherit !important;
+    font-weight: 700;
+    font-size: 1.25rem !important;
+}
+.footer-link, .footer-child-item a {
+    color: inherit !important;
+    font-size: 1rem !important;
 }
 .footer-info {
-    color: black !important;
+    color: inherit !important;
 }
 /* Login page */
 .toggle-password.text-muted{
