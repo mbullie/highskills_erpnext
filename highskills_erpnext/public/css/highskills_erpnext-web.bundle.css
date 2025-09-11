@@ -245,3 +245,50 @@ color: black !important;
      color:blue !important; 
      text-decoration:underline;
 }
+ [data-section-template="Product Category Cards"] .card, [data-section-template="Item Card Group"] .card{
+        border: 1px solid rgba(0, 0, 0, .125);
+    }
+    [data-section-template="Item Card Group"]{
+        margin-top: 1.5rem !important;
+    }
+    [data-section-template="Item Card Group"] .product-category{
+        display:none;
+    }
+    [data-section-template="Item Card Group"] .item-card-group-section .card {
+        height: 250px !important;
+    }
+    [data-section-template="Item Card Group"] .item-card-group-section .card-img{
+        padding: 15px;
+        margin-top: 0;
+        border-radius: 25px;
+        max-height: 200px;
+        height: 200px;
+        object-fit: initial;
+    }
+    [data-section-template="Item Card Group"] .item-card-group-section .card-body{
+        height:100px;
+    }
+    [data-section-template="Item Card Group"] .item-card-group-section .card-img-container{
+        height: 200px;
+    }
+    [data-section-template="Item Card Group"] .item-card-group-section .product-title{
+        color: black !important;
+        text-decoration: none;
+        text-align: right;
+        padding-right:15px;
+    }
+    .product-category-section .card-img-top{
+        border-radius: 25px;
+        padding: 15px !important;
+    }
+    .product-category-section .card-body.text-muted{
+        color: black !important;
+        text-decoration:none !important;
+        padding: 15px;
+    }
+    .item-card-group-section .card-body{
+        padding:0;
+    }
+    .item-card-group-section .mt-4{
+        margin-top:0 !important;
+    }
