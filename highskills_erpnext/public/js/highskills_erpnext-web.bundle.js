@@ -31,6 +31,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const body = document.body;
+
+    const isLoggedIn = body.getAttribute("frappe-session-status") === "logged-in";
+    const isCartPath = body.getAttribute("data-path") === "cart";
+    const isProductPage = body.classList.contains("product-page");
+
+    if (isLoggedIn && isCartPath && isProductPage) {
+        const button = document.querySelector(".btn-request-for-quotation");
+        if (button) {
+            button.addEventListener("click", function () {
+                alert("הצעת מחיר נשלחה למייל שלך לאישור");
+            });
+        }
+    }
+});
+
+
+
    // Function to set a cookie
 function setCookie(name, value, days) {
     const d = new Date();
