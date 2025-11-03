@@ -6,7 +6,7 @@ try:
     # pyhanko high-level signing API
     from pyhanko.sign import signers
     from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
-    from pyhanko.sign.general import PdfSignatureMetadata
+    from pyhanko.sign import PdfSignatureMetadata
 except Exception:  # pragma: no cover - runtime import guard
     signers = None
     IncrementalPdfFileWriter = None
@@ -88,9 +88,9 @@ def sign_pdf_bytes(
 
             # Use SimpleStampBuilder (common in pyhanko) to create an image-based appearance
             try:
-                from pyhanko.sign import stamp as pyhanko_stamp
+                from pyhanko.stamp import SimpleStampBuilder
 
-                stamp_builder = pyhanko_stamp.SimpleStampBuilder(stamp_image_path)
+                stamp_builder = SimpleStampBuilder(stamp_image_path)
             except Exception:
                 # If we cannot build an image-based stamp, surface a clear error to caller
                 raise
