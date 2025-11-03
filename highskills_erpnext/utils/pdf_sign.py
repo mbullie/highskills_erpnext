@@ -88,15 +88,22 @@ def sign_pdf_bytes(
 
             # Use SimpleStampBuilder (common in pyhanko) to create an image-based appearance
             try:
-                from pyhanko.stamp import SimpleStampBuilder
+                from pyhanko.stamp import TextStampStyle, TextStamp
 
-                stamp_builder = SimpleStampBuilder(stamp_image_path)
+                # 1. Define the stamp style
+                # This example uses a custom font and a bitmap background
+                stamp_style = TextStampStyle(
+                    stamp_text=stamp_text,
+                    timestamp_format="%Y-%m-%d %H:%M:%S",
+                    background=stamp_image_path,
+                    # You can also set other properties like text_box_style, inner_content_layout, etc.
+                )
             except Exception:
                 # If we cannot build an image-based stamp, surface a clear error to caller
                 raise
 
             # Create PdfSigner with a new field spec and image appearance
-            signer_kwargs = {"new_field_spec": field_spec, "stamp_style": stamp_builder}
+            signer_kwargs = {"new_field_spec": field_spec, "stamp_style": stamp_style}
 
             pdf_signer = signers.PdfSigner(meta, signer=signer, **signer_kwargs)
             pdf_signer.sign_pdf(w, output=out)
