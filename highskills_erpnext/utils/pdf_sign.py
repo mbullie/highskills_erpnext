@@ -79,7 +79,6 @@ def sign_pdf_bytes(
             from pyhanko.sign import fields as sign_fields
             from pyhanko.stamp import TextStampStyle
             from pyhanko.pdf_utils import text, images
-            from pyhanko.pdf_utils.font import opentype
 
             # Require an image for visible signatures per site configuration policy.
             if not stamp_image_path:
