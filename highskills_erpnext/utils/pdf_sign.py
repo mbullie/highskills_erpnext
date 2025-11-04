@@ -99,20 +99,12 @@ def sign_pdf_bytes(
             )
             sign_fields.append_signature_field(w, sig_field_spec=sig_field_spec)
 
-            # Build a TextStampStyle with optional font and an image background.
-            text_box_style = None
-            if stamp_font_path:
-                if not os.path.exists(stamp_font_path):
-                    raise ValueError(f"Stamp font not found at path: {stamp_font_path}")
-                # GlyphAccumulatorFactory loads the font for text rendering
-                text_box_style = text.TextBoxStyle(font=opentype.GlyphAccumulatorFactory(stamp_font_path))
 
             # images.PdfImage accepts a file path or bytes; pass the image path directly
             background_image = images.PdfImage(stamp_image_path)
 
             stamp_style = TextStampStyle(
                 stamp_text=stamp_text,
-                text_box_style=text_box_style,
                 background=background_image,
             )
 
