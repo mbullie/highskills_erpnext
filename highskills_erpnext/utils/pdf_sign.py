@@ -30,6 +30,8 @@ def sign_pdf_bytes(
     # NOTE: This is required when `visible=True` per app configuration policy.
     stamp_image_path: Optional[str] = None,
     stamp_text: Optional[str] = None,
+    # Optional path to a TTF/OTF font to use for the stamp text appearance
+    stamp_font_path: Optional[str] = None,
 ) -> bytes:
     """
     Sign PDF bytes using PyHanko and a PKCS#12 (PFX) keyfile.
@@ -74,38 +76,48 @@ def sign_pdf_bytes(
     if visible:
         try:
             # Import optional visible-signing helpers
-            from pyhanko.sign.fields import SigFieldSpec
-
-            # Build signature field spec
-            field_spec = SigFieldSpec(field_name, on_page=page_number, box=box) if box is not None else SigFieldSpec(field_name, on_page=page_number)
+            from pyhanko.sign import fields as sign_fields
+            from pyhanko.stamp import TextStampStyle
+            from pyhanko.pdf_utils import text, images
+            from pyhanko.pdf_utils.font import opentype
 
             # Require an image for visible signatures per site configuration policy.
             if not stamp_image_path:
-                raise ValueError("Visible signatures require a stamp image path (stamp_image_path) as configured in site_config.json")
+                raise ValueError(
+                    "Visible signatures require a stamp image path (stamp_image_path) as configured in site_config.json"
+                )
 
             if not os.path.exists(stamp_image_path):
                 raise ValueError(f"Stamp image not found at path: {stamp_image_path}")
 
-            # Use SimpleStampBuilder (common in pyhanko) to create an image-based appearance
-            try:
-                from pyhanko.stamp import TextStampStyle, TextStamp
+            # Build signature field spec and append it to the writer. This ensures the
+            # signature field exists before signing and mirrors the pyHanko example.
+            sig_field_spec = (
+                sign_fields.SigFieldSpec(field_name, box=box, on_page=page_number)
+                if box is not None
+                else sign_fields.SigFieldSpec(field_name, on_page=page_number)
+            )
+            sign_fields.append_signature_field(w, sig_field_spec=sig_field_spec)
 
-                # 1. Define the stamp style
-                # This example uses a custom font and a bitmap background
-                stamp_style = TextStampStyle(
-                    stamp_text=stamp_text,
-                    timestamp_format="%Y-%m-%d %H:%M:%S",
-                    background=stamp_image_path,
-                    # You can also set other properties like text_box_style, inner_content_layout, etc.
-                )
-            except Exception:
-                # If we cannot build an image-based stamp, surface a clear error to caller
-                raise
+            # Build a TextStampStyle with optional font and an image background.
+            text_box_style = None
+            if stamp_font_path:
+                if not os.path.exists(stamp_font_path):
+                    raise ValueError(f"Stamp font not found at path: {stamp_font_path}")
+                # GlyphAccumulatorFactory loads the font for text rendering
+                text_box_style = text.TextBoxStyle(font=opentype.GlyphAccumulatorFactory(stamp_font_path))
 
-            # Create PdfSigner with a new field spec and image appearance
-            signer_kwargs = {"new_field_spec": field_spec, "stamp_style": stamp_style}
+            # images.PdfImage accepts a file path or bytes; pass the image path directly
+            background_image = images.PdfImage(stamp_image_path)
 
-            pdf_signer = signers.PdfSigner(meta, signer=signer, **signer_kwargs)
+            stamp_style = TextStampStyle(
+                stamp_text=stamp_text,
+                text_box_style=text_box_style,
+                background=background_image,
+            )
+
+            # Create PdfSigner with the appearance/stamp style and sign.
+            pdf_signer = signers.PdfSigner(meta, signer=signer, stamp_style=stamp_style)
             pdf_signer.sign_pdf(w, output=out)
             return out.getvalue()
         except Exception:
