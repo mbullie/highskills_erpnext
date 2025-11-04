@@ -100,16 +100,16 @@ web_include_css = [
 
 # Patches and Startup
 # ------------
-before_migrate = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
-after_migrate = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
-after_install = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
-after_sync = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
+# before_migrate = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
+# after_migrate = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
+# after_install = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
+# after_sync = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
 
 # Ensure patch is applied for each request
-on_session_creation = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
+# on_session_creation = ["highskills_erpnext.patches.pdf_sign_patch.apply_patch"]
 
 # Apply during app startup
-app_init = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
+# app_init = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
 
 # Uninstallation
 # ------------

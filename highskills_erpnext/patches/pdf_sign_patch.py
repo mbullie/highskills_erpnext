@@ -123,22 +123,6 @@ def apply_patch():
         logger("pdf").error("Failed to import frappe.utils.pdf - not in Frappe environment")
         return
 
-    # Log current state and caller info
-    caller = "<unknown>"
-    try:
-        import inspect
-        frame = inspect.currentframe().f_back
-        if frame:
-            caller = f"{frame.f_code.co_filename}:{frame.f_code.co_name}:{frame.f_lineno}"
-    except Exception:
-        pass
-
-    logger("pdf").error(
-        "PDF signing patch status - caller=%s, already_patched=%s",
-        caller,
-        getattr(fpdf.get_pdf, "_patched_for_signing", False)
-    )
-
     # Validate site_config and fail fast if required fields are missing.
     _validate_site_config_or_fail()
 
@@ -149,52 +133,6 @@ def apply_patch():
     original_get_pdf = fpdf.get_pdf
 
     def wrapped_get_pdf(html, options=None, output=None, *args, **kwargs):
-        # Log that the patched get_pdf was called, including a best-effort
-        # document identifier and caller information. Keep logging non-fatal.
-        try:
-            doc_name = None
-            if isinstance(options, dict):
-                doc_name = (
-                    options.get("file_name")
-                    or options.get("filename")
-                    or options.get("name")
-                )
-                doc_obj = options.get("doc") or options.get("document") or options.get("context")
-                if isinstance(doc_obj, dict):
-                    doc_name = doc_name or doc_obj.get("name") or doc_obj.get("title")
-                else:
-                    # object-like doc (frappe document)
-                    try:
-                        doc_name = doc_name or getattr(doc_obj, "name", None)
-                    except Exception:
-                        pass
-
-            # find a suitable caller frame (skip frames inside this file)
-            caller = "<unknown>"
-            try:
-                stack = inspect.stack()
-                this_file = __file__ if "__file__" in globals() else None
-                for frame_info in stack[1:6]:
-                    try:
-                        fname = frame_info.filename
-                        if not this_file or os.path.abspath(fname) != os.path.abspath(this_file):
-                            caller = f"{os.path.basename(fname)}:{frame_info.function}:{frame_info.lineno}"
-                            break
-                    except Exception:
-                        continue
-            except Exception:
-                caller = "<inspect-failed>"
-
-            logger("pdf").error(
-                "monkeypatched get_pdf called: doc=%s, caller=%s, output=%s, options=%s",
-                doc_name or "-",
-                caller,
-                "provided" if output else "none",
-                repr(options),
-            )
-        except Exception:
-            # never fail PDF generation due to logging
-            pass
 
         # Call original implementation
         res = original_get_pdf(html, options=options, output=output, *args, **kwargs)
@@ -212,6 +150,8 @@ def apply_patch():
 
     wrapped_get_pdf._patched_for_signing = True
     fpdf.get_pdf = wrapped_get_pdf
+
+
     # Also monkeypatch print_format.download_pdf (used by some print flows)
     try:
         pf = None
@@ -230,27 +170,6 @@ def apply_patch():
                 original_download_pdf = pf.download_pdf
 
                 def wrapped_download_pdf(*args, **kwargs):
-                    # Best-effort logging
-                    try:
-                        caller = "<unknown>"
-                        try:
-                            stack = inspect.stack()
-                            for frame_info in stack[1:6]:
-                                fn = frame_info.filename
-                                if os.path.abspath(fn) != os.path.abspath(__file__):
-                                    caller = f"{os.path.basename(fn)}:{frame_info.function}:{frame_info.lineno}"
-                                    break
-                        except Exception:
-                            pass
-
-                        logger("pdf").error(
-                            "monkeypatched download_pdf called: caller=%s, args=%s, kwargs=%s",
-                            caller,
-                            repr(args),
-                            repr(kwargs),
-                        )
-                    except Exception:
-                        pass
 
                     res = original_download_pdf(*args, **kwargs)
 
