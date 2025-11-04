@@ -152,63 +152,41 @@ def apply_patch():
     fpdf.get_pdf = wrapped_get_pdf
 
 
-    # Also monkeypatch print_format.download_pdf (used by some print flows)
+    """Patch frappe.utils.print_format. at runtime."""
     try:
-        pf = None
-        try:
-            import frappe.utils.print_format as pf_mod
-            pf = pf_mod
-        except Exception:
-            try:
-                import frappe.printing.print_format as pf_mod
-                pf = pf_mod
-            except Exception:
-                pf = None
-
-        if pf and hasattr(pf, "download_pdf"):
-            if not getattr(pf.download_pdf, "_patched_for_signing", False):
-                original_download_pdf = pf.download_pdf
-
-                def wrapped_download_pdf(*args, **kwargs):
-
-                    res = original_download_pdf(*args, **kwargs)
-
-                    # Try to determine options dict from kwargs or args
-                    options = kwargs.get("options") if isinstance(kwargs.get("options"), dict) else None
-                    if not options:
-                        # common positions: (doc, print_format, ... , options)
-                        if len(args) >= 4 and isinstance(args[3], dict):
-                            options = args[3]
-
-                    if isinstance(res, (bytes, bytearray)) and _should_sign(options):
-                        try:
-                            return _sign_bytes_if_needed(bytes(res), options)
-                        except Exception:
-                            try:
-                                logger("pdf").error("Signing in download_pdf failed", exc_info=True)
-                            except Exception:
-                                pass
-                            return res
-
-                    return res
-
-                wrapped_download_pdf._patched_for_signing = True
-                pf.download_pdf = wrapped_download_pdf
-                try:
-                    logger("pdf").error("Applied monkeypatch to %s.download_pdf for PDF signing", pf.__name__)
-                except Exception:
-                    pass
+        import frappe.utils.print_format as fpdfpf
     except Exception:
-        # Non-fatal: don't prevent app startup
-        try:
-            logger("pdf").error("Failed to apply monkeypatch to print_format.download_pdf", exc_info=True)
-        except Exception:
-            pass
-    try:
-        logger("pdf").error("Applied monkeypatch to frappe.utils.pdf.get_pdf for PDF signing")
-    except Exception:
-        # Don't let logging break startup
-        pass
+        # Not running inside a frappe environment
+        logger("pdf").error("Failed to import frappe.utils.print_format - not in Frappe environment")
+        return
+
+    # Validate site_config and fail fast if required fields are missing.
+    _validate_site_config_or_fail()
+
+    # Avoid double-patching
+    if getattr(fpdfpf.download_pdf, "_patched_for_signing", False):
+        return
+
+    original_download_pdf = fpdfpf.download_pdf
+
+    def wrapped_download_pdf(html, options=None, output=None, *args, **kwargs):
+
+        # Call original implementation
+        res = original_download_pdf(html, options=options, output=output, *args, **kwargs)
+
+        # If caller provided an output PdfWriter, original appended pages to it
+        # and returned it — don't sign in that case.
+        if output:
+            return res
+
+        # Only sign when we have bytes result and signing is requested
+        if isinstance(res, (bytes, bytearray)) and _should_sign(options):
+            return _sign_bytes_if_needed(bytes(res), options)
+
+        return res
+
+    wrapped_download_pdf._patched_for_signing = True
+    fpdfpf.download_pdf = wrapped_download_pdf
 
 
 # Apply the patch eagerly
