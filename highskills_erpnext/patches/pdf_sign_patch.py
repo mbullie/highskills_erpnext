@@ -37,7 +37,7 @@ def _should_sign(options: dict | None) -> bool:
 
 def _sign_bytes_if_needed(pdf_bytes: bytes, options: dict | None) -> bytes:
     if sign_pdf_bytes is None:
-        logger("pdf").warning("PDF signing requested but signing helper is not available")
+        logger("pdf").error("PDF signing requested but signing helper is not available")
         return pdf_bytes
 
     # Read all signing configuration from site_config.json under `pdf_sign`.
@@ -55,7 +55,7 @@ def _sign_bytes_if_needed(pdf_bytes: bytes, options: dict | None) -> bytes:
     stamp_text = site_cfg.get("stamp_text")
 
     if not pfx:
-        logger("pdf").warning("PDF signing requested but no PFX path configured in site_config.json under 'pdf_sign.pfx_path'")
+        logger("pdf").error("PDF signing requested but no PFX path configured in site_config.json under 'pdf_sign.pfx_path'")
         return pdf_bytes
 
     try:
@@ -168,7 +168,7 @@ def apply_patch():
             except Exception:
                 caller = "<inspect-failed>"
 
-            logger("pdf").info(
+            logger("pdf").error(
                 "monkeypatched get_pdf called: doc=%s, caller=%s, output=%s, options=%s",
                 doc_name or "-",
                 caller,
@@ -196,7 +196,7 @@ def apply_patch():
     wrapped_get_pdf._patched_for_signing = True
     fpdf.get_pdf = wrapped_get_pdf
     try:
-        logger("pdf").info("Applied monkeypatch to frappe.utils.pdf.get_pdf for PDF signing")
+        logger("pdf").error("Applied monkeypatch to frappe.utils.pdf.get_pdf for PDF signing")
     except Exception:
         # Don't let logging break startup
         pass
