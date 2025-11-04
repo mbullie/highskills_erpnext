@@ -16,6 +16,7 @@ from __future__ import annotations
 import os
 import frappe
 from frappe import logger
+import inspect
 
 try:
     # import our helper; if not available, we'll skip signing
@@ -114,7 +115,7 @@ def _validate_site_config_or_fail():
 
 
 def apply_patch():
-    """Patch frappe.utils.pdf.get_pdf at runtime."""
+    """Patch frappe.utils.pdf. at runtime."""
     try:
         import frappe.utils.pdf as fpdf
     except Exception:
@@ -131,6 +132,53 @@ def apply_patch():
     original_get_pdf = fpdf.get_pdf
 
     def wrapped_get_pdf(html, options=None, output=None, *args, **kwargs):
+        # Log that the patched get_pdf was called, including a best-effort
+        # document identifier and caller information. Keep logging non-fatal.
+        try:
+            doc_name = None
+            if isinstance(options, dict):
+                doc_name = (
+                    options.get("file_name")
+                    or options.get("filename")
+                    or options.get("name")
+                )
+                doc_obj = options.get("doc") or options.get("document") or options.get("context")
+                if isinstance(doc_obj, dict):
+                    doc_name = doc_name or doc_obj.get("name") or doc_obj.get("title")
+                else:
+                    # object-like doc (frappe document)
+                    try:
+                        doc_name = doc_name or getattr(doc_obj, "name", None)
+                    except Exception:
+                        pass
+
+            # find a suitable caller frame (skip frames inside this file)
+            caller = "<unknown>"
+            try:
+                stack = inspect.stack()
+                this_file = __file__ if "__file__" in globals() else None
+                for frame_info in stack[1:6]:
+                    try:
+                        fname = frame_info.filename
+                        if not this_file or os.path.abspath(fname) != os.path.abspath(this_file):
+                            caller = f"{os.path.basename(fname)}:{frame_info.function}:{frame_info.lineno}"
+                            break
+                    except Exception:
+                        continue
+            except Exception:
+                caller = "<inspect-failed>"
+
+            logger("pdf").info(
+                "monkeypatched get_pdf called: doc=%s, caller=%s, output=%s, options=%s",
+                doc_name or "-",
+                caller,
+                "provided" if output else "none",
+                repr(options),
+            )
+        except Exception:
+            # never fail PDF generation due to logging
+            pass
+
         # Call original implementation
         res = original_get_pdf(html, options=options, output=output, *args, **kwargs)
 
@@ -147,6 +195,11 @@ def apply_patch():
 
     wrapped_get_pdf._patched_for_signing = True
     fpdf.get_pdf = wrapped_get_pdf
+    try:
+        logger("pdf").info("Applied monkeypatch to frappe.utils.pdf.get_pdf for PDF signing")
+    except Exception:
+        # Don't let logging break startup
+        pass
 
 
 # Apply the patch eagerly
