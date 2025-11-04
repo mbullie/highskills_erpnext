@@ -120,7 +120,24 @@ def apply_patch():
         import frappe.utils.pdf as fpdf
     except Exception:
         # Not running inside a frappe environment
+        logger("pdf").error("Failed to import frappe.utils.pdf - not in Frappe environment")
         return
+
+    # Log current state and caller info
+    caller = "<unknown>"
+    try:
+        import inspect
+        frame = inspect.currentframe().f_back
+        if frame:
+            caller = f"{frame.f_code.co_filename}:{frame.f_code.co_name}:{frame.f_lineno}"
+    except Exception:
+        pass
+
+    logger("pdf").error(
+        "PDF signing patch status - caller=%s, already_patched=%s",
+        caller,
+        getattr(fpdf.get_pdf, "_patched_for_signing", False)
+    )
 
     # Validate site_config and fail fast if required fields are missing.
     _validate_site_config_or_fail()
