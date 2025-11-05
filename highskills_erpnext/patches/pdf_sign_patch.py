@@ -194,4 +194,4 @@ def apply_patch():
 
 
 # Apply the patch eagerly
-apply_patch()
+# apply_patch()

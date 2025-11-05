@@ -41,7 +41,7 @@ web_include_css = [
 # include js, css files in header of desk.html
 # app_include_css = "/assets/highskills_erpnext/css/highskills_erpnext.css"
 # highskills_erpnext/hooks.py
-app_include_js = "/assets/highskills_erpnext/js/force_load.js"
+# app_include_js = "/assets/highskills_erpnext/js/force_load.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/highskills_erpnext/css/highskills_erpnext.css"

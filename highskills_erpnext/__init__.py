@@ -1,8 +1,12 @@
 __version__ = "0.0.1"
 
-# Apply runtime monkeypatches (non-breaking if frappe is not importable)
-try:  # pragma: no cover - runtime only when frappe is available
-	from .patches import pdf_sign_patch  # noqa: F401
+# highskills_erpnext/__init__.py
+
+# This is the single most reliable way to force execution of startup code
+# because the framework must import this file to load the app.
+try:
+    from .patches.pdf_sign_patch import apply_patch
+    apply_patch()
 except Exception:
-	# If frappe isn't present in this environment (tests, packaging), ignore
-	pass
+    # Handle this gracefully if run outside of a Frappe environment (e.g., CI/local tests)
+    pass
