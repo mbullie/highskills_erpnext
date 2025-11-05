@@ -20,6 +20,7 @@ web_include_js = [
 web_include_css = [
     "/assets/highskills_erpnext/css/highskills_erpnext-web.bundle.css",
 ]
+on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
