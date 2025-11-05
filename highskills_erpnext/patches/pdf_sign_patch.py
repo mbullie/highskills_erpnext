@@ -133,6 +133,8 @@ def apply_patch():
     original_get_pdf = fpdf.get_pdf
 
     def wrapped_get_pdf(html, options=None, output=None, *args, **kwargs):
+        #log
+        logger("pdf").error("wrapped_get_pdf called")
 
         # Call original implementation
         res = original_get_pdf(html, options=options, output=output, *args, **kwargs)
@@ -170,6 +172,8 @@ def apply_patch():
     original_download_pdf = fpdfpf.download_pdf
 
     def wrapped_download_pdf(html, options=None, output=None, *args, **kwargs):
+        #log
+        logger("pdf").error("wrapped_download_pdf called")
 
         # Call original implementation
         res = original_download_pdf(html, options=options, output=output, *args, **kwargs)
