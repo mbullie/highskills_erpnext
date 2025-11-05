@@ -20,7 +20,7 @@ web_include_js = [
 web_include_css = [
     "/assets/highskills_erpnext/css/highskills_erpnext-web.bundle.css",
 ]
-on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
+#on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
 
@@ -40,7 +40,8 @@ on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/highskills_erpnext/css/highskills_erpnext.css"
-# app_include_js = "/assets/highskills_erpnext/js/highskills_erpnext.js"
+# highskills_erpnext/hooks.py
+app_include_js = "/assets/highskills_erpnext/js/force_load.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/highskills_erpnext/css/highskills_erpnext.css"
