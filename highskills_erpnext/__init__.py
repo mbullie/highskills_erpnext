@@ -10,7 +10,7 @@ try:
     
     # First try to import and patch the PDF modules
     import frappe.utils.pdf
-    import frappe.printing.print_format
+    import frappe.utils.print_format
     
     # Now import and apply our patch
     from .patches.pdf_sign_patch import apply_patch
