@@ -36,6 +36,13 @@ def _should_sign(options: dict | None) -> bool:
 
 
 def _sign_bytes_if_needed(pdf_bytes: bytes, options: dict | None) -> bytes:
+    # Validate config strictly when actually trying to sign
+    try:
+        _validate_site_config_or_fail(strict=True)
+    except Exception as e:
+        logger("pdf").error(f"PDF signing configuration validation failed: {str(e)}")
+        return pdf_bytes
+
     if sign_pdf_bytes is None:
         logger("pdf").error("PDF signing requested but signing helper is not available")
         return pdf_bytes
@@ -74,12 +81,16 @@ def _sign_bytes_if_needed(pdf_bytes: bytes, options: dict | None) -> bytes:
         return pdf_bytes
 
 
-def _validate_site_config_or_fail():
+def _validate_site_config_or_fail(strict=False):
     """Validate that required pdf_sign settings exist when enabled.
 
     This function will raise RuntimeError with a clear message if required
-    configuration fields are missing or point to non-existent files. It's
-    intended to run at startup (app import) so failures are visible early.
+    configuration fields are missing or point to non-existent files.
+
+    Args:
+        strict (bool): If True, enforce file existence checks. If False,
+            only validate configuration structure but don't check files.
+            Default False for module import, True for actual signing.
     """
     try:
         site_cfg = frappe.get_conf().get("pdf_sign", {}) or {}
@@ -95,7 +106,7 @@ def _validate_site_config_or_fail():
     pfx = site_cfg.get("pfx_path")
     if not pfx:
         missing.append("pdf_sign.pfx_path")
-    else:
+    elif strict:  # Only check file existence in strict mode
         if not os.path.exists(pfx):
             raise RuntimeError(f"PDF signing enabled but PFX file not found at '{pfx}'. Please set 'pdf_sign.pfx_path' in site_config.json and ensure the file is readable by the bench user.")
 
@@ -104,7 +115,7 @@ def _validate_site_config_or_fail():
         stamp_image = site_cfg.get("stamp_image_path")
         if not stamp_image:
             missing.append("pdf_sign.stamp_image_path (required when pdf_sign.visible is true)")
-        else:
+        elif strict:  # Only check file existence in strict mode
             if not os.path.exists(stamp_image):
                 raise RuntimeError(f"PDF signing visible stamp image not found at '{stamp_image}'. Please set 'pdf_sign.stamp_image_path' in site_config.json and ensure the file is readable by the bench user.")
 
