@@ -105,6 +105,8 @@ def sign_pdf_bytes(
             stamp_style = TextStampStyle(
                 stamp_text=stamp_text,
                 background=background_image,
+                border_width=0,     # Set border width to 0
+                border_color=None,  # Set border color to None or transparent
             )
 
             # Create PdfSigner with the appearance/stamp style and sign.
