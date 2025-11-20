@@ -14,7 +14,7 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
         quotation.custom_signature = signature_payload
         # "Ordered" is the status for signed quotations
         quotation.status = "Ordered"
-        quotation.company = company_name
+        #quotation.company = company_name
 
         # use save() so document events / notifications (Value Change) are triggered
         quotation.save(ignore_permissions=True)
