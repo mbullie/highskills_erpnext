@@ -110,7 +110,7 @@ frappe.ready(function() {
 
             if (response.message.success) {
                 alert("Quotation accepted successfully!");
-                window.location.href = "/me"; // Redirect to customer's home
+                window.location.href = response.message.redirect_url; // Redirect to customer's home redirect_url
             } else {
                 alert("Error: " + response.message.error);
             }
