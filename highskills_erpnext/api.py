@@ -14,7 +14,7 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
         # "Ordered" is the status for signed quotations
         #quotation.db_set("status", "Ordered") 
 
-        quotation.db_set("company", company_name) 
+        #quotation.db_set("company", company_name) 
 
         
         frappe.db.commit()
@@ -45,8 +45,8 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
         # Update company and personal information
         customer = frappe.get_doc("Customer", quotation.party_name)
 
-        customer.db_set("customer_details", "Role in company: "+ role_in_company + ",Company name: " + company_name + ",Company ID: " + company_id)
-        customer.db_set("customer_name", customer_name)
+        customer.db_set("customer_details", "Role in company: "+ role_in_company + ",Company name: " + company_name + ",Company ID: " + company_id+ ",customer_name : " + customer_name)
+        #customer.db_set("customer_name", customer_name)
 
         frappe.db.commit()
 
