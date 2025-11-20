@@ -19,6 +19,10 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
         
         frappe.db.commit()
 
+        # Trigger Frappe's notification system
+        quotation.notify_update()
+
+
         # Update company 
         #if not frappe.db.exists("Company", company_name):
         #    company = frappe.get_doc(
