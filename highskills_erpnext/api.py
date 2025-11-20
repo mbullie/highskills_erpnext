@@ -5,14 +5,14 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
     try:
         quotation = frappe.get_doc("Quotation", quotation_name)
 
-        quotation.status = "Ordered"
-        quotation.save(ignore_permissions=True)
+        #quotation.status = "Ordered"
+        #quotation.save(ignore_permissions=True)
 
         # Update the quotation with the new signature and status
         #quotation.db_set("custom_signature", signature_image_base64.split("base64,")[1])
         quotation.db_set("custom_signature", signature_image_base64)
         # "Ordered" is the status for signed quotations
-        #quotation.db_set("status", "Ordered") 
+        quotation.db_set("status", "Ordered") 
 
         quotation.db_set("company", company_name) 
 
