@@ -8,7 +8,7 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
         quotation.db_set("custom_signature", signature_image_base64)
         frappe.db.commit()
 
-        create_signed_quotation_document(quotation_name, signature_image_base64, company_name, company_id, role_in_company, customer_name, quotation.party_name)
+        create_signed_quotation_document(quotation_name, signature_image_base64, company_name, company_id, role_in_company, customer_name, quotation.party_name, quotation.contact_person)
 
         # Trigger Frappe's notification system
         #quotation.notify_update()
@@ -54,7 +54,7 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
 
 
 @frappe.whitelist(allow_guest=True)
-def create_signed_quotation_document(quotation_name, signature_data, company_name, company_id, role, customer_name, party_name):
+def create_signed_quotation_document(quotation_name, signature_data, company_name, company_id, role, customer_name, party_name, contact_person):
     """
     Creates and saves a new document in the 'Signed Quotation' DocType 
     with the required field data, including the base64 signature image.
@@ -70,13 +70,14 @@ def create_signed_quotation_document(quotation_name, signature_data, company_nam
     """
     try:
         # 1. Initialize the new document object
-        contact = frappe.get_doc("Contact", party_name)
+        #contact = frappe.get_doc("Contact", party_name)
         new_doc = frappe.get_doc({
             "doctype": "Signed Quotation",
             
             # 2. Set the field values
             "quotation_id": quotation_name,
-            "contact": contact,
+            "contact": contact_person,
+            "customer": party_name,
             "custom_signature": signature_data,
             "company_name": company_name,
             "company_id": company_id,
