@@ -1,14 +1,14 @@
 import frappe
 
 @frappe.whitelist(allow_guest=True)
-def sign_quotation_api(quotation_name, signature_image_base64, company_name, company_id, role_in_company, customer_name):
+def sign_quotation_api(quotation_name, signature_image_base64, company_name, company_id, role_in_company, customer_name, contact_phone):
     try:
         quotation = frappe.get_doc("Quotation", quotation_name)
             # Update the quotation with the new signature
         quotation.db_set("custom_signature", signature_image_base64)
         frappe.db.commit()
 
-        create_signed_quotation_document(quotation_name, signature_image_base64, company_name, company_id, role_in_company, customer_name, quotation.party_name, quotation.contact_person)
+        create_signed_quotation_document(quotation_name, signature_image_base64, company_name, company_id, role_in_company, customer_name, quotation.party_name, quotation.contact_person, contact_phone)
 
         # Trigger Frappe's notification system
         #quotation.notify_update()
@@ -54,7 +54,7 @@ def sign_quotation_api(quotation_name, signature_image_base64, company_name, com
 
 
 @frappe.whitelist(allow_guest=True)
-def create_signed_quotation_document(quotation_name, signature_data, company_name, company_id, role, customer_name, party_name, contact_person):
+def create_signed_quotation_document(quotation_name, signature_data, company_name, company_id, role, customer_name, party_name, contact_person,contact_phone):
     """
     Creates and saves a new document in the 'Signed Quotation' DocType 
     with the required field data, including the base64 signature image.
@@ -66,11 +66,12 @@ def create_signed_quotation_document(quotation_name, signature_data, company_nam
     :param role: The role of the person signing in the company.
     :param customer_name: The name of the customer/client.
     :param party_name: The name of the party_name on the quotation.
+    :param contact_phone: The name of the contact_phone on the quotation.
     :return: The name of the newly created document.
     """
     try:
         # 1. Initialize the new document object
-        #contact = frappe.get_doc("Contact", party_name)
+        contact = frappe.get_doc("Contact", contact_person)
         new_doc = frappe.get_doc({
             "doctype": "Signed Quotation",
             
@@ -83,6 +84,8 @@ def create_signed_quotation_document(quotation_name, signature_data, company_nam
             "company_id": company_id,
             "role_in_company": role,
             "customer_name": customer_name,
+            "contact_phone": contact_phone,
+            "contact_mail": contact.email_id,
             
             # Optional: Adding a timestamp for when the signature was captured
             "date_signed": frappe.utils.now_datetime()
@@ -93,7 +96,7 @@ def create_signed_quotation_document(quotation_name, signature_data, company_nam
         new_doc.save()
         frappe.db.commit()
 
-        frappe.msgprint(f"New Signed Quotation **{new_doc.name}** created successfully.")
+        frappe.msgprint(f"Quoation has been signed.")
         
         return new_doc.name
 

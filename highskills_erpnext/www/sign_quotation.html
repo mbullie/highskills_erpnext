@@ -55,6 +55,8 @@
                 <input id="role_in_company"  name="role_in_company" type="text" class="form-control" value="" required>
                 <label><strong>{{ _("Full name:") }}</strong><span class="req">*</span></label>
                 <input id="customer_name" name="customer_name" type="text" class="form-control" value="" required>
+                <label><strong>{{ _("Phone:") }}</strong><span class="req">*</span></label>
+                <input id="contact_phone" name="contact_phone" type="text" class="form-control" value="" required>
             </div>
         </div>
   
@@ -86,7 +88,8 @@ frappe.ready(function() {
         const companyId = document.getElementById('company_id').value.trim();
         const roleInCompany = document.getElementById('role_in_company').value.trim();
         const customerName = document.getElementById('customer_name').value.trim();
-        if (!companyName || !companyId || !roleInCompany || !customerName) {
+        const contactPhone = document.getElementById('contact_phone').value.trim();
+        if (!companyName || !companyId || !roleInCompany || !customerName || !contactPhone) {
             alert("Please fill in all required fields.");
             return;
         }
@@ -103,13 +106,14 @@ frappe.ready(function() {
                     company_name: companyName,
                     company_id:    companyId,
                     role_in_company: roleInCompany,
-                    customer_name: customerName
+                    customer_name: customerName,
+                    contact_phone: contactPhone,
                 },
                 freeze: true
             });
 
             if (response.message.success) {
-                alert("Quotation accepted successfully!");
+                //alert("Quotation accepted successfully!");
                 window.location.href = response.message.redirect_url; // Redirect to customer's home redirect_url
             } else {
                 alert("Error: " + response.message.error);
