@@ -161,15 +161,13 @@ color: black !important;
 
 .checkbox-group {
     float:right;
+    margin-left: 15px;
 }
 
-.checkbox-group input[type="checkbox"] {
-    margin-left: 10px;
-}
 
 .checkbox-group label {
-    margin-right: 5px;
     font-size: 14px;
+    vertical-align: middle;
 }
 
 .checkbox-group a {
