@@ -47,29 +47,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // --- 2. New Logic: Replace "Add to Quote" Text ---
-    // Select all buttons that have the class 'btn-add-to-cart-list'
-    const buttonsToUpdate = document.querySelectorAll(".btn-add-to-cart-list");
+    if (isProductPage) {
+        // --- 2. New Logic: Replace "Add to Quote" Text ---
+        // Select all buttons that have the class 'btn-add-to-cart-list'
+        const buttonsToUpdate = document.querySelectorAll(".btn-add-to-cart-list");
 
-    buttonsToUpdate.forEach(button => {
-        let innerHTML = button.innerHTML;
-        let newInnerHTML = innerHTML;
+        buttonsToUpdate.forEach(button => {
+            let innerHTML = button.innerHTML;
+            let newInnerHTML = innerHTML;
 
-        // Check and replace "Add to Quote" with "הוספה לסל"
-        if (innerHTML.includes("Add to Quote")) {
-            newInnerHTML = newInnerHTML.replace("Add to Quote", "הוספה לסל");
-        }
+            // Check and replace "Add to Quote" with "הוספה לסל"
+            if (innerHTML.includes("Add to Quote")) {
+                newInnerHTML = newInnerHTML.replace("Add to Quote", "הוספה לסל");
+            }
 
-        // Check and replace "Go to Quote" with "מעבר לסל הקניות"
-        if (innerHTML.includes("Go to Quote")) {
-            newInnerHTML = newInnerHTML.replace("Go to Quote", "מעבר לסל הקניות");
+            // Check and replace "Go to Quote" with "מעבר לסל הקניות"
+            if (innerHTML.includes("Go to Quote")) {
+                newInnerHTML = newInnerHTML.replace("Go to Quote", "מעבר לסל הקניות");
+            }
+            
+            // Apply the updated content only if a replacement was made
+            if (newInnerHTML !== innerHTML) {
+                button.innerHTML = newInnerHTML;
+            }
+        });
+
+        // --- 3. New Logic: Replace Search Placeholder ---
+        const searchBox = document.getElementById("search-box");
+
+        if (searchBox) {
+            // Set the new placeholder text
+            searchBox.placeholder = "חפש מוצרים";
         }
-        
-        // Apply the updated content only if a replacement was made
-        if (newInnerHTML !== innerHTML) {
-            button.innerHTML = newInnerHTML;
-        }
-    });
+    }
 });
 
 
