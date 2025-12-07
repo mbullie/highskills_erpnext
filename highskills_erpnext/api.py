@@ -96,7 +96,7 @@ def create_signed_quotation_document(quotation_name, signature_data, company_nam
         new_doc.save()
         frappe.db.commit()
 
-        frappe.msgprint(f"Quoation has been signed.")
+        frappe.msgprint(frappe._("Quotation has been signed."))
         
         return new_doc.name
 
