@@ -178,10 +178,10 @@ web_include_css = [
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"highskills_erpnext.tasks.all"
-# 	],
+scheduler_events = {
+	"all": [
+		"frappe.email.queue.flush"   # sends queued emails every minute
+ 	],
 # 	"daily": [
 # 		"highskills_erpnext.tasks.daily"
 # 	],
@@ -194,7 +194,7 @@ web_include_css = [
 # 	"monthly": [
 # 		"highskills_erpnext.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------
