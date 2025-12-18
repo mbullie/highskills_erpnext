@@ -38,7 +38,8 @@
         <p><strong>{{ _("Contact email:") }}</strong>
             {{quotation.contact_email}}
         </p>
-        <p><strong>{{ _("Total:") }}</strong> {{ quotation.grand_total }}</p>
+        <p><strong>{{ _("Total:") }}</strong> {{ quotation.grand_total }} {{ quotation.currency }}</p>
+        <p><strong>{{ _("Link to quotation:") }}</strong> <a target="_blank" href="/quotations/{{ quotation.name }}">{{ quotation.name }}</a></p>
 
         <div class="mycontainer">
             <div class="myitem p-4">
