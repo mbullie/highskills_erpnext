@@ -20,12 +20,9 @@ web_include_js = [
 web_include_css = [
     "/assets/highskills_erpnext/css/highskills_erpnext-web.bundle.css",
 ]
-
-scheduler_events = {
-    "cron": {
-        "* * * * *": [
-            "frappe.email.queue.flush"
-        ]
+doc_events = {
+    "Email Queue": {
+        "after_insert": "frappe.email.queue.flush"
     }
 }
 
