@@ -22,7 +22,7 @@ web_include_css = [
 ]
 doc_events = {
     "Email Queue": {
-        "after_insert": "highskills_erpnext.utils.trigger_immediate_flush"
+        "after_insert": "highskills_erpnext.helpers.trigger_immediate_flush"
     }
 }
 
