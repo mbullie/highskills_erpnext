@@ -1,7 +1,3 @@
-if (!document.cookie.includes("preferred_language=he")) {
-    document.cookie = "preferred_language=he; path=/";
-    location.reload(); // reload to apply language
-}
 document.addEventListener('DOMContentLoaded', function() {
     if (document.body.classList.contains('product-page')) {
         const targetNode = document.body;
