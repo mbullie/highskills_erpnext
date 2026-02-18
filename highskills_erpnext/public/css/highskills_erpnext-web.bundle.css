@@ -1,4 +1,4 @@
-body, body.product-page{
+body.product-page{
     
     background:white;
     font-family: 'Inter', sans-serif;
@@ -8,7 +8,6 @@ body, body.product-page{
     margin: 0;
     padding: 0;
     min-height: 100vh;
-
 }
 body:lang(he) {
   direction: rtl;
@@ -21,7 +20,7 @@ body:lang(he) {
         background-color: white;
     }
 }
-.navbar{
+/*.navbar{
     background: transparent !important;
     border-bottom: transparent !important;
 }
@@ -38,7 +37,7 @@ body:lang(he) {
     height:40px;
     max-width: 200px !important;
     max-height: 44px !important;
-}
+}*/
 @font-face {
     font-family: 'HandelGothic';
     font-style: normal;
