@@ -57,19 +57,6 @@ body:lang(he) {
 #page-home .card-body .product-category{
     display:none;
 }
-.product-category-section .card-grid{
-    grid-template-columns: repeat(4, 1fr) !important;
-}
-.product-category-section .card-img-top{
-    height: 200px;
-    padding: 20px;
-}
-.product-category-section .card-body{
-    font-weight: 700;
-    font-size: 16px;
-    color:blue !important;
-    text-decoration: underline;
-}
 .item-card-group-section .product-title{
     font-weight: 700 !important;
     font-size: 16px !important;
@@ -274,15 +261,7 @@ color: black !important;
         text-align: right;
         padding-right:15px;
     }
-    .product-category-section .card-img-top{
-        border-radius: 25px;
-        padding: 15px !important;
-    }
-    .product-category-section .card-body.text-muted{
-        color: black !important;
-        text-decoration:none !important;
-        padding: 15px;
-    }
+
     .item-card-group-section .card-body{
         padding:0;
     }
