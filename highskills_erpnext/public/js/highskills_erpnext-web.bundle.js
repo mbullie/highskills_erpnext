@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     if (document.body.classList.contains('product-page')) {
         const targetNode = document.body;
         const config = { childList: true, subtree: true };
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
-});
+});*/
 
 
 
