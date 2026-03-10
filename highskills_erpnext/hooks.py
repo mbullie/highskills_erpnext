@@ -13,7 +13,7 @@ web_page_controllers = {
     "login": "highskills_erpnext.www.login.get_context",
 }
 web_include_js = [
-    "/assets/highskills_erpnext/js/sienna.min.js",
+    "/assets/highskills_erpnext/js/sienna-accessibility.umd.js",
     "/assets/highskills_erpnext/js/highskills_erpnext-web.bundle.js"
 ]
 
