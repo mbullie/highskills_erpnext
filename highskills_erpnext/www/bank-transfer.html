@@ -1,0 +1,129 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ _("Bank Transfer Instructions") }}{% endblock %}
+
+{% block page_content %}
+<div class="bank-transfer-page">
+	<h3>{{ _("Bank Transfer Instructions") }}</h3>
+
+	<p class="text-muted">
+		{{ _("Your order has been placed. Please complete payment by bank transfer using the details below, then upload your payment confirmation.") }}
+	</p>
+
+	<div class="panel panel-default order-summary">
+		<div class="row">
+			<div class="col-sm-6">
+				<strong>{{ _("Order Reference") }}:</strong> {{ reference_name }}
+			</div>
+			<div class="col-sm-6">
+				<strong>{{ _("Amount Due") }}:</strong>
+				{{ "%.2f"|format(amount_due) if amount_due else "0.00" }} {{ currency }}
+			</div>
+		</div>
+		<p class="text-muted small mt-2">
+			{{ _("Please use {0} as the payment reference so we can match your transfer.").format(reference_name) }}
+		</p>
+	</div>
+
+	{% if bank_account %}
+	<div class="panel panel-default bank-details mt-4">
+		<h5>{{ _("Bank Account Details") }}</h5>
+		<table class="table table-bordered">
+			<tr>
+				<td>{{ _("Account Name") }}</td>
+				<td>{{ bank_account.account_name }}</td>
+			</tr>
+			<tr>
+				<td>{{ _("Bank") }}</td>
+				<td>{{ bank_account.bank }}</td>
+			</tr>
+			{% if bank_account.bank_account_no %}
+			<tr>
+				<td>{{ _("Account Number") }}</td>
+				<td>{{ bank_account.bank_account_no }}</td>
+			</tr>
+			{% endif %}
+			{% if bank_account.iban %}
+			<tr>
+				<td>{{ _("IBAN") }}</td>
+				<td>{{ bank_account.iban }}</td>
+			</tr>
+			{% endif %}
+		</table>
+	</div>
+	{% else %}
+	<div class="alert alert-warning mt-4">
+		{{ _("Bank account details are not configured yet. Please contact us for payment instructions.") }}
+	</div>
+	{% endif %}
+
+	<div class="panel panel-default payment-proof-upload mt-4">
+		<h5>{{ _("Upload Payment Confirmation") }}</h5>
+
+		{% if already_uploaded %}
+		<div class="alert alert-success" id="upload-success-message">
+			{{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") }}
+		</div>
+		{% endif %}
+
+		<div id="upload-form-wrapper" class="{{ 'hide' if already_uploaded else '' }}">
+			<div class="form-group">
+				<input type="file" id="payment-proof-file" class="form-control">
+			</div>
+			<button class="btn btn-primary btn-sm" id="upload-payment-proof-btn">
+				{{ _("Upload") }}
+			</button>
+			<p class="text-muted small mt-2" id="upload-status"></p>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+frappe.ready(function () {
+	var uploadBtn = document.getElementById("upload-payment-proof-btn");
+	if (!uploadBtn) return;
+
+	uploadBtn.addEventListener("click", function () {
+		var fileInput = document.getElementById("payment-proof-file");
+		var statusEl = document.getElementById("upload-status");
+
+		if (!fileInput.files || !fileInput.files.length) {
+			statusEl.textContent = {{ _("Please choose a file first.") | tojson }};
+			return;
+		}
+
+		var formData = new FormData();
+		formData.append("file", fileInput.files[0]);
+		formData.append("dt", {{ reference_doctype | tojson }});
+		formData.append("dn", {{ reference_name | tojson }});
+
+		statusEl.textContent = {{ _("Uploading...") | tojson }};
+		uploadBtn.disabled = true;
+
+		fetch("/api/method/highskills_erpnext.www.bank_transfer.upload_payment_proof", {
+			method: "POST",
+			headers: { "X-Frappe-CSRF-Token": frappe.csrf_token },
+			body: formData,
+		})
+			.then(function (response) {
+				if (!response.ok) throw new Error("upload_failed");
+				return response.json();
+			})
+			.then(function () {
+				document.getElementById("upload-form-wrapper").classList.add("hide");
+				var successEl = document.createElement("div");
+				successEl.className = "alert alert-success";
+				successEl.id = "upload-success-message";
+				successEl.textContent = {{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") | tojson }};
+				document.querySelector(".payment-proof-upload").insertBefore(successEl, document.getElementById("upload-form-wrapper"));
+			})
+			.catch(function () {
+				uploadBtn.disabled = false;
+				statusEl.textContent = {{ _("Upload failed, please try again.") | tojson }};
+			});
+	});
+});
+</script>
+{% endblock %}

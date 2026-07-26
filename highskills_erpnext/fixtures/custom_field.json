@@ -1,0 +1,99 @@
+[
+ {
+  "doctype": "Custom Field",
+  "name": "Webshop Settings-payment_method_rules",
+  "dt": "Webshop Settings",
+  "fieldname": "payment_method_rules",
+  "fieldtype": "Table",
+  "options": "Webshop Payment Method Rule",
+  "label": "Payment Method Rules",
+  "insert_after": "payment_gateway_account",
+  "description": "Per customer-type payment method. A row with no Payment Gateway Account means that customer type uses the manual bank-transfer flow instead of a gateway. Add/edit rows here to change payment methods without any code changes.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Order-customer_type",
+  "dt": "Sales Order",
+  "fieldname": "customer_type",
+  "fieldtype": "Data",
+  "label": "Customer Type",
+  "insert_after": "customer_name",
+  "fetch_from": "customer.customer_type",
+  "read_only": 1,
+  "description": "Auto-fetched from Customer. Lets a Notification record condition on Individual vs Company (e.g. \"doc.customer_type == 'Company'\") without any code - Sales Order has no native way to reach this value from a Notification condition otherwise.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Order-payment_proof_uploaded",
+  "dt": "Sales Order",
+  "fieldname": "payment_proof_uploaded",
+  "fieldtype": "Check",
+  "default": "0",
+  "label": "Payment Proof Uploaded",
+  "insert_after": "per_billed",
+  "read_only": 1,
+  "description": "Set automatically when a Company (bank-transfer) customer uploads a proof-of-payment document at checkout. Used by Accounts to filter orders awaiting manual bank-transfer reconciliation.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Item-term_months",
+  "dt": "Item",
+  "fieldname": "term_months",
+  "fieldtype": "Int",
+  "label": "Subscription Term (Months)",
+  "insert_after": "is_stock_item",
+  "description": "For SaaS/subscription items only: number of months the one-time price covers. Used to show a monthly-equivalent price breakdown on quotations/orders and to size the entitlement window when payment is confirmed.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Order-entitlement_start_date",
+  "dt": "Sales Order",
+  "fieldname": "entitlement_start_date",
+  "fieldtype": "Date",
+  "label": "Entitlement Start Date",
+  "insert_after": "payment_proof_uploaded",
+  "read_only": 1,
+  "description": "Set automatically once payment for this order is confirmed (Payment Entry submitted) - never at order placement. Product access should only be granted from this date.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Order-entitlement_end_date",
+  "dt": "Sales Order",
+  "fieldname": "entitlement_end_date",
+  "fieldtype": "Date",
+  "label": "Entitlement End Date",
+  "insert_after": "entitlement_start_date",
+  "read_only": 1,
+  "description": "Entitlement Start Date + the purchased item's Subscription Term (Months). Product access should be disallowed after this date.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Invoice-entitlement_start_date",
+  "dt": "Sales Invoice",
+  "fieldname": "entitlement_start_date",
+  "fieldtype": "Date",
+  "label": "Entitlement Start Date",
+  "insert_after": "outstanding_amount",
+  "read_only": 1,
+  "description": "Set automatically once payment for this invoice is confirmed (Payment Entry submitted) - never at invoice creation. Product access should only be granted from this date.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Invoice-entitlement_end_date",
+  "dt": "Sales Invoice",
+  "fieldname": "entitlement_end_date",
+  "fieldtype": "Date",
+  "label": "Entitlement End Date",
+  "insert_after": "entitlement_start_date",
+  "read_only": 1,
+  "description": "Entitlement Start Date + the purchased item's Subscription Term (Months). Product access should be disallowed after this date.",
+  "module": "Highskills Erpnext"
+ }
+]

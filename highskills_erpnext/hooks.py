@@ -22,7 +22,45 @@ web_include_css = [
 doc_events = {
     "Email Queue": {
         "after_insert": "highskills_erpnext.helpers.trigger_immediate_flush"
+    },
+    "Payment Entry": {
+        "on_submit": "highskills_erpnext.api_subscription.on_payment_entry_submit"
     }
+}
+
+# Custom signup form (Personal/Company toggle, see templates/includes/login/signup.html)
+signup_form_template = "highskills_erpnext/templates/includes/login/signup.html"
+
+# Fixtures - schema additions ship as code, applied automatically on `bench migrate`.
+# Never add fields via Customize Form by hand: edit these fixture files instead.
+fixtures = [
+    {
+        "doctype": "Custom Field",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "Webshop Settings-payment_method_rules",
+                    "Sales Order-customer_type",
+                    "Sales Order-payment_proof_uploaded",
+                    "Item-term_months",
+                    "Sales Order-entitlement_start_date",
+                    "Sales Order-entitlement_end_date",
+                    "Sales Invoice-entitlement_start_date",
+                    "Sales Invoice-entitlement_end_date",
+                ],
+            ]
+        ],
+    }
+]
+
+# Route the webshop "Pay" button through per-customer-type payment method
+# selection (Webshop Settings > Payment Method Rules) instead of the stock
+# single-gateway lookup. See overrides/payment_request.py.
+override_whitelisted_methods = {
+    "erpnext.accounts.doctype.payment_request.payment_request.make_payment_request":
+        "highskills_erpnext.overrides.payment_request.custom_make_payment_request"
 }
 
 #on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"

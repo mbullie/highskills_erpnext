@@ -1,0 +1,92 @@
+{#
+	Custom signup form: Personal vs Company account types.
+	Rendered standalone via the `signup_form_template` hook (see hooks.py),
+	so this template has no page context beyond Frappe's default jinja
+	globals - see api_signup.py for the whitelisted `custom_sign_up` method
+	this form posts to (wired up in the overridden login.js next to it).
+#}
+<form class="form-signin form-signup hide" role="form">
+	<div class="page-card-body">
+		<div class="form-group signup-account-type">
+			<label class="form-label d-block">{{ _("Account Type") }}</label>
+			<div class="btn-group btn-group-toggle account-type-options" role="group">
+				<label class="btn btn-outline-secondary active">
+					<input type="radio" name="signup_account_type" value="Individual" checked>
+					{{ _("Personal") }}
+				</label>
+				<label class="btn btn-outline-secondary">
+					<input type="radio" name="signup_account_type" value="Company">
+					{{ _("Company") }}
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="form-label sr-only" for="signup_first_name">{{ _("First Name") }}</label>
+			<input type="text" id="signup_first_name" class="form-control"
+				placeholder="{{ _('First Name') }}" required autocomplete="given-name">
+		</div>
+
+		<div class="form-group">
+			<label class="form-label sr-only" for="signup_last_name">{{ _("Last Name") }}</label>
+			<input type="text" id="signup_last_name" class="form-control"
+				placeholder="{{ _('Last Name') }}" required autocomplete="family-name">
+		</div>
+
+		<div class="form-group">
+			<label class="form-label sr-only" for="signup_email">{{ _("Email") }}</label>
+			<input type="email" id="signup_email" class="form-control"
+				placeholder="{{ _('jane@example.com') }}" required autocomplete="username">
+		</div>
+
+		<div class="form-group">
+			<label class="form-label sr-only" for="signup_country">{{ _("Country") }}</label>
+			<select id="signup_country" class="form-control" required>
+				<option value="">{{ _("Select Country") }}</option>
+				{% for country in frappe.db.get_list("Country", fields=["name"], order_by="name", limit_page_length=0) %}
+				<option value="{{ country.name }}">{{ _(country.name) }}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div class="signup-company-fields hide">
+			<div class="form-group">
+				<label class="form-label sr-only" for="signup_job_title">{{ _("Job Title") }}</label>
+				<input type="text" id="signup_job_title" class="form-control"
+					placeholder="{{ _('Job Title') }}" autocomplete="organization-title">
+			</div>
+
+			<div class="form-group">
+				<label class="form-label sr-only" for="signup_company_name">{{ _("Company Name") }}</label>
+				<input type="text" id="signup_company_name" class="form-control"
+					placeholder="{{ _('Company Name') }}" autocomplete="organization">
+			</div>
+
+			<div class="form-group">
+				<label class="form-label sr-only" for="signup_company_id">{{ _("Company ID") }}</label>
+				<input type="text" id="signup_company_id" class="form-control"
+					placeholder="{{ _('Company ID (VAT / Registration Number)') }}">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="form-label sr-only" for="signup_password">{{ _("Password") }}</label>
+			<input type="password" id="signup_password" class="form-control"
+				placeholder="{{ _('Password') }}" required autocomplete="new-password">
+		</div>
+
+		<div class="form-group">
+			<label class="form-label sr-only" for="signup_confirm_password">{{ _("Confirm Password") }}</label>
+			<input type="password" id="signup_confirm_password" class="form-control"
+				placeholder="{{ _('Confirm Password') }}" required autocomplete="new-password">
+		</div>
+	</div>
+	<div class="page-card-actions">
+		<button class="btn btn-sm btn-primary btn-block btn-signup"
+			type="submit">{{ _("Sign up") }}</button>
+
+		<p class="text-center sign-up-message">
+			<a href="#login" class="blue">{{ _("Have an account? Login") }}</a>
+		</p>
+	</div>
+</form>
