@@ -138,7 +138,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const termsCheckbox = document.getElementById('consentTerms');
     const checkboxes = [cookieCheckbox, termsCheckbox];
 
-    const hasConsent = getCookie(consentCookieName); 
+    // This page doesn't include the cookie-consent banner markup (e.g. it
+    // isn't defined on every page/template) - skip instead of throwing.
+    if (!overlay || !banner || !acceptBtn || checkboxes.some(checkbox => !checkbox)) {
+        return;
+    }
+
+    const hasConsent = getCookie(consentCookieName);
 
     if (hasConsent === "accepted") {
         banner.classList.add('hidden');
