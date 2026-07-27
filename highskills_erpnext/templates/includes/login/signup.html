@@ -43,7 +43,7 @@
 			<label class="form-label sr-only" for="signup_country">{{ _("Country") }}</label>
 			<select id="signup_country" class="form-control" required>
 				<option value="">{{ _("Select Country") }}</option>
-				{% for country in frappe.db.get_list("Country", fields=["name"], order_by="name", limit_page_length=0) %}
+				{% for country in frappe.db.get_list("Country", fields=["name"], order_by="name", limit_page_length=0, ignore_permissions=True) %}
 				<option value="{{ country.name }}">{{ _(country.name) }}</option>
 				{% endfor %}
 			</select>
