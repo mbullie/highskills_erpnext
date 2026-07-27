@@ -9,7 +9,7 @@ readme = "README.md"
 dynamic = ["version"]
 dependencies = [
     # "frappe~=15.0.0" # Installed and managed by bench.
-    "pyhanko>=0.18.0",
+    "pyhanko==0.25.3",
 ]
 
 [build-system]
