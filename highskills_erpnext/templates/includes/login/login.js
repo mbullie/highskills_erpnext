@@ -140,8 +140,12 @@ login.bind_events = function () {
 }
 
 login.update_signup_account_type = function () {
-	var account_type = $(".account-type-options input[name=signup_account_type]:checked").val() || "Individual";
+	var checked_input = $(".account-type-options input[name=signup_account_type]:checked");
+	var account_type = checked_input.val() || "Individual";
 	var is_company = account_type === "Company";
+
+	$(".account-type-options label").removeClass("active");
+	checked_input.closest("label").addClass("active");
 
 	$(".signup-company-fields").toggleClass("hide", !is_company);
 	$("#signup_job_title, #signup_company_name, #signup_company_id").prop("required", is_company);
