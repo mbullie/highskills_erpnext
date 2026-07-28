@@ -8,7 +8,30 @@ doctype). Nothing here is hardcoded - editing rows in that table is the
 supported way to change payment methods per customer type in the future.
 """
 
+from contextlib import contextmanager
+
 import frappe
+
+
+@contextmanager
+def as_administrator():
+	"""Temporarily elevate to Administrator for a privileged system operation.
+
+	Used around core ERPNext calls that assume an internal, accounting-privileged
+	caller (e.g. payment_request.make_payment_request, Payment
+	Request.on_payment_authorized) but are, in the webshop flow, reached via the
+	customer's own (deliberately minimal) session or an unauthenticated payment
+	gateway callback. The real authorization question in each caller - "is this
+	genuinely this customer's own order", "did the gateway actually confirm this
+	payment" - should already be answered before entering this context; this only
+	elevates the actual privileged write.
+	"""
+	current_user = frappe.session.user
+	try:
+		frappe.set_user("Administrator")
+		yield
+	finally:
+		frappe.set_user(current_user)
 
 
 def get_payment_method_rule(customer_type):

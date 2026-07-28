@@ -63,6 +63,14 @@ override_whitelisted_methods = {
         "highskills_erpnext.overrides.payment_request.custom_make_payment_request"
 }
 
+# Elevate Payment Request.on_payment_authorized() to Administrator so that
+# recording a gateway-confirmed payment (creating the Payment Entry) doesn't
+# depend on whichever session the payment gateway's callback happens to be
+# attached to. See overrides/payment_request.py docstring.
+override_doctype_class = {
+    "Payment Request": "highskills_erpnext.overrides.payment_request.CustomPaymentRequest"
+}
+
 #on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"

@@ -23,9 +23,20 @@ ownership the same way the rest of this app already does for portal pages
 (`frappe.has_website_permission`, see www/bank_transfer.py), then performs
 the actual privileged operation as Administrator on the customer's behalf -
 the customer's own session never needs those permissions at all.
+
+CustomPaymentRequest.on_payment_authorized (below) applies the same pattern
+one level deeper: every payment gateway's confirmation callback ultimately
+calls `<Payment Request doc>.run_method("on_payment_authorized", ...)`, which
+in turn calls `PaymentRequest.set_as_paid()` -> `create_payment_entry()` ->
+`get_account_details()` -> `frappe.has_permission("Payment Entry", ...)`.
+Same assumption-mismatch, just one call deeper and gateway-agnostic - fixed
+once here instead of per-gateway (e.g. in paypal_settings.confirm_payment,
+which would need duplicating for every future gateway). By the time this
+runs, the gateway has already confirmed the charge; recording that is a
+system operation, not something the calling session's own permissions
+should gate.
 """
 
-from contextlib import contextmanager
 from urllib.parse import quote
 
 import frappe
@@ -34,21 +45,21 @@ from frappe import _
 from erpnext.accounts.doctype.payment_request.payment_request import (
 	make_payment_request as core_make_payment_request,
 )
+from webshop.webshop.doctype.override_doctype.payment_request import (
+	PaymentRequest as WebshopPaymentRequest,
+)
 
 from highskills_erpnext.webshop_payments import (
+	as_administrator,
 	get_customer_type_for_reference,
 	get_payment_method_rule,
 )
 
 
-@contextmanager
-def _as_administrator():
-	current_user = frappe.session.user
-	try:
-		frappe.set_user("Administrator")
-		yield
-	finally:
-		frappe.set_user(current_user)
+class CustomPaymentRequest(WebshopPaymentRequest):
+	def on_payment_authorized(self, status=None):
+		with as_administrator():
+			return super().on_payment_authorized(status)
 
 
 @frappe.whitelist()
@@ -76,7 +87,7 @@ def custom_make_payment_request(**args):
 	# fall back to stock single-gateway behaviour so an unconfigured site
 	# keeps working exactly as before.
 	if rule is None:
-		with _as_administrator():
+		with as_administrator():
 			return core_make_payment_request(**args)
 
 	if not rule.payment_gateway_account:
@@ -91,5 +102,5 @@ def custom_make_payment_request(**args):
 		return
 
 	args["payment_gateway_account"] = rule.payment_gateway_account
-	with _as_administrator():
+	with as_administrator():
 		return core_make_payment_request(**args)
