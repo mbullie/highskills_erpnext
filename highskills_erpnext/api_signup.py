@@ -21,6 +21,8 @@ from frappe.website.utils import is_signup_disabled
 
 ISRAEL_PRICE_LIST = "Israel Selling (ILS)"
 EXPORT_PRICE_LIST = "Export Selling (USD)"
+INDIVIDUAL_CUSTOMER_GROUP = "Individual"
+COMPANY_CUSTOMER_GROUP = "Commercial"
 
 
 @frappe.whitelist(allow_guest=True)
@@ -93,7 +95,7 @@ def custom_sign_up(
 		{
 			"customer_name": customer_name,
 			"customer_type": account_type,
-			"customer_group": _get_default_customer_group(),
+			"customer_group": _get_default_customer_group(account_type),
 			"territory": get_root_of("Territory"),
 			"tax_id": company_id if account_type == "Company" else None,
 			"default_price_list": default_price_list,
@@ -180,7 +182,18 @@ def _validate_required_fields(
 		frappe.throw(_("Please select a valid country"))
 
 
-def _get_default_customer_group():
+def _get_default_customer_group(account_type):
+	"""Company -> Commercial, Individual -> Individual.
+
+	Falls back to the sitewide Webshop Settings default if the expected
+	Customer Group doesn't exist on site, same defensive pattern as
+	`_get_default_price_list`.
+	"""
+	group = COMPANY_CUSTOMER_GROUP if account_type == "Company" else INDIVIDUAL_CUSTOMER_GROUP
+
+	if frappe.db.exists("Customer Group", group):
+		return group
+
 	from webshop.webshop.doctype.webshop_settings.webshop_settings import get_shopping_cart_settings
 
 	return get_shopping_cart_settings().default_customer_group
