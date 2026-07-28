@@ -7,11 +7,29 @@ to that whitelisted method, so intercepting it here - rather than duplicating
 webshop's order.html - is the smallest, most upgrade-safe way to branch
 payment method by Customer.customer_type using the Webshop Payment Method
 Rule table on Webshop Settings (see webshop_payments.py).
+
+Ownership + privilege handling (see custom_make_payment_request below): core
+`make_payment_request` (erpnext commit 78fc942, "fix: better permissions on
+make payment request") now does `frappe.has_permission("Payment Request",
+"create")` and `frappe.has_permission(args.dt, "read", args.dn)` against
+whoever's session is calling it. That's the right check for an internal Desk
+user creating a Payment Request against someone else's document, but wrong
+for this endpoint: webshop's "Pay" button is hit directly by the customer's
+own browser session, and a customer's Website User role was never meant to
+carry blanket read/create access to Sales Order / Payment Request - nor
+should it. Rather than widen what the `Customer` role can see (which would
+let any customer read *any* Sales Order, not just their own), this validates
+ownership the same way the rest of this app already does for portal pages
+(`frappe.has_website_permission`, see www/bank_transfer.py), then performs
+the actual privileged operation as Administrator on the customer's behalf -
+the customer's own session never needs those permissions at all.
 """
 
+from contextlib import contextmanager
 from urllib.parse import quote
 
 import frappe
+from frappe import _
 
 from erpnext.accounts.doctype.payment_request.payment_request import (
 	make_payment_request as core_make_payment_request,
@@ -21,6 +39,16 @@ from highskills_erpnext.webshop_payments import (
 	get_customer_type_for_reference,
 	get_payment_method_rule,
 )
+
+
+@contextmanager
+def _as_administrator():
+	current_user = frappe.session.user
+	try:
+		frappe.set_user("Administrator")
+		yield
+	finally:
+		frappe.set_user(current_user)
 
 
 @frappe.whitelist()
@@ -33,6 +61,14 @@ def custom_make_payment_request(**args):
 	if args.get("order_type") != "Shopping Cart":
 		return core_make_payment_request(**args)
 
+	ref_doc = frappe.get_doc(args.dt, args.dn)
+
+	# The one real authorization check: is this genuinely the calling
+	# customer's own order? Uses the portal-appropriate permission system,
+	# not the internal Desk role system - see module docstring.
+	if not frappe.has_website_permission(ref_doc):
+		frappe.throw(_("Not Permitted"), frappe.PermissionError)
+
 	customer_type = get_customer_type_for_reference(args.get("dt"), args.get("dn"))
 	rule = get_payment_method_rule(customer_type)
 
@@ -40,11 +76,14 @@ def custom_make_payment_request(**args):
 	# fall back to stock single-gateway behaviour so an unconfigured site
 	# keeps working exactly as before.
 	if rule is None:
-		return core_make_payment_request(**args)
+		with _as_administrator():
+			return core_make_payment_request(**args)
 
 	if not rule.payment_gateway_account:
 		# This customer type is on the manual bank-transfer flow: no Payment
 		# Request/gateway involved at all, send them to the instructions page.
+		# (bank_transfer.py does its own has_website_permission check too,
+		# so this redirect is safe even without the check above.)
 		frappe.local.response["type"] = "redirect"
 		frappe.local.response["location"] = frappe.utils.get_url(
 			"/bank-transfer?dt={0}&dn={1}".format(quote(args.dt), quote(args.dn))
@@ -52,4 +91,5 @@ def custom_make_payment_request(**args):
 		return
 
 	args["payment_gateway_account"] = rule.payment_gateway_account
-	return core_make_payment_request(**args)
+	with _as_administrator():
+		return core_make_payment_request(**args)
