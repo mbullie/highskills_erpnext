@@ -108,7 +108,19 @@ override_whitelisted_methods = {
     "erpnext.accounts.doctype.payment_request.payment_request.make_payment_request":
         "highskills_erpnext.overrides.payment_request.custom_make_payment_request",
     "webshop.webshop.shopping_cart.cart.update_cart":
-        "highskills_erpnext.overrides.cart.custom_update_cart"
+        "highskills_erpnext.overrides.cart.custom_update_cart",
+    "webshop.webshop.shopping_cart.cart.place_order":
+        "highskills_erpnext.overrides.cart.custom_place_order",
+    "webshop.webshop.shopping_cart.cart.update_cart_address":
+        "highskills_erpnext.overrides.cart.custom_update_cart_address",
+    "webshop.webshop.shopping_cart.cart.apply_shipping_rule":
+        "highskills_erpnext.overrides.cart.custom_apply_shipping_rule",
+    "webshop.webshop.shopping_cart.cart.apply_coupon_code":
+        "highskills_erpnext.overrides.cart.custom_apply_coupon_code",
+    "webshop.webshop.shopping_cart.cart.request_for_quotation":
+        "highskills_erpnext.overrides.cart.custom_request_for_quotation",
+    "webshop.webshop.shopping_cart.cart.get_cart_quotation":
+        "highskills_erpnext.overrides.cart.custom_get_cart_quotation"
 }
 
 # Elevate Payment Request.on_payment_authorized() to Administrator so that
