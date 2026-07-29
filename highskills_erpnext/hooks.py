@@ -75,6 +75,18 @@ fixtures = [
         ],
     },
     {
+        "doctype": "Custom DocPerm",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "fpj60djon0",
+                ],
+            ]
+        ],
+    },
+    {
         "doctype": "Property Setter",
         "filters": [
             [
@@ -94,7 +106,9 @@ fixtures = [
 # single-gateway lookup. See overrides/payment_request.py.
 override_whitelisted_methods = {
     "erpnext.accounts.doctype.payment_request.payment_request.make_payment_request":
-        "highskills_erpnext.overrides.payment_request.custom_make_payment_request"
+        "highskills_erpnext.overrides.payment_request.custom_make_payment_request",
+    "webshop.webshop.shopping_cart.cart.update_cart":
+        "highskills_erpnext.overrides.cart.custom_update_cart"
 }
 
 # Elevate Payment Request.on_payment_authorized() to Administrator so that
