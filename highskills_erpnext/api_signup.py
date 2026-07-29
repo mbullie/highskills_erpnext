@@ -79,6 +79,7 @@ def custom_sign_up(
 			"new_password": password,
 			"user_type": "Website User",
 			"send_welcome_email": 0,
+			"language": frappe.local.lang,
 		}
 	)
 	user.flags.ignore_permissions = True
