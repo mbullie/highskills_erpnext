@@ -95,5 +95,29 @@
   "read_only": 1,
   "description": "Entitlement Start Date + the purchased item's Subscription Term (Months). Product access should be disallowed after this date.",
   "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Quotation Item-term_price_breakdown",
+  "dt": "Quotation Item",
+  "fieldname": "term_price_breakdown",
+  "fieldtype": "Data",
+  "label": "Term Price Breakdown",
+  "insert_after": "description",
+  "read_only": 1,
+  "description": "Auto-populated for subscription items (Item.term_months set): \"<monthly rate>/month x <N> months = <total>\". Set by highskills_erpnext.subscription_pricing.apply_subscription_term_pricing, shown on the cart page and on the Quotation print format.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Sales Order Item-term_price_breakdown",
+  "dt": "Sales Order Item",
+  "fieldname": "term_price_breakdown",
+  "fieldtype": "Data",
+  "label": "Term Price Breakdown",
+  "insert_after": "description",
+  "read_only": 1,
+  "description": "Auto-populated for subscription items (Item.term_months set): \"<monthly rate>/month x <N> months = <total>\". Set by highskills_erpnext.subscription_pricing.apply_subscription_term_pricing, shown on the Sales Order print format.",
+  "module": "Highskills Erpnext"
  }
 ]

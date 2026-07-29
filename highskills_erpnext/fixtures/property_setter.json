@@ -1,0 +1,22 @@
+[
+ {
+  "doctype": "Property Setter",
+  "name": "Quotation-main-default_print_format",
+  "doctype_or_field": "DocType",
+  "doc_type": "Quotation",
+  "property": "default_print_format",
+  "property_type": "Data",
+  "value": "Highskills Quotation",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Property Setter",
+  "name": "Sales Order-main-default_print_format",
+  "doctype_or_field": "DocType",
+  "doc_type": "Sales Order",
+  "property": "default_print_format",
+  "property_type": "Data",
+  "value": "Highskills Sales Order",
+  "module": "Highskills Erpnext"
+ }
+]
