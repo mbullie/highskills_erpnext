@@ -37,6 +37,12 @@
 				<td>{{ _("Bank") }}</td>
 				<td>{{ bank_account.bank }}</td>
 			</tr>
+			{% if bank_account.branch_code %}
+			<tr>
+				<td>{{ _("Branch Code") }}</td>
+				<td>{{ bank_account.branch_code }}</td>
+			</tr>
+			{% endif %}
 			{% if bank_account.bank_account_no %}
 			<tr>
 				<td>{{ _("Account Number") }}</td>
