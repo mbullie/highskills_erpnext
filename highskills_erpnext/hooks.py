@@ -25,12 +25,6 @@ doc_events = {
     },
     "Payment Entry": {
         "on_submit": "highskills_erpnext.api_subscription.on_payment_entry_submit"
-    },
-    "Quotation": {
-        "before_validate": "highskills_erpnext.subscription_pricing.apply_subscription_term_pricing"
-    },
-    "Sales Order": {
-        "before_validate": "highskills_erpnext.subscription_pricing.apply_subscription_term_pricing"
     }
 }
 
@@ -55,34 +49,6 @@ fixtures = [
                     "Sales Order-entitlement_end_date",
                     "Sales Invoice-entitlement_start_date",
                     "Sales Invoice-entitlement_end_date",
-                    "Quotation Item-term_price_breakdown",
-                    "Sales Order Item-term_price_breakdown",
-                ],
-            ]
-        ],
-    },
-    {
-        "doctype": "Print Format",
-        "filters": [
-            [
-                "name",
-                "in",
-                [
-                    "Highskills Quotation",
-                    "Highskills Sales Order",
-                ],
-            ]
-        ],
-    },
-    {
-        "doctype": "Property Setter",
-        "filters": [
-            [
-                "name",
-                "in",
-                [
-                    "Quotation-main-default_print_format",
-                    "Sales Order-main-default_print_format",
                 ],
             ]
         ],
