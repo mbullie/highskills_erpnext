@@ -119,6 +119,13 @@ override_doctype_class = {
     "Payment Request": "highskills_erpnext.overrides.payment_request.CustomPaymentRequest"
 }
 
+# /shop is per-customer dynamic content (price list resolved from the logged-in
+# Customer's default_price_list) rendered via a Page Builder Web Page, which has
+# no automatic no_cache detection - without this, Frappe's website page cache
+# would serve one visitor's price list to every subsequent visitor. See
+# helpers.py::disable_cache_for_dynamic_pages docstring.
+before_request = ["highskills_erpnext.helpers.disable_cache_for_dynamic_pages"]
+
 #on_startup = "highskills_erpnext.patches.pdf_sign_patch.apply_patch"
 #web_include_js = "/assets/highskills_erpnext/js/user_profile_redirect.js"
 #web_include_js = "/assets/highskills_erpnext/js/force_profile_update.js"
