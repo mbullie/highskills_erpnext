@@ -13,15 +13,14 @@
  },
  {
   "doctype": "Custom Field",
-  "name": "Sales Order-customer_type",
-  "dt": "Sales Order",
+  "name": "Quotation-customer_type",
+  "dt": "Quotation",
   "fieldname": "customer_type",
   "fieldtype": "Data",
   "label": "Customer Type",
-  "insert_after": "customer_name",
-  "fetch_from": "customer.customer_type",
+  "insert_after": "order_type",
   "read_only": 1,
-  "description": "Auto-fetched from Customer. Lets a Notification record condition on Individual vs Company (e.g. \"doc.customer_type == 'Company'\") without any code - Sales Order has no native way to reach this value from a Notification condition otherwise.",
+  "description": "Set in code (highskills_erpnext.overrides.cart.custom_place_order) when the Quotation is submitted - not via fetch_from, since party_name is a Dynamic Link (Customer or Lead) that fetch_from can't reliably resolve. Lets a Notification record condition on Individual vs Company (e.g. \"doc.customer_type == 'Company'\") without any code - Notification conditions can only do plain attribute access on doc, confirmed no frappe.db access is exposed there (notification.py's own get_context() only exposes frappe.utils).",
   "module": "Highskills Erpnext"
  },
  {
@@ -32,7 +31,7 @@
   "fieldtype": "Check",
   "default": "0",
   "label": "Purchase Order Uploaded",
-  "insert_after": "order_type",
+  "insert_after": "customer_type",
   "read_only": 1,
   "description": "Set automatically when a Company (bank-transfer) customer uploads their Purchase Order document at /bank-transfer. Used by staff to find Quotations awaiting manual conversion to Sales Order.",
   "module": "Highskills Erpnext"

@@ -94,6 +94,18 @@ def custom_place_order():
 		if not (quotation.shipping_address_name or quotation.customer_address):
 			frappe.throw(frappe._("Set Shipping Address or Billing Address"))
 
+		# Set directly here (not via fetch_from) - party_name is a Dynamic
+		# Link (Customer or Lead depending on quotation_to), so a plain
+		# fetch_from can't reliably resolve it. We already have customer_type
+		# from the payment-method-rule lookup above, so just use it - lets a
+		# Quotation "On Submit" Notification condition on Individual vs
+		# Company via plain `doc.customer_type` attribute access, since
+		# Notification conditions have no frappe.db access at all (confirmed
+		# via notification.py's own get_context(), which only exposes
+		# frappe.utils - not frappe.db).
+		if quotation.meta.has_field("customer_type"):
+			quotation.customer_type = customer_type
+
 		quotation.submit()
 
 		if hasattr(frappe.local, "cookie_manager"):
