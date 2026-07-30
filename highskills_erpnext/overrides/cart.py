@@ -111,7 +111,19 @@ def custom_place_order():
 		if hasattr(frappe.local, "cookie_manager"):
 			frappe.local.cookie_manager.delete_cookie("cart_count")
 
-		return quotation.name
+		# webshop/templates/pages/cart.js's place_order() callback hardcodes
+		# `window.location.href = '/orders/' + r.message` - that route
+		# (erpnext/hooks.py website_route_rules) hardcodes doctype="Sales
+		# Order" for whatever name it's given, so redirecting it at a
+		# Quotation name fails (frappe.get_doc("Sales Order", "SAL-QTN-...")
+		# doesn't exist - Frappe's website page framework maps that to a 403
+		# rather than a 404, to avoid leaking record existence). Returning a
+		# structured object here instead of a bare name lets our own JS
+		# override (public/js/highskills_erpnext-web.bundle.js) redirect
+		# straight to /bank-transfer instead. The Individual/PayPal branch
+		# below (core_place_order) is untouched and still returns a bare
+		# Sales Order name string, matching what cart.js already expects.
+		return {"name": quotation.name, "doctype": "Quotation"}
 
 	return core_place_order()
 

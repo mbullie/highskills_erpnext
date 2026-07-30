@@ -172,3 +172,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// webshop/templates/pages/cart.js's place_order() callback always does
+// `window.location.href = '/orders/' + r.message`, assuming place_order
+// always returns a Sales Order name. For Company/manual-bank-transfer
+// customers, highskills_erpnext.overrides.cart.custom_place_order no longer
+// creates a Sales Order - it returns {name, doctype: "Quotation"} instead,
+// and needs to land on /bank-transfer, not /orders/<name> (which hardcodes
+// doctype="Sales Order" via erpnext's website_route_rules and would 403 on
+// a Quotation name). Individual/PayPal customers are unaffected - that
+// branch still returns a bare Sales Order name string, unchanged.
+frappe.ready(function () {
+    if (typeof webshop === "undefined" || !webshop.webshop || !webshop.webshop.shopping_cart) {
+        return;
+    }
+
+    var shopping_cart = webshop.webshop.shopping_cart;
+
+    shopping_cart.place_order = function (btn) {
+        shopping_cart.freeze();
+
+        return frappe.call({
+            type: "POST",
+            method: "webshop.webshop.shopping_cart.cart.place_order",
+            btn: btn,
+            callback: function (r) {
+                if (r.exc) {
+                    shopping_cart.unfreeze();
+                    var msg = "";
+                    if (r._server_messages) {
+                        msg = JSON.parse(r._server_messages || []).join("<br>");
+                    }
+                    $("#cart-error").empty().html(msg || frappe._("Something went wrong!")).toggle(true);
+                    return;
+                }
+
+                $(btn).hide();
+                var result = r.message;
+
+                if (result && typeof result === "object" && result.doctype === "Quotation") {
+                    window.location.href = "/bank-transfer?dt=Quotation&dn=" + encodeURIComponent(result.name);
+                } else {
+                    window.location.href = "/orders/" + encodeURIComponent(result);
+                }
+            }
+        });
+    };
+
+    // cart.js already bound ".btn-place-order" clicks to its own local
+    // `place_order` reference at page load, before this override runs -
+    // rebind so clicks go through the override above instead.
+    $(".btn-place-order").off("click").on("click", function () {
+        shopping_cart.place_order(this);
+    });
+});
