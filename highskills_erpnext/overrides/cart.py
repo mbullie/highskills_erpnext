@@ -47,6 +47,8 @@ from webshop.webshop.shopping_cart.cart import request_for_quotation as core_req
 from webshop.webshop.shopping_cart.cart import update_cart as core_update_cart
 from webshop.webshop.shopping_cart.cart import update_cart_address as core_update_cart_address
 
+from highskills_erpnext.webshop_payments import get_customer_type_for_reference, get_payment_method_rule
+
 
 def _flag_cart_items_ignore_permissions(quotation):
 	for item in quotation.get("items") or []:
@@ -67,7 +69,38 @@ def custom_update_cart(item_code, qty, additional_notes=None, with_items=False):
 
 @frappe.whitelist()
 def custom_place_order():
-	_flag_cart_items_ignore_permissions(_get_cart_quotation())
+	"""For manual-bank-transfer customer types (e.g. Company), stop short of
+	creating a Sales Order - just submit the Quotation. Staff manually
+	convert it to a Sales Order in Desk once the customer's PO is confirmed
+	(uploaded at /bank-transfer, or sent by email) - this can happen well
+	after checkout, so nothing here should assume a Sales Order exists yet.
+	See www/bank_transfer.py module docstring for the full flow.
+
+	Every other customer type (e.g. Individual/PayPal) is unaffected - core
+	update_cart already creates+submits a Sales Order immediately, matching
+	PayPal's instant/automatic payment.
+	"""
+	quotation = _get_cart_quotation()
+	_flag_cart_items_ignore_permissions(quotation)
+
+	customer_type = get_customer_type_for_reference("Quotation", quotation.name)
+	rule = get_payment_method_rule(customer_type)
+
+	if rule is not None and not rule.payment_gateway_account:
+		cart_settings = frappe.get_cached_doc("Webshop Settings")
+		quotation.company = cart_settings.company
+		quotation.flags.ignore_permissions = True
+
+		if not (quotation.shipping_address_name or quotation.customer_address):
+			frappe.throw(frappe._("Set Shipping Address or Billing Address"))
+
+		quotation.submit()
+
+		if hasattr(frappe.local, "cookie_manager"):
+			frappe.local.cookie_manager.delete_cookie("cart_count")
+
+		return quotation.name
+
 	return core_place_order()
 
 

@@ -49,7 +49,8 @@ fixtures = [
                 [
                     "Webshop Settings-payment_method_rules",
                     "Sales Order-customer_type",
-                    "Sales Order-payment_proof_uploaded",
+                    "Quotation-po_uploaded",
+                    "Quotation-payment_proof_uploaded",
                     "Item-term_months",
                     "Sales Order-entitlement_start_date",
                     "Sales Order-entitlement_end_date",

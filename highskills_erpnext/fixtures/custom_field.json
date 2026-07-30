@@ -26,15 +26,28 @@
  },
  {
   "doctype": "Custom Field",
-  "name": "Sales Order-payment_proof_uploaded",
-  "dt": "Sales Order",
+  "name": "Quotation-po_uploaded",
+  "dt": "Quotation",
+  "fieldname": "po_uploaded",
+  "fieldtype": "Check",
+  "default": "0",
+  "label": "Purchase Order Uploaded",
+  "insert_after": "order_type",
+  "read_only": 1,
+  "description": "Set automatically when a Company (bank-transfer) customer uploads their Purchase Order document at /bank-transfer. Used by staff to find Quotations awaiting manual conversion to Sales Order.",
+  "module": "Highskills Erpnext"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Quotation-payment_proof_uploaded",
+  "dt": "Quotation",
   "fieldname": "payment_proof_uploaded",
   "fieldtype": "Check",
   "default": "0",
   "label": "Payment Proof Uploaded",
-  "insert_after": "per_billed",
+  "insert_after": "po_uploaded",
   "read_only": 1,
-  "description": "Set automatically when a Company (bank-transfer) customer uploads a proof-of-payment document at checkout. Used by Accounts to filter orders awaiting manual bank-transfer reconciliation.",
+  "description": "Set automatically when a Company (bank-transfer) customer uploads a proof-of-payment document at /bank-transfer. Lives on Quotation (not Sales Order) because the customer can upload proof before staff have manually converted the Quotation to a Sales Order. Used by Accounts to filter orders awaiting manual bank-transfer reconciliation.",
   "module": "Highskills Erpnext"
  },
  {
@@ -55,7 +68,7 @@
   "fieldname": "entitlement_start_date",
   "fieldtype": "Date",
   "label": "Entitlement Start Date",
-  "insert_after": "payment_proof_uploaded",
+  "insert_after": "per_billed",
   "read_only": 1,
   "description": "Set automatically once payment for this order is confirmed (Payment Entry submitted) - never at order placement. Product access should only be granted from this date.",
   "module": "Highskills Erpnext"

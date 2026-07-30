@@ -6,9 +6,15 @@
 <div class="bank-transfer-page">
 	<h3>{{ _("Bank Transfer Instructions") }}</h3>
 
+	{% if reference_doctype == "Quotation" %}
+	<p class="text-muted">
+		{{ _("Please confirm your order by uploading your Purchase Order below (or send it to us by email), then complete payment by bank transfer using the details below and upload your payment confirmation.") }}
+	</p>
+	{% else %}
 	<p class="text-muted">
 		{{ _("Your order has been placed. Please complete payment by bank transfer using the details below, then upload your payment confirmation.") }}
 	</p>
+	{% endif %}
 
 	<div class="panel panel-default order-summary">
 		<div class="row">
@@ -24,6 +30,31 @@
 			{{ _("Please use {0} as the payment reference so we can match your transfer.").format(reference_name) }}
 		</p>
 	</div>
+
+	{% if show_po_upload %}
+	<div class="panel panel-default po-upload mt-4">
+		<h5>{{ _("Upload Purchase Order") }}</h5>
+		<p class="text-muted small">
+			{{ _("If you have a Purchase Order document, upload it here. You can also just send it to us by email instead - either way works.") }}
+		</p>
+
+		{% if po_already_uploaded %}
+		<div class="alert alert-success" id="upload-po-success-message">
+			{{ _("Thank you - your Purchase Order has been received. We'll confirm your order shortly.") }}
+		</div>
+		{% endif %}
+
+		<div id="upload-po-form-wrapper" class="{{ 'hide' if po_already_uploaded else '' }}">
+			<div class="form-group">
+				<input type="file" id="po-file" class="form-control">
+			</div>
+			<button class="btn btn-primary btn-sm" id="upload-po-btn">
+				{{ _("Upload") }}
+			</button>
+			<p class="text-muted small mt-2" id="upload-po-status"></p>
+		</div>
+	</div>
+	{% endif %}
 
 	{% if bank_account %}
 	<div class="panel panel-default bank-details mt-4">
@@ -88,47 +119,72 @@
 {% block script %}
 <script>
 frappe.ready(function () {
-	var uploadBtn = document.getElementById("upload-payment-proof-btn");
-	if (!uploadBtn) return;
+	function wireUpload(opts) {
+		var uploadBtn = document.getElementById(opts.buttonId);
+		if (!uploadBtn) return;
 
-	uploadBtn.addEventListener("click", function () {
-		var fileInput = document.getElementById("payment-proof-file");
-		var statusEl = document.getElementById("upload-status");
+		uploadBtn.addEventListener("click", function () {
+			var fileInput = document.getElementById(opts.fileInputId);
+			var statusEl = document.getElementById(opts.statusId);
 
-		if (!fileInput.files || !fileInput.files.length) {
-			statusEl.textContent = {{ _("Please choose a file first.") | tojson }};
-			return;
-		}
+			if (!fileInput.files || !fileInput.files.length) {
+				statusEl.textContent = {{ _("Please choose a file first.") | tojson }};
+				return;
+			}
 
-		var formData = new FormData();
-		formData.append("file", fileInput.files[0]);
-		formData.append("dt", {{ reference_doctype | tojson }});
-		formData.append("dn", {{ reference_name | tojson }});
+			var formData = new FormData();
+			formData.append("file", fileInput.files[0]);
+			formData.append("dt", {{ reference_doctype | tojson }});
+			formData.append("dn", {{ reference_name | tojson }});
+			formData.append("file_type", opts.fileType);
 
-		statusEl.textContent = {{ _("Uploading...") | tojson }};
-		uploadBtn.disabled = true;
+			statusEl.textContent = {{ _("Uploading...") | tojson }};
+			uploadBtn.disabled = true;
 
-		fetch("/api/method/highskills_erpnext.www.bank_transfer.upload_payment_proof", {
-			method: "POST",
-			headers: { "X-Frappe-CSRF-Token": frappe.csrf_token },
-			body: formData,
-		})
-			.then(function (response) {
-				if (!response.ok) throw new Error("upload_failed");
-				return response.json();
+			fetch("/api/method/highskills_erpnext.www.bank_transfer.upload_payment_proof", {
+				method: "POST",
+				headers: { "X-Frappe-CSRF-Token": frappe.csrf_token },
+				body: formData,
 			})
-			.then(function () {
-				document.getElementById("upload-form-wrapper").classList.add("hide");
-				var successEl = document.createElement("div");
-				successEl.className = "alert alert-success";
-				successEl.id = "upload-success-message";
-				successEl.textContent = {{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") | tojson }};
-				document.querySelector(".payment-proof-upload").insertBefore(successEl, document.getElementById("upload-form-wrapper"));
-			})
-			.catch(function () {
-				uploadBtn.disabled = false;
-				statusEl.textContent = {{ _("Upload failed, please try again.") | tojson }};
-			});
+				.then(function (response) {
+					if (!response.ok) throw new Error("upload_failed");
+					return response.json();
+				})
+				.then(function () {
+					document.getElementById(opts.formWrapperId).classList.add("hide");
+					var successEl = document.createElement("div");
+					successEl.className = "alert alert-success";
+					successEl.id = opts.successId;
+					successEl.textContent = opts.successMessage;
+					document.querySelector(opts.panelSelector).insertBefore(successEl, document.getElementById(opts.formWrapperId));
+				})
+				.catch(function () {
+					uploadBtn.disabled = false;
+					statusEl.textContent = {{ _("Upload failed, please try again.") | tojson }};
+				});
+		});
+	}
+
+	wireUpload({
+		buttonId: "upload-po-btn",
+		fileInputId: "po-file",
+		statusId: "upload-po-status",
+		formWrapperId: "upload-po-form-wrapper",
+		successId: "upload-po-success-message",
+		panelSelector: ".po-upload",
+		fileType: "po",
+		successMessage: {{ _("Thank you - your Purchase Order has been received. We'll confirm your order shortly.") | tojson }},
+	});
+
+	wireUpload({
+		buttonId: "upload-payment-proof-btn",
+		fileInputId: "payment-proof-file",
+		statusId: "upload-status",
+		formWrapperId: "upload-form-wrapper",
+		successId: "upload-success-message",
+		panelSelector: ".payment-proof-upload",
+		fileType: "proof",
+		successMessage: {{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") | tojson }},
 	});
 });
 </script>
