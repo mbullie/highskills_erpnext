@@ -71,7 +71,11 @@
 			</span>
 		</div>
 		<p class="pbp-card-text">
+			{% if support_email %}
+			{{ _("If you have a Purchase Order document, upload it here. You can also just send it to us by email at {0} instead - either way works.").format(support_email) }}
+			{% else %}
 			{{ _("If you have a Purchase Order document, upload it here. You can also just send it to us by email instead - either way works.") }}
+			{% endif %}
 		</p>
 
 		<div id="upload-po-success-message" class="pbp-done-msg {{ '' if po_already_uploaded else 'hide' }}">
@@ -135,7 +139,11 @@
 			</span>
 		</div>
 		<p class="pbp-card-text">
+			{% if support_email %}
+			{{ _("If you have proof of payment, upload it here. You can also just send it to us by email at {0} instead - either way works.").format(support_email) }}
+			{% else %}
 			{{ _("If you have proof of payment, upload it here. You can also just send it to us by email instead - either way works.") }}
+			{% endif %}
 		</p>
 
 		<div id="upload-success-message" class="pbp-done-msg {{ '' if already_uploaded else 'hide' }}">

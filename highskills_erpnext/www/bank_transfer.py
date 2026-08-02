@@ -64,6 +64,11 @@ def get_context(context):
 	bank_account = get_company_bank_account(ref_doc.get("company") or cart_settings.company)
 	context.bank_account = bank_account
 
+	# Raw, unchecked read - same pattern as bank_account/cart_settings above,
+	# not frappe.get_doc()+check_permission(), so no risk of re-hitting the
+	# Item/Account-style permission wall for a Customer-role viewer.
+	context.support_email = frappe.db.get_value("Email Account", {"default_outgoing": 1}, "email_id")
+
 
 @frappe.whitelist()
 def upload_payment_proof(dt, dn, file_type="proof"):
