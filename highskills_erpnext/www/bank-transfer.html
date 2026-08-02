@@ -3,7 +3,7 @@
 {% block title %}{{ _("Purchase Order & Bank Details") }}{% endblock %}
 
 {% block page_content %}
-{%- set is_rtl = frappe.local.lang in ("he", "ar") -%}
+{%- set is_rtl = is_rtl() -%}
 {%- set text_dir = "rtl" if is_rtl else "ltr" -%}
 {%- set align_start = "right" if is_rtl else "left" -%}
 <div class="pbp-page" dir="{{ text_dir }}">
@@ -130,6 +130,9 @@
 				{{ _("Received") if already_uploaded else _("Awaiting Upload") }}
 			</span>
 		</div>
+		<p class="pbp-card-text">
+			{{ _("If you have proof of payment, upload it here. You can also just send it to us by email instead - either way works.") }}
+		</p>
 
 		<div id="upload-success-message" class="pbp-done-msg {{ '' if already_uploaded else 'hide' }}">
 			<span class="pbp-dot"></span>
