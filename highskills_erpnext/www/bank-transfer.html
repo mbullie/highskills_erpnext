@@ -36,12 +36,16 @@
 		.pbp-bank td:first-child { color: #8c8a7f; width: 40%; }
 		.pbp-bank td:last-child { font-weight: 700; text-align: {{ "left" if is_rtl else "right" }}; }
 		.pbp-warn { background: #fdf3e3; color: #7a5514; border: 1px solid #f0d9a8; border-radius: 8px; padding: 12px 14px; font-size: 13px; }
+		.pbp-email-note { font-size: 12.5px; color: #8c8a7f; line-height: 1.5; margin: 0 0 20px; text-align: {{ align_start }}; }
 		.hide { display: none; }
 	</style>
 
 	<h1>{{ _("Purchase Order & Bank Details") }}</h1>
 	<p class="pbp-lede">
 		{{ _("Upload your Purchase Order and payment confirmation here whenever you have them ready - you don't need to do both at once, and you can also email either one to us instead.") }}
+	</p>
+	<p class="pbp-email-note">
+		{{ _("We've also sent you an email with a copy of your quotation attached. You can always return to this page using the link in that email.") }}
 	</p>
 
 	<div class="pbp-summary">
