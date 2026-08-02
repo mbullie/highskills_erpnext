@@ -47,7 +47,7 @@ def get_context(context):
 		frappe.throw(_("Not Permitted"), frappe.PermissionError)
 
 	context.no_header = False
-	context.title = _("Bank Transfer Instructions")
+	context.title = _("Purchase Order & Bank Details")
 	context.doc = ref_doc
 	context.reference_doctype = dt
 	context.reference_name = dn

@@ -1,65 +1,96 @@
 {% extends "templates/web.html" %}
 
-{% block title %}{{ _("Bank Transfer Instructions") }}{% endblock %}
+{% block title %}{{ _("Purchase Order & Bank Details") }}{% endblock %}
 
 {% block page_content %}
-<div class="bank-transfer-page">
-	<h3>{{ _("Bank Transfer Instructions") }}</h3>
+{%- set is_rtl = frappe.local.lang in ("he", "ar") -%}
+{%- set text_dir = "rtl" if is_rtl else "ltr" -%}
+{%- set align_start = "right" if is_rtl else "left" -%}
+<div class="pbp-page" dir="{{ text_dir }}">
+	<style>
+		.pbp-page { max-width: 640px; margin: 0 auto; font-size: 14px; color: #1c1b19; }
+		.pbp-page h1 { font-size: 22px; font-weight: 700; margin: 0 0 8px; text-align: {{ align_start }}; }
+		.pbp-lede { font-size: 14px; color: #5b594f; line-height: 1.55; margin: 0 0 22px; text-align: {{ align_start }}; }
+		.pbp-summary { background: #ffffff; border: 1px solid #e4e1d6; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+		.pbp-field { display: flex; flex-direction: column; gap: 2px; }
+		.pbp-label { font-size: 11.5px; color: #8c8a7f; text-transform: uppercase; letter-spacing: 0.04em; }
+		.pbp-value { font-size: 15px; font-weight: 700; }
+		.pbp-ref-note { width: 100%; font-size: 12px; color: #8c8a7f; border-top: 1px solid #e4e1d6; padding-top: 8px; margin-top: 4px; text-align: {{ align_start }}; }
+		.pbp-card { background: #ffffff; border: 1px solid #e4e1d6; border-radius: 10px; padding: 18px 20px; margin-bottom: 16px; text-align: {{ align_start }}; }
+		.pbp-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+		.pbp-card-title { font-size: 15.5px; font-weight: 700; }
+		.pbp-status { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }
+		.pbp-status.pending { background: #fdf3e3; color: #7a5514; border: 1px solid #f0d9a8; }
+		.pbp-status.done { background: #e8f3e9; color: #1f5c23; border: 1px solid #cfe8d1; }
+		.pbp-card-text { font-size: 13px; color: #5b594f; line-height: 1.5; margin: 0 0 14px; }
+		.pbp-filerow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+		.pbp-filerow input[type="file"] { flex: 1; min-width: 180px; font-size: 13px; border: 1px solid #e4e1d6; border-radius: 8px; padding: 7px 10px; background: #f7f6f2; }
+		.pbp-btn { display: inline-flex; align-items: center; gap: 6px; background: #2e7d32; color: #ffffff; border: none; border-radius: 8px; padding: 9px 18px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+		.pbp-btn:disabled { opacity: 0.6; cursor: default; }
+		.pbp-status-text { font-size: 12.5px; color: #8c8a7f; margin: 8px 0 0; }
+		.pbp-done-msg { display: flex; gap: 10px; align-items: flex-start; background: #e8f3e9; color: #1f5c23; border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.5; margin-bottom: 14px; }
+		.pbp-dot { width: 8px; height: 8px; border-radius: 50%; background: #2e7d32; margin-top: 5px; flex-shrink: 0; }
+		.pbp-bank { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+		.pbp-bank tr + tr td { border-top: 1px solid #e4e1d6; }
+		.pbp-bank td { padding: 8px 0; }
+		.pbp-bank td:first-child { color: #8c8a7f; width: 40%; }
+		.pbp-bank td:last-child { font-weight: 700; text-align: {{ "left" if is_rtl else "right" }}; }
+		.pbp-warn { background: #fdf3e3; color: #7a5514; border: 1px solid #f0d9a8; border-radius: 8px; padding: 12px 14px; font-size: 13px; }
+		.hide { display: none; }
+	</style>
 
-	{% if reference_doctype == "Quotation" %}
-	<p class="text-muted">
-		{{ _("Please confirm your order by uploading your Purchase Order below (or send it to us by email), then complete payment by bank transfer using the details below and upload your payment confirmation.") }}
+	<h1>{{ _("Purchase Order & Bank Details") }}</h1>
+	<p class="pbp-lede">
+		{{ _("Upload your Purchase Order and payment confirmation here whenever you have them ready - you don't need to do both at once, and you can also email either one to us instead.") }}
 	</p>
-	{% else %}
-	<p class="text-muted">
-		{{ _("Your order has been placed. Please complete payment by bank transfer using the details below, then upload your payment confirmation.") }}
-	</p>
-	{% endif %}
 
-	<div class="panel panel-default order-summary">
-		<div class="row">
-			<div class="col-sm-6">
-				<strong>{{ _("Order Reference") }}:</strong> {{ reference_name }}
-			</div>
-			<div class="col-sm-6">
-				<strong>{{ _("Amount Due") }}:</strong>
-				{{ "%.2f"|format(amount_due) if amount_due else "0.00" }} {{ currency }}
-			</div>
+	<div class="pbp-summary">
+		<div class="pbp-field">
+			<span class="pbp-label">{{ _("Order Reference") }}</span>
+			<span class="pbp-value">{{ reference_name }}</span>
 		</div>
-		<p class="text-muted small mt-2">
+		<div class="pbp-field">
+			<span class="pbp-label">{{ _("Amount Due") }}</span>
+			<span class="pbp-value">{{ "%.2f"|format(amount_due) if amount_due else "0.00" }} {{ currency }}</span>
+		</div>
+		<div class="pbp-ref-note">
 			{{ _("Please use {0} as the payment reference so we can match your transfer.").format(reference_name) }}
-		</p>
+		</div>
 	</div>
 
 	{% if show_po_upload %}
-	<div class="panel panel-default po-upload mt-4">
-		<h5>{{ _("Upload Purchase Order") }}</h5>
-		<p class="text-muted small">
+	<div class="pbp-card">
+		<div class="pbp-card-head">
+			<span class="pbp-card-title">{{ _("Purchase Order") }}</span>
+			<span class="pbp-status {{ 'done' if po_already_uploaded else 'pending' }}" id="po-status-pill">
+				{{ _("Received") if po_already_uploaded else _("Awaiting Upload") }}
+			</span>
+		</div>
+		<p class="pbp-card-text">
 			{{ _("If you have a Purchase Order document, upload it here. You can also just send it to us by email instead - either way works.") }}
 		</p>
 
-		{% if po_already_uploaded %}
-		<div class="alert alert-success" id="upload-po-success-message">
-			{{ _("Thank you - your Purchase Order has been received. We'll confirm your order shortly.") }}
+		<div id="upload-po-success-message" class="pbp-done-msg {{ '' if po_already_uploaded else 'hide' }}">
+			<span class="pbp-dot"></span>
+			<span>{{ _("Thank you - your Purchase Order has been received. We'll confirm your order shortly.") }}</span>
 		</div>
-		{% endif %}
 
 		<div id="upload-po-form-wrapper" class="{{ 'hide' if po_already_uploaded else '' }}">
-			<div class="form-group">
-				<input type="file" id="po-file" class="form-control">
+			<div class="pbp-filerow">
+				<input type="file" id="po-file">
+				<button class="pbp-btn" id="upload-po-btn">{{ _("Upload") }}</button>
 			</div>
-			<button class="btn btn-primary btn-sm" id="upload-po-btn">
-				{{ _("Upload") }}
-			</button>
-			<p class="text-muted small mt-2" id="upload-po-status"></p>
+			<p class="pbp-status-text" id="upload-po-status"></p>
 		</div>
 	</div>
 	{% endif %}
 
-	{% if bank_account %}
-	<div class="panel panel-default bank-details mt-4">
-		<h5>{{ _("Bank Account Details") }}</h5>
-		<table class="table table-bordered">
+	<div class="pbp-card">
+		<div class="pbp-card-head">
+			<span class="pbp-card-title">{{ _("Bank Account Details") }}</span>
+		</div>
+		{% if bank_account %}
+		<table class="pbp-bank">
 			<tr>
 				<td>{{ _("Account Name") }}</td>
 				<td>{{ bank_account.account_name }}</td>
@@ -87,30 +118,30 @@
 			</tr>
 			{% endif %}
 		</table>
-	</div>
-	{% else %}
-	<div class="alert alert-warning mt-4">
-		{{ _("Bank account details are not configured yet. Please contact us for payment instructions.") }}
-	</div>
-	{% endif %}
-
-	<div class="panel panel-default payment-proof-upload mt-4">
-		<h5>{{ _("Upload Payment Confirmation") }}</h5>
-
-		{% if already_uploaded %}
-		<div class="alert alert-success" id="upload-success-message">
-			{{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") }}
-		</div>
+		{% else %}
+		<p class="pbp-warn">{{ _("Bank account details are not configured yet. Please contact us for payment instructions.") }}</p>
 		{% endif %}
+	</div>
+
+	<div class="pbp-card">
+		<div class="pbp-card-head">
+			<span class="pbp-card-title">{{ _("Payment Confirmation") }}</span>
+			<span class="pbp-status {{ 'done' if already_uploaded else 'pending' }}" id="proof-status-pill">
+				{{ _("Received") if already_uploaded else _("Awaiting Upload") }}
+			</span>
+		</div>
+
+		<div id="upload-success-message" class="pbp-done-msg {{ '' if already_uploaded else 'hide' }}">
+			<span class="pbp-dot"></span>
+			<span>{{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") }}</span>
+		</div>
 
 		<div id="upload-form-wrapper" class="{{ 'hide' if already_uploaded else '' }}">
-			<div class="form-group">
-				<input type="file" id="payment-proof-file" class="form-control">
+			<div class="pbp-filerow">
+				<input type="file" id="payment-proof-file">
+				<button class="pbp-btn" id="upload-payment-proof-btn">{{ _("Upload") }}</button>
 			</div>
-			<button class="btn btn-primary btn-sm" id="upload-payment-proof-btn">
-				{{ _("Upload") }}
-			</button>
-			<p class="text-muted small mt-2" id="upload-status"></p>
+			<p class="pbp-status-text" id="upload-status"></p>
 		</div>
 	</div>
 </div>
@@ -152,11 +183,13 @@ frappe.ready(function () {
 				})
 				.then(function () {
 					document.getElementById(opts.formWrapperId).classList.add("hide");
-					var successEl = document.createElement("div");
-					successEl.className = "alert alert-success";
-					successEl.id = opts.successId;
-					successEl.textContent = opts.successMessage;
-					document.querySelector(opts.panelSelector).insertBefore(successEl, document.getElementById(opts.formWrapperId));
+					document.getElementById(opts.successId).classList.remove("hide");
+					var pill = document.getElementById(opts.pillId);
+					if (pill) {
+						pill.classList.remove("pending");
+						pill.classList.add("done");
+						pill.textContent = opts.doneLabel;
+					}
 				})
 				.catch(function () {
 					uploadBtn.disabled = false;
@@ -171,9 +204,9 @@ frappe.ready(function () {
 		statusId: "upload-po-status",
 		formWrapperId: "upload-po-form-wrapper",
 		successId: "upload-po-success-message",
-		panelSelector: ".po-upload",
+		pillId: "po-status-pill",
 		fileType: "po",
-		successMessage: {{ _("Thank you - your Purchase Order has been received. We'll confirm your order shortly.") | tojson }},
+		doneLabel: {{ _("Received") | tojson }},
 	});
 
 	wireUpload({
@@ -182,9 +215,9 @@ frappe.ready(function () {
 		statusId: "upload-status",
 		formWrapperId: "upload-form-wrapper",
 		successId: "upload-success-message",
-		panelSelector: ".payment-proof-upload",
+		pillId: "proof-status-pill",
 		fileType: "proof",
-		successMessage: {{ _("Thank you - your payment confirmation has been received. Our Accounts team will verify it shortly.") | tojson }},
+		doneLabel: {{ _("Received") | tojson }},
 	});
 });
 </script>
