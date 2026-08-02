@@ -69,6 +69,20 @@
 {% block page_content %}
 <!-- {{ for_test }} -->
 <div>
+	<!--
+		www/login.html blanks the {% block navbar %} above for a clean,
+		distraction-free login page - but frappe/website/js/website.js's
+		show_language_picker() (runs for every Guest session, gated on
+		Website Settings.show_language_picker) looks for this exact
+		#language-switcher element to populate and reveal. It normally
+		lives inside the navbar (templates/includes/navbar/navbar.html),
+		so blanking the navbar removed it along with everything else.
+		Re-added here, standalone, so the picker still works on login
+		without restoring the full navbar (brand/menu/nav links).
+	-->
+	<div class="form-group mb-0 hide" id="language-switcher" style="max-width: 160px; margin: 0 auto 12px !important;">
+		<select class="form-control"></select>
+	</div>
 	<noscript>
 		<div class="text-center my-5">
 			<h4>{{ _("Javascript is disabled on your browser") }}</h4>
