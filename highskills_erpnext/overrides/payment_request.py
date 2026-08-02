@@ -95,9 +95,21 @@ def custom_make_payment_request(**args):
 		# Request/gateway involved at all, send them to the instructions page.
 		# (bank_transfer.py does its own has_website_permission check too,
 		# so this redirect is safe even without the check above.)
+		#
+		# frappe.utils.get_url() deliberately not used here: site_config's
+		# host_name is set to an internal Docker address (frontend:8080) so
+		# wkhtmltopdf can reach its own assets during PDF generation - and
+		# get_url() always prefers host_name when it's set, over the live
+		# request's own Host header, for every caller site-wide. Correct for
+		# wkhtmltopdf, wrong here: this redirect goes straight to the
+		# customer's own browser, which can't resolve a Docker-internal
+		# hostname. get_host_name_from_request() reads
+		# frappe.local.request.host directly, bypassing host_name entirely -
+		# always correct for a real browser-initiated request like this one.
+		host = frappe.utils.get_host_name_from_request() or frappe.utils.get_url()
 		frappe.local.response["type"] = "redirect"
-		frappe.local.response["location"] = frappe.utils.get_url(
-			"/bank-transfer?dt={0}&dn={1}".format(quote(args.dt), quote(args.dn))
+		frappe.local.response["location"] = host + "/bank-transfer?dt={0}&dn={1}".format(
+			quote(args.dt), quote(args.dn)
 		)
 		return
 
