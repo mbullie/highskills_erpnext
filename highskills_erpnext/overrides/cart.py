@@ -106,6 +106,20 @@ def custom_place_order():
 		if quotation.meta.has_field("customer_type"):
 			quotation.customer_type = customer_type
 
+		# Set explicitly, not left to any assumed auto-stamping - confirmed
+		# via bench console that frappe.new_doc() never populates `language`
+		# on its own, and nothing in webshop/erpnext's checkout flow sets it
+		# either, so every Quotation through this flow ended up with
+		# language=None until something else (most likely staff opening/
+		# saving it in Desk later, from their own admin session) stamped it
+		# "en" regardless of the customer's actual language. This is the one
+		# point in the flow with reliable access to the customer's own
+		# session language - Notification's attach_print and our print
+		# formats' is_rtl() both key off this field, so it needs to actually
+		# reflect the customer, not whoever last touched the document in Desk.
+		if quotation.meta.has_field("language"):
+			quotation.language = frappe.local.lang
+
 		quotation.submit()
 
 		if hasattr(frappe.local, "cookie_manager"):
