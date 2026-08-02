@@ -219,10 +219,17 @@ frappe.ready(function () {
         });
     };
 
-    // cart.js already bound ".btn-place-order" clicks to its own local
-    // `place_order` reference at page load, before this override runs -
-    // rebind so clicks go through the override above instead.
-    $(".btn-place-order").off("click").on("click", function () {
-        shopping_cart.place_order(this);
-    });
+    // No need to rebind ".btn-place-order" clicks here: cart.js's own
+    // bind_place_order() already does `shopping_cart.place_order(this)`
+    // inside its click handler - a dynamic property lookup evaluated at
+    // click time, not a reference captured when the handler was bound. So
+    // reassigning shopping_cart.place_order above is sufficient on its own,
+    // regardless of whether this script runs before or after cart.js's own
+    // frappe.ready() callback. An earlier version of this override also
+    // manually rebound the click handler here, which - when this callback
+    // happened to run before cart.js's own bind_events() - left two click
+    // handlers active (this rebind, plus cart.js's own later re-registration
+    // once .off() had already fired and wasn't there to clear it again),
+    // causing place_order to fire twice per click and intermittently trip
+    // Frappe's TimestampMismatchError on the second, stale submit.
 });
