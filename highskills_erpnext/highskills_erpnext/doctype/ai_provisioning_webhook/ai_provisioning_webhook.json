@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:rule_name",
+ "creation": "2026-08-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "rule_name",
+  "enabled",
+  "sb_condition",
+  "condition",
+  "html_condition",
+  "sb_request",
+  "request_url",
+  "request_method",
+  "cb_request",
+  "webhook_json",
+  "sb_headers",
+  "webhook_headers"
+ ],
+ "fields": [
+  {
+   "fieldname": "rule_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rule Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "sb_condition",
+   "fieldtype": "Section Break",
+   "label": "Trigger"
+  },
+  {
+   "description": "Fires on every Payment Entry submit if left blank. Evaluated against `doc` (the Payment Entry) and `order` (the resolved Sales Order / Sales Invoice referenced by the payment - the only place item details are actually available, since Payment Entry itself has no items).",
+   "fieldname": "condition",
+   "fieldtype": "Small Text",
+   "label": "Condition"
+  },
+  {
+   "fieldname": "html_condition",
+   "fieldtype": "HTML",
+   "options": "<p><strong>Condition examples:</strong></p>\n<pre>order.customer == \"CUST-00001\"\n\"COURSE-CREATOR-1Y\" in [i.item_code for i in order.items]\ndoc.paid_amount &gt; 1000\n</pre>"
+  },
+  {
+   "fieldname": "sb_request",
+   "fieldtype": "Section Break",
+   "label": "Request"
+  },
+  {
+   "description": "May use Jinja, e.g. {{ order.customer }} - rendered with the same doc/order context as the Condition.",
+   "fieldname": "request_url",
+   "fieldtype": "Small Text",
+   "label": "Request URL",
+   "reqd": 1
+  },
+  {
+   "default": "POST",
+   "fieldname": "request_method",
+   "fieldtype": "Select",
+   "label": "Request Method",
+   "options": "POST\nPUT",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_request",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "JSON request body template, Jinja. Use {{ doc.name }} / {{ order.customer }} etc. Must render to valid JSON.",
+   "fieldname": "webhook_json",
+   "fieldtype": "Code",
+   "label": "JSON Request Body",
+   "options": "Jinja"
+  },
+  {
+   "fieldname": "sb_headers",
+   "fieldtype": "Section Break",
+   "label": "Headers"
+  },
+  {
+   "description": "e.g. Authorization / Bearer <the target app's shared secret>",
+   "fieldname": "webhook_headers",
+   "fieldtype": "Table",
+   "label": "Headers",
+   "options": "AI Provisioning Webhook Header"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-08-03 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Highskills Erpnext",
+ "name": "AI Provisioning Webhook",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

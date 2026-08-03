@@ -1,0 +1,122 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-08-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "provisioning_webhook",
+  "payment_entry",
+  "success",
+  "status_code",
+  "cb_source",
+  "reference_doctype",
+  "reference_name",
+  "customer",
+  "sb_response",
+  "api_key",
+  "tenant_url",
+  "response_json"
+ ],
+ "fields": [
+  {
+   "fieldname": "provisioning_webhook",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Provisioning Webhook",
+   "options": "AI Provisioning Webhook",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payment_entry",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Payment Entry",
+   "options": "Payment Entry",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "success",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Success"
+  },
+  {
+   "fieldname": "status_code",
+   "fieldtype": "Int",
+   "label": "Status Code"
+  },
+  {
+   "fieldname": "cb_source",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_doctype",
+   "fieldtype": "Select",
+   "label": "Reference Doctype",
+   "options": "Sales Order\nSales Invoice"
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Name",
+   "options": "reference_doctype"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "sb_response",
+   "fieldtype": "Section Break",
+   "label": "Response"
+  },
+  {
+   "description": "Best-effort extracted from the response JSON below - blank if the target app's response didn't include it.",
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "API Key"
+  },
+  {
+   "fieldname": "tenant_url",
+   "fieldtype": "Data",
+   "label": "Tenant URL"
+  },
+  {
+   "description": "Raw response body (or traceback, on failure) - kept for audit/debugging even when api_key/tenant_url extraction fails.",
+   "fieldname": "response_json",
+   "fieldtype": "Code",
+   "label": "Raw Response"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-08-03 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Highskills Erpnext",
+ "name": "AI Provisioning Result",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

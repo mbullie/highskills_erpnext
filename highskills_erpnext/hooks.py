@@ -24,7 +24,10 @@ doc_events = {
         "after_insert": "highskills_erpnext.helpers.trigger_immediate_flush"
     },
     "Payment Entry": {
-        "on_submit": "highskills_erpnext.api_subscription.on_payment_entry_submit"
+        "on_submit": [
+            "highskills_erpnext.api_subscription.on_payment_entry_submit",
+            "highskills_erpnext.ai_provisioning.on_payment_entry_submit",
+        ]
     },
     "Quotation": {
         "before_validate": "highskills_erpnext.subscription_pricing.apply_subscription_term_pricing"
