@@ -15,7 +15,7 @@ for Guest/Website User are made or needed anywhere.
 
 import frappe
 from frappe import _
-from frappe.utils import cint
+from frappe.utils import cint, escape_html
 from frappe.utils.nestedset import get_root_of
 from frappe.website.utils import is_signup_disabled
 
@@ -61,10 +61,10 @@ def custom_sign_up(
 		)
 		return
 
-	first_name = first_name.strip()
-	last_name = last_name.strip()
-	company_name = company_name.strip() if company_name else None
-	job_title = job_title.strip() if job_title else None
+	first_name = escape_html(first_name.strip())
+	last_name = escape_html(last_name.strip())
+	company_name = escape_html(company_name.strip()) if company_name else None
+	job_title = escape_html(job_title.strip()) if job_title else None
 
 	fullname = f"{first_name} {last_name}".strip()
 	customer_name = company_name if account_type == "Company" else fullname
