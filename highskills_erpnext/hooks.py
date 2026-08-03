@@ -208,10 +208,9 @@ before_request = ["highskills_erpnext.helpers.disable_cache_for_dynamic_pages"]
 # ----------
 
 # add methods and filters to jinja environment
-# jinja = {
-# 	"methods": "highskills_erpnext.utils.jinja_methods",
-# 	"filters": "highskills_erpnext.utils.jinja_filters"
-# }
+jinja = {
+	"filters": "highskills_erpnext.helpers.unescape_html_entities",
+}
 
 # Installation
 # ------------

@@ -1,3 +1,5 @@
+import html
+
 import frappe
 from frappe.email.queue import flush
 
@@ -25,6 +27,17 @@ def disable_cache_for_dynamic_pages():
     """
     if frappe.request and frappe.request.path in NO_CACHE_WEBSITE_PATHS:
         frappe.local.no_cache = True
+
+
+def unescape_html_entities(text):
+    """Registered via hooks.py `jinja.filters`, used only in print formats.
+
+    api_signup.py HTML-escapes company/contact names before storing them
+    (e.g. `"` -> `&quot;`) - reversing that here, for display only, keeps
+    the stored value and every other rendering surface (Desk, emails,
+    bank-transfer page) untouched.
+    """
+    return html.unescape(text) if text else text
 
 
 def trigger_immediate_flush(doc, method=None):
