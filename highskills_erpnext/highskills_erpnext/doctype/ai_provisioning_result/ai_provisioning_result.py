@@ -14,8 +14,9 @@ class AIProvisioningResult(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		api_key: DF.Password | None
+		api_key: DF.Data | None
 		customer: DF.Link | None
+		customer_email: DF.Data | None
 		payment_entry: DF.Link
 		provisioning_webhook: DF.Link
 		reference_doctype: DF.Literal["Sales Order", "Sales Invoice"]

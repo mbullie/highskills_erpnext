@@ -14,6 +14,7 @@
   "reference_doctype",
   "reference_name",
   "customer",
+  "customer_email",
   "sb_response",
   "api_key",
   "tenant_url",
@@ -72,14 +73,21 @@
    "options": "Customer"
   },
   {
+   "description": "Resolved from the Sales Order/Sales Invoice's contact_email at insert time - the Notification that emails the customer their key/URL uses this as its Receiver By Document Field, since `customer` above is a Customer record ID, not an email address.",
+   "fieldname": "customer_email",
+   "fieldtype": "Data",
+   "label": "Customer Email",
+   "options": "Email"
+  },
+  {
    "fieldname": "sb_response",
    "fieldtype": "Section Break",
    "label": "Response"
   },
   {
-   "description": "Best-effort extracted from the response JSON below - blank if the target app's response didn't include it.",
+   "description": "Best-effort extracted from the response JSON below - blank if the target app's response didn't include it. Plain Data, not Password: this key is deliberately emailed to the customer in plaintext, so masking it here would only break `{{ doc.api_key }}` in the Notification template without adding any real protection.",
    "fieldname": "api_key",
-   "fieldtype": "Password",
+   "fieldtype": "Data",
    "label": "API Key"
   },
   {

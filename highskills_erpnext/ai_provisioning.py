@@ -149,6 +149,7 @@ def _log_result(webhook, payment_entry, order, result):
 			"reference_doctype": order.doctype,
 			"reference_name": order.name,
 			"customer": order.get("customer"),
+			"customer_email": order.get("contact_email"),
 			**result,
 		}
 	)
