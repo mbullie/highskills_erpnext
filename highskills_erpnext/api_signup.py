@@ -69,6 +69,8 @@ def custom_sign_up(
 	fullname = f"{first_name} {last_name}".strip()
 	customer_name = company_name if account_type == "Company" else fullname
 
+	default_role = frappe.get_single_value("Portal Settings", "default_role")
+
 	user = frappe.get_doc(
 		{
 			"doctype": "User",
@@ -80,14 +82,11 @@ def custom_sign_up(
 			"user_type": "Website User",
 			"send_welcome_email": 0,
 			"language": frappe.local.lang,
+			"roles": [{"role": default_role}] if default_role else [],
 		}
 	)
 	user.flags.ignore_permissions = True
 	user.insert()
-
-	default_role = frappe.get_single_value("Portal Settings", "default_role")
-	if default_role:
-		user.add_roles(default_role)
 
 	default_price_list = _get_default_price_list(country)
 
