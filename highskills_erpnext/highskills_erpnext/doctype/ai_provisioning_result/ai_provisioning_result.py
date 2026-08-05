@@ -17,6 +17,7 @@ class AIProvisioningResult(Document):
 		api_key: DF.Data | None
 		customer: DF.Link | None
 		customer_email: DF.Data | None
+		language: DF.Data | None
 		payment_entry: DF.Link
 		provisioning_webhook: DF.Link
 		reference_doctype: DF.Literal["Sales Order", "Sales Invoice"]

@@ -56,12 +56,31 @@ def run_provisioning_webhooks(payment_entry_name):
 
 		order = frappe.get_doc(reference.reference_doctype, reference.reference_name)
 
+		language = _resolve_customer_language(order.customer)
+
 		for webhook in webhooks:
 			if not _condition_matches(webhook, payment_entry, order):
 				continue
 
 			result = fire_webhook(webhook, payment_entry, order)
-			_log_result(webhook, payment_entry, order, result)
+			_log_result(webhook, payment_entry, order, result, language)
+
+
+def _resolve_customer_language(customer):
+	"""Background jobs have no request/session, so frappe.local.lang here
+	is just the site's base language - not the customer's. order.language
+	isn't reliable either (only ever set on the Quotation for the
+	Company/bank-transfer flow, and not guaranteed to survive staff
+	manually converting it to a Sales Order). The customer's own
+	User.language, set once at signup (api_signup.py), is the one source
+	that's always correct - reached the same way
+	api_subscription.has_active_entitlement() looks up Portal User, just
+	in the opposite direction (customer -> user, not user -> customer).
+	"""
+	portal_user = frappe.db.get_value("Portal User", {"parent": customer}, "user")
+	if not portal_user:
+		return frappe.local.lang
+	return frappe.db.get_value("User", portal_user, "language") or frappe.local.lang
 
 
 def get_condition_context(payment_entry, order):
@@ -140,7 +159,7 @@ def fire_webhook(webhook, payment_entry, order):
 	return result
 
 
-def _log_result(webhook, payment_entry, order, result):
+def _log_result(webhook, payment_entry, order, result, language):
 	log = frappe.new_doc("AI Provisioning Result")
 	log.update(
 		{
@@ -150,8 +169,25 @@ def _log_result(webhook, payment_entry, order, result):
 			"reference_name": order.name,
 			"customer": order.get("customer"),
 			"customer_email": order.get("contact_email"),
+			"language": language,
 			**result,
 		}
 	)
 	log.flags.ignore_permissions = True
-	log.insert()
+
+	# This insert triggers the customer-facing Notification (Document Event
+	# = New) synchronously, as part of the doc-event hook chain - but this
+	# whole function runs inside a background job (see on_payment_entry_
+	# submit's frappe.enqueue), which has no request/session of its own, so
+	# frappe.local.lang would otherwise just be the site's base language
+	# regardless of the customer. print_language() scopes the customer's
+	# resolved language to exactly this insert - see plan/session notes on
+	# why this is safe despite print_language() itself lacking a
+	# try/finally: an exception here aborts this job immediately, and
+	# frappe.utils.background_jobs.execute_job() unconditionally calls
+	# frappe.destroy() after every job (success or failure) before the
+	# worker can pick up another one, so there's no cross-job leakage.
+	from frappe.translate import print_language
+
+	with print_language(language):
+		log.insert()

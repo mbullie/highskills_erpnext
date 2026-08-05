@@ -15,6 +15,7 @@
   "reference_name",
   "customer",
   "customer_email",
+  "language",
   "sb_response",
   "api_key",
   "tenant_url",
@@ -78,6 +79,12 @@
    "fieldtype": "Data",
    "label": "Customer Email",
    "options": "Email"
+  },
+  {
+   "description": "The customer's own User.language, resolved via Customer -> Portal User -> User at insert time - used to render the Notification email in the customer's language even though this runs in a background job with no request/session of its own.",
+   "fieldname": "language",
+   "fieldtype": "Data",
+   "label": "Language"
   },
   {
    "fieldname": "sb_response",
